@@ -1,0 +1,171 @@
+/* ============================================================
+   admin.css — Yönetim paneli (AŞAMA 3)
+   account.css shell/nav stillerini paylaşır; buradakiler ek.
+   ============================================================ */
+
+.admin-page { background: var(--bg); }
+.admin-page .auth-slot { display: flex; }
+
+.admin-shell {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 32px) 20px 64px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.admin-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #2b1610;
+  background: linear-gradient(135deg, #f5dc9b, #b88b3a);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-right: 8px;
+}
+
+/* ---- dashboard ---- */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.stat-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 18px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.stat-val { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+.stat-label { font-size: 13px; color: var(--ink-3); }
+.stat-warn .stat-val { color: #8a6d1e; }
+.stat-danger { border-color: rgba(230,57,70,0.4); }
+.stat-danger .stat-val { color: var(--accent); }
+.admin-quick { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.admin-quick .auth-btn-ghost { align-self: auto; margin-top: 0; }
+
+/* ---- filtre çipleri ---- */
+.admin-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.admin-chip {
+  font: inherit; font-size: 13px;
+  padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink-2);
+  cursor: pointer; transition: all var(--t-fast) var(--ease);
+}
+.admin-chip:hover { color: var(--ink); border-color: var(--ink-3); }
+.admin-chip.is-active { background: #4f1e23; color: #fff; border-color: #4f1e23; }
+
+/* ---- tablo ---- */
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+.admin-table th {
+  text-align: left; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-3);
+  padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--bg-soft);
+}
+.admin-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ink); vertical-align: middle; }
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-row { cursor: pointer; transition: background var(--t-fast) var(--ease); }
+.admin-row:hover { background: var(--bg-soft); }
+.mono { font-variant-numeric: tabular-nums; font-weight: 600; }
+.stock-low { color: var(--accent); font-weight: 700; }
+
+.admin-thumb {
+  width: 40px; height: 40px; object-fit: cover; border-radius: 6px;
+  display: inline-grid; place-items: center;
+  background: var(--bg-soft);
+}
+.admin-thumb-ph { color: var(--ink-3); font-size: 18px; }
+
+.admin-mini {
+  font: inherit; font-size: 12px;
+  padding: 5px 10px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--bg-soft); color: var(--ink-2);
+  cursor: pointer; margin-right: 4px;
+}
+.admin-mini:hover { background: var(--card); color: var(--ink); }
+.cat-tree-mark { color: var(--ink-3); }
+.cat-thumb-sm { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; vertical-align: middle; margin-right: 6px; }
+
+/* önerilen ürün checkbox listesi */
+.rec-check-list {
+  max-height: 220px; overflow-y: auto;
+  border: 1px solid var(--line); border-radius: 8px; padding: 8px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.rec-check { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+.rec-check:hover { background: var(--bg-soft); }
+.rec-check input { accent-color: #4f1e23; flex: 0 0 auto; }
+.rec-check em { color: var(--ink-3); font-style: normal; font-size: 12px; }
+
+/* ---- sipariş detay form satırları ---- */
+.admin-form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
+.admin-input {
+  font: inherit; font-size: 14px;
+  padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); min-width: 160px;
+}
+.admin-input:focus { outline: none; border-color: #4f1e23; box-shadow: 0 0 0 3px rgba(79,30,35,0.12); }
+.admin-form-row .auth-btn-primary, .admin-form-row .auth-btn-ghost { align-self: auto; margin-top: 0; }
+.admin-addr { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+
+.admin-danger-row { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); }
+.admin-danger-btn {
+  font: inherit; font-size: 13px;
+  padding: 9px 16px; border-radius: 6px;
+  border: 1px solid rgba(230,57,70,0.4); background: transparent; color: var(--accent);
+  cursor: pointer; transition: background var(--t-fast) var(--ease);
+}
+.admin-danger-btn:hover { background: rgba(230,57,70,0.07); }
+
+/* ---- ürün/kategori formu ---- */
+.admin-form { max-width: none; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 20px; background: var(--bg); }
+.admin-form select.admin-input, .account-field select {
+  font: inherit; font-size: 15px; padding: 11px 13px;
+  border: 1px solid var(--line); border-radius: 5px; background: var(--card); color: var(--ink); width: 100%;
+}
+
+/* ---- görsel yönetimi ---- */
+.admin-images { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.admin-img-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; }
+.admin-img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.admin-img-cell { position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; aspect-ratio: 1; }
+.admin-img-cell.is-primary { border-color: #b88b3a; box-shadow: 0 0 0 2px rgba(184,139,58,0.3); }
+.admin-img-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.admin-img-badge {
+  position: absolute; left: 6px; bottom: 6px;
+  font-size: 11px; font-weight: 700; color: #2b1610;
+  background: linear-gradient(135deg, #f5dc9b, #b88b3a); padding: 2px 8px; border-radius: 999px;
+}
+.admin-img-primary {
+  position: absolute; left: 6px; bottom: 6px;
+  font: inherit; font-size: 11px; padding: 3px 8px; border-radius: 999px;
+  border: 0; background: rgba(0,0,0,0.65); color: #fff; cursor: pointer;
+}
+.admin-img-del {
+  position: absolute; top: 4px; right: 4px;
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 16px; line-height: 1;
+  cursor: pointer; display: grid; place-items: center;
+}
+.admin-img-del:hover { background: var(--accent); }
+.admin-upload {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: #4f1e23;
+  padding: 10px 16px; border: 1px dashed rgba(79,30,35,0.4); border-radius: 8px; cursor: pointer;
+}
+.admin-upload:hover { background: rgba(79,30,35,0.05); }
+
+/* ---- gate / badge yeniden kullanım account.css'ten ---- */
+
+@media (min-width: 768px) {
+  .admin-shell { grid-template-columns: 220px 1fr; gap: 36px; padding: calc(var(--header-h) + 48px) 32px 80px; }
+  .admin-nav { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
+}
+@media (max-width: 767px) {
+  .account-field-row { grid-template-columns: 1fr; }
+  .admin-form-row .admin-input { min-width: 0; flex: 1 1 100%; }
+}

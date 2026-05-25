@@ -1,0 +1,436 @@
+/* ============================================================
+   account.css — Hesabım paneli (PR-C)
+   styles.css token'larını kullanır (--ink, --line, --bg vb.)
+   ============================================================ */
+
+.account-page { background: var(--bg); }
+
+/* ---- shell ---- */
+.account-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 32px) 20px 64px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+/* ---- sol nav ---- */
+.account-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.account-greeting {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.account-greeting-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.account-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.account-tab {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--ink-2);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.account-tab:hover { background: var(--bg-soft); color: var(--ink); }
+.account-tab.is-active {
+  background: linear-gradient(135deg, rgba(201,160,96,0.18), rgba(184,139,58,0.12));
+  color: #4f1e23;
+  font-weight: 700;
+}
+.account-logout {
+  margin-top: 14px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink-3);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.account-logout:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---- panel ---- */
+.account-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 28px;
+  box-shadow: var(--shadow-1);
+  min-height: 320px;
+}
+.account-panel-title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.account-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.account-panel-head .account-panel-title { margin: 0; }
+.account-loading { color: var(--ink-3); font-size: 14px; }
+.account-empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+/* ---- formlar ---- */
+.account-form { display: flex; flex-direction: column; gap: 16px; max-width: 480px; }
+.account-field { display: flex; flex-direction: column; gap: 6px; }
+.account-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.account-field label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.account-field input,
+.account-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.account-field textarea { resize: vertical; min-height: 56px; }
+.account-field input:focus,
+.account-field textarea:focus {
+  outline: none;
+  border-color: #4f1e23;
+  background: var(--card);
+  box-shadow: 0 0 0 3px rgba(79,30,35,0.12);
+}
+.account-field input[readonly] { background: var(--bg-soft); color: var(--ink-2); cursor: not-allowed; }
+.account-hint { font-size: 12px; color: var(--ink-3); }
+
+.account-form-msg {
+  margin: 0;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+.account-form-msg.is-ok  { color: #2a6b4e; background: rgba(42,157,143,0.10); }
+.account-form-msg.is-err { color: var(--accent); background: rgba(230,57,70,0.08); }
+
+.account-form .auth-btn-primary,
+.account-form .auth-btn-ghost { align-self: flex-start; }
+
+.account-divider { height: 1px; background: var(--line); margin: 28px 0; }
+
+.account-accordion summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 8px 0;
+  list-style: none;
+}
+.account-accordion summary::-webkit-details-marker { display: none; }
+.account-accordion summary::before { content: "+ "; color: var(--ink-3); }
+.account-accordion[open] summary::before { content: "− "; }
+.account-accordion .account-form { margin-top: 16px; }
+
+/* ---- adresler ---- */
+.account-add-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4f1e23;
+  background: transparent;
+  border: 1px dashed rgba(79,30,35,0.4);
+  border-radius: 6px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.account-add-btn:hover { background: rgba(79,30,35,0.06); border-color: #4f1e23; }
+
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.address-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.address-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.address-title { font-weight: 700; color: var(--ink); }
+.address-default-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4f1e23;
+  background: linear-gradient(135deg, rgba(201,160,96,0.22), rgba(184,139,58,0.16));
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.address-name { margin: 0 0 4px; font-weight: 600; color: var(--ink); }
+.address-line, .address-meta, .address-phone { margin: 0 0 2px; color: var(--ink-2); }
+.address-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.address-actions button {
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink-2);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.address-actions button:hover { background: var(--card); color: var(--ink); }
+.address-actions .address-del:hover { color: var(--accent); border-color: var(--accent); }
+
+/* adres formu */
+.address-form {
+  max-width: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: var(--bg);
+}
+.address-form-title { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+.address-form-actions { display: flex; gap: 10px; }
+.address-form-actions .auth-btn-primary,
+.address-form-actions .auth-btn-ghost { align-self: auto; margin-top: 0; }
+
+/* ---- gate (giriş gerekli) ---- */
+.account-gate {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  min-height: 60vh;
+  padding: calc(var(--header-h) + 40px) 24px 40px;
+}
+.account-gate-text { margin: 0; font-size: 16px; color: var(--ink-2); }
+.account-gate .auth-btn-primary { align-self: center; }
+.account-gate-home { font-size: 13px; color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============================================================
+   SİPARİŞLER
+   ============================================================ */
+.order-list { display: flex; flex-direction: column; gap: 10px; }
+.order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.order-row:hover { border-color: var(--ink-3); background: var(--card); transform: translateY(-1px); }
+.order-row-main { display: flex; flex-direction: column; gap: 3px; }
+.order-number { font-size: 14px; font-weight: 700; color: var(--ink); }
+.order-date { font-size: 12px; color: var(--ink-3); }
+.order-row-side { display: flex; align-items: center; gap: 12px; }
+.order-total { font-size: 14px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.status-badge.s-pending   { color: #8a6d1e; background: rgba(201,160,96,0.18); }
+.status-badge.s-paid      { color: #2a6b4e; background: rgba(42,157,143,0.14); }
+.status-badge.s-preparing { color: #b25a16; background: rgba(249,115,22,0.14); }
+.status-badge.s-shipped   { color: #2a5db2; background: rgba(91,141,239,0.16); }
+.status-badge.s-delivered { color: #2a6b4e; background: rgba(42,157,143,0.20); }
+.status-badge.s-cancelled { color: var(--ink-3); background: var(--bg-soft); }
+
+/* sipariş detay */
+.order-back {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink-2);
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+.order-back:hover { color: var(--ink); }
+.order-detail-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.order-detail-head .account-panel-title { margin: 0; }
+.order-section-title { margin: 24px 0 12px; font-size: 15px; font-weight: 700; }
+.order-items { display: flex; flex-direction: column; gap: 8px; }
+.order-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.order-item-name { color: var(--ink); font-weight: 500; }
+.order-item-qty, .order-item-price { color: var(--ink-3); font-size: 13px; }
+.order-item-sub { color: var(--ink); font-weight: 600; }
+
+.order-tracking {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--bg-soft);
+  border-radius: 8px;
+}
+.order-tracking-code { font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+
+/* timeline */
+.order-timeline { display: flex; flex-direction: column; }
+.timeline-item { display: flex; gap: 12px; padding-bottom: 16px; position: relative; }
+.timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 5px; top: 14px; bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+.timeline-dot {
+  flex: 0 0 12px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  margin-top: 2px;
+  background: var(--ink-3);
+  z-index: 1;
+}
+.timeline-dot.s-paid, .timeline-dot.s-delivered { background: #2a9d8f; }
+.timeline-dot.s-shipped { background: #5b8def; }
+.timeline-dot.s-preparing { background: #f97316; }
+.timeline-dot.s-cancelled { background: var(--ink-3); }
+.timeline-body { display: flex; flex-direction: column; gap: 2px; }
+.timeline-status { font-size: 14px; font-weight: 600; color: var(--ink); }
+.timeline-date { font-size: 12px; color: var(--ink-3); }
+
+/* ============================================================
+   FAVORİLER
+   ============================================================ */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.wishlist-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+.wishlist-media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, var(--bg-soft), #ececea);
+  text-decoration: none;
+}
+.wishlist-glyph { font-size: 40px; font-weight: 700; color: var(--ink-3); }
+.wishlist-body { padding: 10px 12px 4px; flex: 1; }
+.wishlist-name { margin: 0 0 4px; font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.wishlist-price { margin: 0; font-size: 13px; color: var(--ink-2); }
+.wishlist-remove {
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink-3);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 9px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.wishlist-remove:hover { color: var(--accent); background: rgba(230,57,70,0.06); }
+
+/* ============================================================
+   Desktop ≥768px — iki kolon
+   ============================================================ */
+@media (min-width: 768px) {
+  .account-shell {
+    grid-template-columns: 240px 1fr;
+    padding: calc(var(--header-h) + 48px) 32px 80px;
+    gap: 40px;
+  }
+  .account-nav {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    align-self: start;
+  }
+  .account-panel { padding: 36px; }
+}
+
+/* ============================================================
+   Mobil <768px — nav yatay scroll sticky üst
+   ============================================================ */
+@media (max-width: 767px) {
+  .account-greeting { margin-bottom: 8px; }
+  .account-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .account-tabs::-webkit-scrollbar { display: none; }
+  .account-tab { white-space: nowrap; flex: 0 0 auto; }
+  .account-logout { margin-top: 4px; align-self: flex-start; }
+  .account-field-row { grid-template-columns: 1fr; }
+  .account-panel { padding: 20px; }
+}

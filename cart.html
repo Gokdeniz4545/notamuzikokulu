@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Sepetim — Nota Müzik Market</title>
+<meta name="theme-color" content="#fafafa" />
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<link rel="stylesheet" href="styles.css?v=37" />
+<link rel="stylesheet" href="auth.css?v=28" />
+<link rel="stylesheet" href="shop.css?v=30" />
+</head>
+<body class="shop-page">
+
+<header class="site-header" id="siteHeader">
+  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
+    <span class="logo-mark" aria-hidden="true">♪</span>
+    <span class="logo-text">NOTA MÜZİK MARKET<sup>®</sup></span>
+  </a>
+  <div class="header-right">
+    <div class="auth-slot" id="authSlot" data-state="loading">
+      <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
+      <button class="auth-link auth-link-primary" data-when="out" data-tab="register" type="button">Kayıt Ol</button>
+      <a href="account.html" class="account-link" data-when="in" hidden>Hesabım</a>
+      <button type="button" id="logoutBtn" class="logout-link" data-when="in" hidden>Çıkış</button>
+    </div>
+  </div>
+</header>
+
+<main class="shop-shell">
+  <div class="shop-head">
+    <h1 class="shop-title">Sepetim</h1>
+    <a href="index.html" class="shop-back">← Alışverişe devam et</a>
+  </div>
+  <div id="cartContent"><p class="shop-loading">Yükleniyor…</p></div>
+</main>
+
+<div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js?v=37"></script>
+<script src="api.js?v=39"></script>
+<script src="cart-store.js?v=33"></script>
+<script src="auth-modal.js?v=30" defer></script>
+<script src="header-auth.js?v=30" defer></script>
+<script src="cart.js?v=30" defer></script>
+
+</body>
+</html>

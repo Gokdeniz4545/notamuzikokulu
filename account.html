@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Hesabım — Nota Müzik Market</title>
+<meta name="description" content="Hesap bilgilerin, adreslerin, siparişlerin ve favorilerin." />
+<meta name="theme-color" content="#fafafa" />
+
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<link rel="stylesheet" href="styles.css?v=37" />
+<link rel="stylesheet" href="auth.css?v=28" />
+<link rel="stylesheet" href="account.css?v=29" />
+</head>
+<body class="account-page">
+
+<header class="site-header" id="siteHeader">
+  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
+    <span class="logo-mark" aria-hidden="true">♪</span>
+    <span class="logo-text">NOTA MÜZİK MARKET<sup>®</sup></span>
+  </a>
+
+  <div class="header-right">
+    <a href="index.html" class="auth-link">Ana Sayfa</a>
+    <button type="button" id="headerLogout" class="logout-link" hidden>Çıkış</button>
+  </div>
+</header>
+
+<main class="account-shell" id="accountShell" hidden>
+  <aside class="account-nav">
+    <p class="account-greeting">Merhaba,<br><span class="account-greeting-name" id="acctGreeting">…</span></p>
+    <nav class="account-tabs" role="tablist" aria-label="Hesap bölümleri">
+      <button type="button" class="account-tab" role="tab" data-tab="profile">Profilim</button>
+      <button type="button" class="account-tab" role="tab" data-tab="addresses">Adreslerim</button>
+      <button type="button" class="account-tab" role="tab" data-tab="orders">Siparişlerim</button>
+      <button type="button" class="account-tab" role="tab" data-tab="wishlist">Favorilerim</button>
+    </nav>
+    <button type="button" class="account-logout" id="acctLogout">Çıkış Yap</button>
+  </aside>
+
+  <section class="account-panel" id="accountPanel" aria-live="polite">
+    <!-- aktif tab JS ile render edilir -->
+  </section>
+</main>
+
+<!-- Guard bekleme ekranı -->
+<div class="account-gate" id="accountGate">
+  <p class="account-gate-text">Hesabına erişmek için giriş yapman gerekiyor.</p>
+  <button type="button" class="auth-btn-primary" onclick="openAuthModal('login')">Giriş Yap</button>
+  <a href="index.html" class="account-gate-home">Ana sayfaya dön</a>
+</div>
+
+<!-- mini toast -->
+<div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
+
+<!-- ============================================================
+     Auth modal — login / register / forgot / reset / check-email
+     (index.html ile aynı; guard fail olduğunda login için)
+     ============================================================ -->
+<div class="auth-modal" id="authModal" hidden role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+  <div class="auth-modal-card" role="document">
+    <button type="button" class="auth-close" aria-label="Kapat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="auth-tabs" role="tablist" aria-label="Hesap">
+      <button type="button" class="auth-tab" role="tab" data-tab="login" aria-selected="true">Giriş Yap</button>
+      <button type="button" class="auth-tab" role="tab" data-tab="register" aria-selected="false">Kayıt Ol</button>
+    </div>
+
+    <div class="auth-state is-active" data-state="login" role="tabpanel">
+      <form class="auth-form" id="authLoginForm" autocomplete="on" novalidate>
+        <div class="auth-field">
+          <label for="authLoginEmail">E-posta</label>
+          <input id="authLoginEmail" name="email" type="email" inputmode="email" autocomplete="email" required />
+        </div>
+        <div class="auth-field">
+          <label for="authLoginPassword">Şifre</label>
+          <input id="authLoginPassword" name="password" type="password" autocomplete="current-password" minlength="6" required />
+        </div>
+        <div class="auth-row-between">
+          <span></span>
+          <a href="#" id="authForgotLink">Şifremi unuttum</a>
+        </div>
+        <p class="auth-error" hidden></p>
+        <button type="submit" class="auth-btn-primary">Giriş Yap</button>
+      </form>
+      <p class="auth-foot">Hesabın yok mu? <a href="#" id="authToRegister">Kayıt ol</a></p>
+    </div>
+
+    <div class="auth-state" data-state="register" role="tabpanel">
+      <form class="auth-form" id="authRegisterForm" autocomplete="on" novalidate>
+        <div class="auth-field">
+          <label for="authRegName">Ad Soyad</label>
+          <input id="authRegName" name="fullName" type="text" autocomplete="name" required />
+        </div>
+        <div class="auth-field">
+          <label for="authRegEmail">E-posta</label>
+          <input id="authRegEmail" name="email" type="email" inputmode="email" autocomplete="email" required />
+        </div>
+        <div class="auth-field">
+          <label for="authRegPassword">Şifre</label>
+          <input id="authRegPassword" name="password" type="password" autocomplete="new-password" minlength="6" required />
+        </div>
+        <label class="auth-check">
+          <input type="checkbox" name="kvkk" required />
+          <span>KVKK metnini okudum ve onaylıyorum.</span>
+        </label>
+        <p class="auth-error" hidden></p>
+        <button type="submit" class="auth-btn-primary">Kayıt Ol</button>
+      </form>
+      <p class="auth-foot">Zaten hesabın var mı? <a href="#" id="authToLogin">Giriş yap</a></p>
+    </div>
+
+    <div class="auth-state" data-state="forgot" role="tabpanel">
+      <h3 class="auth-heading">Şifreni mi unuttun?</h3>
+      <p class="auth-sub">E-postanı gir, sıfırlama bağlantısını gönderelim.</p>
+      <form class="auth-form" id="authForgotForm" autocomplete="on" novalidate>
+        <div class="auth-field">
+          <label for="authForgotEmail">E-posta</label>
+          <input id="authForgotEmail" name="email" type="email" inputmode="email" autocomplete="email" required />
+        </div>
+        <p class="auth-error" hidden></p>
+        <p class="auth-info" hidden></p>
+        <button type="submit" class="auth-btn-primary">Sıfırlama Bağlantısını Gönder</button>
+        <button type="button" class="auth-btn-ghost" id="authBackToLogin">Geri dön</button>
+      </form>
+    </div>
+
+    <div class="auth-state" data-state="reset" role="tabpanel">
+      <h3 class="auth-heading">Yeni şifre belirle</h3>
+      <p class="auth-sub">Hesabın için yeni bir şifre seç.</p>
+      <form class="auth-form" id="authResetForm" autocomplete="on" novalidate>
+        <div class="auth-field">
+          <label for="authResetPwd">Yeni şifre</label>
+          <input id="authResetPwd" name="password" type="password" autocomplete="new-password" minlength="6" required />
+        </div>
+        <div class="auth-field">
+          <label for="authResetPwd2">Yeni şifre (tekrar)</label>
+          <input id="authResetPwd2" name="password2" type="password" autocomplete="new-password" minlength="6" required />
+        </div>
+        <p class="auth-error" hidden></p>
+        <p class="auth-info" hidden></p>
+        <button type="submit" class="auth-btn-primary">Şifremi Güncelle</button>
+      </form>
+    </div>
+
+    <div class="auth-state" data-state="check-email" role="tabpanel">
+      <div class="auth-check-email">
+        <span class="auth-check-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <h3>Mailini kontrol et</h3>
+        <p><span class="auth-email-strong" id="authCheckEmailAddr">…</span> adresine doğrulama bağlantısı gönderdik.</p>
+        <p>Linke tıkladığında otomatik olarak giriş yapacaksın.</p>
+        <span class="auth-spam-hint">Gelmediyse spam / önemsiz klasörünü kontrol et.</span>
+        <p class="auth-error" hidden></p>
+        <p class="auth-info" hidden></p>
+        <button type="button" class="auth-btn-primary" id="authResendBtn" style="margin-top:18px;">Tekrar gönder</button>
+        <button type="button" class="auth-btn-ghost" id="authCheckCloseBtn">Kapat</button>
+      </div>
+    </div>
+
+    <div class="auth-state" data-state="verified" role="tabpanel">
+      <div class="auth-check-email">
+        <span class="auth-check-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <h3>E-postan doğrulandı ✓</h3>
+        <p>Hoş geldin — otomatik giriş yapıldı.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Supabase JS SDK (UMD) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js?v=37"></script>
+<script src="cart-store.js?v=33"></script>
+<script src="auth-modal.js?v=30" defer></script>
+<script src="account.js?v=29" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /account.html
+Disallow: /admin.html
+Disallow: /checkout.html
+Disallow: /cart.html
+
+Sitemap: https://www.notamuzikmarket.com/sitemap.xml
