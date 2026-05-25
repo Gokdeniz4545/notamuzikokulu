@@ -5,11 +5,11 @@
 
 -- ----- Kategoriler -----
 INSERT INTO categories (slug, name, image_path, display_order) VALUES
-  ('guitars',  'Gitarlar',            'images/cat-guitars.png', 1),
-  ('keys',     'Klavye & Piyano',     'images/cat-keys.png',    2),
-  ('drums',    'Davul & Perküsyon',   'images/cat-drums.png',   3),
-  ('strings',  'Yaylılar',            'images/cat-strings.png', 4),
-  ('access',   'Aksesuarlar',         'images/cat-access.png',  5);
+  ('guitars',  'Gitarlar',            'images/cat-guitars.webp', 1),
+  ('keys',     'Klavye & Piyano',     'images/cat-keys.webp',    2),
+  ('drums',    'Davul & Perküsyon',   'images/cat-drums.webp',   3),
+  ('strings',  'Yaylılar',            'images/cat-strings.webp', 4),
+  ('access',   'Aksesuarlar',         'images/cat-access.webp',  5);
 
 -- ----- Ürünler -----
 -- VALUES tablosu: (slug, name, cat_slug, price, stock, description)

@@ -4,11 +4,11 @@
 
 const CATEGORIES = [
   { slug: 'all',      name: 'Tümü',       color: '#1a1a1a' },
-  { slug: 'guitars',  name: 'Gitarlar',   color: '#e63946', image: 'images/cat-guitars.png' },
-  { slug: 'keys',     name: 'Klavye',     color: '#5b8def', image: 'images/cat-keys.png' },
-  { slug: 'drums',    name: 'Davul',      color: '#f97316', image: 'images/cat-drums.png' },
-  { slug: 'strings',  name: 'Yaylılar',   color: '#a06cd5', image: 'images/cat-strings.png' },
-  { slug: 'access',   name: 'Aksesuarlar',color: '#2a9d8f', image: 'images/cat-access.png' },
+  { slug: 'guitars',  name: 'Gitarlar',   color: '#e63946', image: 'images/cat-guitars.webp' },
+  { slug: 'keys',     name: 'Klavye',     color: '#5b8def', image: 'images/cat-keys.webp' },
+  { slug: 'drums',    name: 'Davul',      color: '#f97316', image: 'images/cat-drums.webp' },
+  { slug: 'strings',  name: 'Yaylılar',   color: '#a06cd5', image: 'images/cat-strings.webp' },
+  { slug: 'access',   name: 'Aksesuarlar',color: '#2a9d8f', image: 'images/cat-access.webp' },
 ];
 
 const PRODUCTS = [

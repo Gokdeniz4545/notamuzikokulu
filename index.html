@@ -3,21 +3,64 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Nota Müzik Market — Müziğin Dokunuşu</title>
-<meta name="description" content="Türkiye'nin müzik enstrümanı koleksiyonu. Gitar, klavye, davul, yaylı çalgılar ve aksesuarlar." />
+<title>Nota Müzik Market — Müzik Enstrümanları | Gitar, Piyano, Davul</title>
+<meta name="description" content="Gitar, dijital piyano, elektronik davul, keman ve müzik aksesuarları. Geniş ürün yelpazesi, hızlı kargo — Nota Müzik Market ile doğru enstrümanı seç." />
+<meta name="keywords" content="müzik enstrümanları, elektro gitar, dijital piyano, elektronik davul, keman, müzik aksesuarları, müzik market" />
+<meta name="robots" content="index, follow" />
 <meta name="theme-color" content="#fafafa" />
+<link rel="canonical" href="https://www.notamuzikmarket.com/" />
 
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Nota Müzik Market" />
+<meta property="og:locale" content="tr_TR" />
+<meta property="og:title" content="Nota Müzik Market — Müzik Enstrümanları" />
+<meta property="og:description" content="Gitar, dijital piyano, elektronik davul, keman ve müzik aksesuarları. Geniş ürün yelpazesi, hızlı kargo." />
+<meta property="og:url" content="https://www.notamuzikmarket.com/" />
+<meta property="og:image" content="https://www.notamuzikmarket.com/images/hero-guitar.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nota Müzik Market — Müzik Enstrümanları" />
+<meta name="twitter:description" content="Gitar, dijital piyano, elektronik davul, keman ve müzik aksesuarları." />
+<meta name="twitter:image" content="https://www.notamuzikmarket.com/images/hero-guitar.png" />
+
+<link rel="icon" type="image/png" href="images/logo-icon.png" />
+<link rel="apple-touch-icon" href="images/logo-icon.png" />
 <link rel="preconnect" href="https://rsms.me/" />
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-<link rel="stylesheet" href="styles.css?v=37" />
+<link rel="stylesheet" href="styles.css?v=38" />
 <link rel="stylesheet" href="auth.css?v=28" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Nota Müzik Market",
+  "url": "https://www.notamuzikmarket.com/",
+  "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+  "description": "Gitar, dijital piyano, elektronik davul, keman ve müzik aksesuarları satan online müzik market.",
+  "areaServed": "TR"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Nota Müzik Market",
+  "url": "https://www.notamuzikmarket.com/",
+  "inLanguage": "tr-TR",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": { "@type": "EntryPoint", "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}" },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 </head>
 <body>
 
 <header class="site-header" id="siteHeader">
   <a href="#" class="logo" aria-label="Nota Müzik Market ana sayfa">
-    <span class="logo-mark" aria-hidden="true">♪</span>
-    <span class="logo-text">NOTA MÜZİK MARKET<sup>®</sup></span>
+    <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
   </a>
 
   <nav class="site-nav" aria-label="Birincil">
@@ -58,7 +101,10 @@
 <main>
 
   <section class="hero" id="hero">
-    <img class="hero-img" id="heroImg" src="images/hero-guitar.png" alt="" aria-hidden="true" decoding="async" />
+    <picture>
+      <source srcset="images/hero-guitar.webp" type="image/webp" />
+      <img class="hero-img" id="heroImg" src="images/hero-guitar.png" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
+    </picture>
     <div class="hero-inner">
       <p class="eyebrow">Nota Müzik Market</p>
       <h1 class="hero-title">Müziğin<br/>Dokunuşu.</h1>
@@ -317,7 +363,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
 <!-- Supabase JS SDK (UMD) — window.supabase global'i sağlar -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="data.js?v=27"></script>
+<script src="data.js?v=28"></script>
 <script src="supabase-client.js?v=37"></script>
 <script src="api.js?v=39"></script>
 <script src="cart-store.js?v=33"></script>
