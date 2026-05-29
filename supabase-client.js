@@ -134,9 +134,12 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
 
   // ---- profil ----
   async function getProfile() {
+    const uid = await currentUserId();
+    if (!uid) return { data: null, error: { message: 'Oturum bulunamadı.' } };
     const { data, error } = await window.sb
       .from('profiles')
       .select('id, full_name, phone, role, created_at')
+      .eq('id', uid)
       .single();
     return { data, error };
   }
