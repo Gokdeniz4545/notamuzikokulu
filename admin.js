@@ -403,7 +403,14 @@
   async function onProductDelete(id) {
     if (!confirm('Ürünü kalıcı silmek istediğine emin misin?')) return;
     const { error } = await window.NMAdmin.deleteProduct(id);
-    if (error) { toast('Silinemedi — siparişlerde kullanılıyor olabilir. "Pasif" yapmayı dene.'); return; }
+    if (error) {
+      const ok = confirm('Bu ürün siparişlerde kullanıldığı için silinemez.\n\nPasife almak ister misin? (Sitede görünmez, sipariş geçmişi korunur)');
+      if (!ok) return;
+      const { error: e2 } = await window.NMAdmin.toggleActive(id, false);
+      if (e2) { toast('Pasife alınamadı: ' + (e2.message || '')); return; }
+      toast('Ürün pasife alındı'); $('#prodFormHost').innerHTML = ''; renderProducts();
+      return;
+    }
     toast('Ürün silindi'); $('#prodFormHost').innerHTML = ''; renderProducts();
   }
   async function renderProductImages(productId) {
