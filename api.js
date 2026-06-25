@@ -65,7 +65,8 @@
     const { data, error } = await window.sb
       .from('products')
       .select('id, slug, name, price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
-      .in('id', ids);
+      .in('id', ids)
+      .eq('is_active', true);
     if (error) { console.error('[api] getProductsByIds', error); return []; }
     return data.map((p) => ({
       id: p.id,
