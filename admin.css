@@ -41,9 +41,18 @@
 }
 .stat-val { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
 .stat-label { font-size: 13px; color: var(--ink-3); }
+.stat-sub { font-size: 15px; font-weight: 700; color: var(--accent); margin-top: 2px; }
 .stat-warn .stat-val { color: #8a6d1e; }
 .stat-danger { border-color: rgba(230,57,70,0.4); }
 .stat-danger .stat-val { color: var(--accent); }
+.stat-accent { border-color: rgba(230,57,70,0.4); background: rgba(230,57,70,0.04); }
+.stat-accent .stat-val { color: var(--accent); font-size: 24px; }
+.admin-section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-2); margin: 26px 0 12px;
+}
+.admin-section-title:first-of-type { margin-top: 14px; }
+.admin-section-note { font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--ink-3); }
 .admin-quick { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
 .admin-quick .auth-btn-ghost { align-self: auto; margin-top: 0; }
 

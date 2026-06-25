@@ -309,6 +309,38 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
     return { total, pending, preparing, shipped, productsTotal, lowStock, lowStockThreshold: LOW_STOCK };
   }
 
+  // ---- satış istatistikleri (takvim bazlı: bugün / bu hafta / bu ay) ----
+  // Yalnız 'delivered' siparişler sayılır; tarih sipariş tarihine (created_at) göre.
+  async function getSalesStats() {
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const dayIdx = (now.getDay() + 6) % 7;            // Pazartesi = 0
+    const startOfWeek = new Date(startOfToday);
+    startOfWeek.setDate(startOfToday.getDate() - dayIdx);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const earliest = new Date(Math.min(startOfToday.getTime(), startOfWeek.getTime(), startOfMonth.getTime()));
+
+    const { data, error } = await window.sb
+      .from('orders')
+      .select('total_amount, created_at')
+      .eq('status', 'delivered')
+      .gte('created_at', earliest.toISOString());
+    if (error) { console.error('[admin] getSalesStats', error); return { error }; }
+
+    const agg = (since) => {
+      let count = 0, revenue = 0;
+      (data || []).forEach((o) => {
+        if (new Date(o.created_at) >= since) { count++; revenue += Number(o.total_amount) || 0; }
+      });
+      return { count, revenue };
+    };
+    return {
+      today: agg(startOfToday),
+      week:  agg(startOfWeek),
+      month: agg(startOfMonth),
+    };
+  }
+
   // ---- siparişler ----
   async function listOrders(status) {
     let q = window.sb.from('orders')
@@ -473,7 +505,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   }
 
   window.NMAdmin = {
-    getStats,
+    getStats, getSalesStats,
     listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder,
     listProducts, createProduct, updateProduct, setStock, toggleActive, deleteProduct,
     listProductImages, uploadProductImage, deleteProductImage, setPrimaryImage, publicUrl,

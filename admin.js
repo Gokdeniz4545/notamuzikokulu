@@ -127,9 +127,23 @@
   // DASHBOARD
   // ============================================================
   async function renderDashboard() {
-    const s = await window.NMAdmin.getStats();
+    const [s, sales] = await Promise.all([
+      window.NMAdmin.getStats(),
+      window.NMAdmin.getSalesStats(),
+    ]);
+    const salesOk = sales && !sales.error;
     panel.innerHTML = `
       <h2 class="account-panel-title">Özet</h2>
+
+      <h3 class="admin-section-title">Satışlar <span class="admin-section-note">(teslim edilen siparişler)</span></h3>
+      <div class="admin-stats">
+        ${salesCard('Bugün', sales)}
+        ${salesCard('Bu hafta', sales)}
+        ${salesCard('Bu ay', sales)}
+        ${statCard('Bu ayki ciro', salesOk ? fmtTL(sales.month.revenue) : '—', 'accent')}
+      </div>
+
+      <h3 class="admin-section-title">Siparişler & Stok</h3>
       <div class="admin-stats">
         ${statCard('Toplam sipariş', s.total)}
         ${statCard('Onay bekleyen', s.pending, 'warn')}
@@ -146,6 +160,18 @@
   }
   function statCard(label, val, tone) {
     return `<div class="stat-card ${tone ? 'stat-' + tone : ''}"><span class="stat-val">${esc(val)}</span><span class="stat-label">${esc(label)}</span></div>`;
+  }
+  // Satış kartı: ana değer = sipariş adedi, alt satır = ciro
+  function salesCard(label, sales) {
+    const key = label === 'Bugün' ? 'today' : (label === 'Bu hafta' ? 'week' : 'month');
+    const ok = sales && !sales.error && sales[key];
+    const count = ok ? sales[key].count : 0;
+    const revenue = ok ? fmtTL(sales[key].revenue) : '—';
+    return `<div class="stat-card">
+      <span class="stat-val">${esc(count)}</span>
+      <span class="stat-label">${esc(label)} · satış</span>
+      <span class="stat-sub">${esc(revenue)}</span>
+    </div>`;
   }
 
   // ============================================================
