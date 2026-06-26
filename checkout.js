@@ -258,7 +258,7 @@
     content.innerHTML = `
       <div class="co-pay-wrap">
         <p class="co-pay-head">Ödemeni güvenli PayTR ekranında tamamla</p>
-        <iframe src="https://www.paytr.com/odeme/guest/${encodeURIComponent(token)}"
+        <iframe src="https://www.paytr.com/odeme/guvenli/${encodeURIComponent(token)}"
                 id="paytriframe" frameborder="0" scrolling="no" style="width:100%;"></iframe>
       </div>`;
     const s = document.createElement('script');
