@@ -22,3 +22,7 @@ __pycache__/
 
 # Toplu içe aktarma — gizli kimlik bilgileri (asla commit etme)
 scripts/import.config.json
+
+# Supabase CLI geçici dosyaları
+supabase/.temp/
+supabase/.branches/
