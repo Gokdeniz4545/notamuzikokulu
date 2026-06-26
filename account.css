@@ -289,6 +289,7 @@
 .status-badge.s-shipped   { color: #2a5db2; background: rgba(91,141,239,0.16); }
 .status-badge.s-delivered { color: #2a6b4e; background: rgba(42,157,143,0.20); }
 .status-badge.s-cancelled { color: var(--ink-3); background: var(--bg-soft); }
+.status-badge.s-refunded  { color: #8a3a3a; background: rgba(230,57,70,0.10); }
 
 /* sipariş detay */
 .order-back {

@@ -350,6 +350,7 @@
     shipped:   { label: 'Kargoda',       cls: 's-shipped' },
     delivered: { label: 'Teslim edildi', cls: 's-delivered' },
     cancelled: { label: 'İptal edildi',  cls: 's-cancelled' },
+    refunded:  { label: 'İade edildi',   cls: 's-cancelled' },
   };
   const statusLabel = (s) => (ORDER_STATUS[s] || { label: s }).label;
   const statusCls   = (s) => (ORDER_STATUS[s] || { cls: 's-pending' }).cls;

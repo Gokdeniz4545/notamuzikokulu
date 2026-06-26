@@ -45,6 +45,7 @@
   const ORDER_STATUS = {
     pending:   'Onay bekliyor', paid: 'Ödendi', preparing: 'Hazırlanıyor',
     shipped:   'Kargoda', delivered: 'Teslim edildi', cancelled: 'İptal edildi',
+    refunded:  'İade edildi',
   };
   const statusCls = (s) => 's-' + s;
 
@@ -263,11 +264,46 @@
       <h3 class="order-section-title">Durum geçmişi</h3>
       <div class="order-timeline">${timeline}</div>
 
+      ${['paid', 'partial_refund'].includes(order.payment_status) ? `
+      <h3 class="order-section-title">İade (PayTR)</h3>
+      <p class="account-hint">Ödenen: ${esc(fmtTL(order.total_amount))}${Number(order.refunded_amount) > 0 ? ` · İade edilen: ${esc(fmtTL(order.refunded_amount))}` : ''}</p>
+      <div class="admin-form-row">
+        <input id="refundAmt" class="admin-input" type="number" min="0" step="0.01" placeholder="Tutar (boş = kalan tümü)" />
+        <button type="button" class="admin-danger-btn" id="refundBtn">İade Et</button>
+      </div>` : (Number(order.refunded_amount) > 0 ? `
+      <h3 class="order-section-title">İade</h3>
+      <p class="account-hint">Bu sipariş iade edildi — toplam ${esc(fmtTL(order.refunded_amount))}.</p>` : '')}
+
       <div class="admin-danger-row">
         <button type="button" class="admin-danger-btn" id="ordCancel">Siparişi iptal et</button>
       </div>`;
 
     $('#orderBack').addEventListener('click', () => selectTab('orders', true));
+    const refundBtn = $('#refundBtn');
+    if (refundBtn) refundBtn.addEventListener('click', async () => {
+      const amt = $('#refundAmt').value.trim();
+      if (!confirm(amt ? `${amt} TL iade edilsin mi?` : 'Kalan tutarın tamamı iade edilsin mi?')) return;
+      refundBtn.disabled = true;
+      try {
+        const session = await window.NMAuth.getSession();
+        const resp = await fetch(window.NM_SUPA.url + '/functions/v1/paytr-refund', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': window.NM_SUPA.anonKey,
+            'Authorization': 'Bearer ' + (session ? session.access_token : window.NM_SUPA.anonKey),
+          },
+          body: JSON.stringify({ merchant_oid: order.paytr_merchant_oid, amount: amt || null }),
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) throw new Error(data.error || 'İade başarısız');
+        toast(data.full ? 'Tam iade yapıldı' : 'Kısmi iade yapıldı');
+        renderOrderDetail(id);
+      } catch (e) {
+        toast('İade hatası: ' + (e.message || ''));
+        refundBtn.disabled = false;
+      }
+    });
     $('#ordStatusSave').addEventListener('click', async () => {
       const { error: e } = await window.NMAdmin.updateOrderStatus(id, $('#ordStatus').value);
       if (e) return toast('Güncellenemedi'); toast('Durum güncellendi'); renderOrderDetail(id);
