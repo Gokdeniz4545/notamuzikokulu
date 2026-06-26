@@ -137,6 +137,46 @@
 }
 .co-section-title { margin: 0; font-size: 18px; font-weight: 700; }
 
+/* ---- form alanları (checkout) — account stilleriyle aynı dil ---- */
+.co-form .account-field,
+.co-new-addr .account-field { display: flex; flex-direction: column; gap: 6px; }
+.co-form .account-field-row,
+.co-new-addr .account-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.co-form .account-field label,
+.co-new-addr .account-field label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.co-form .account-field input,
+.co-form .account-field textarea,
+.co-new-addr .account-field input,
+.co-new-addr .account-field textarea {
+  width: 100%; box-sizing: border-box;
+  padding: 12px 14px;
+  font: inherit; font-size: 15px; color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.co-form .account-field textarea,
+.co-new-addr .account-field textarea { resize: vertical; min-height: 64px; }
+.co-form .account-field input:focus,
+.co-form .account-field textarea:focus,
+.co-new-addr .account-field input:focus,
+.co-new-addr .account-field textarea:focus {
+  outline: none; border-color: #4f1e23; background: var(--card);
+  box-shadow: 0 0 0 3px rgba(79,30,35,0.12);
+}
+.co-form .account-hint,
+.co-new-addr .account-hint { font-size: 12px; color: var(--ink-3); }
+.co-form .auth-check { display: flex; align-items: flex-start; gap: 9px; font-size: 14px; color: var(--ink-2); cursor: pointer; }
+.co-form .auth-check input { margin-top: 2px; accent-color: #4f1e23; }
+.co-form .account-form-msg {
+  margin: 0; font-size: 13px; padding: 10px 13px; border-radius: 8px;
+}
+.co-form .account-form-msg.is-ok  { color: #2a6b4e; background: rgba(42,157,143,0.10); }
+.co-form .account-form-msg.is-err { color: var(--accent); background: rgba(230,57,70,0.08); }
+
 .co-addr-list { display: flex; flex-direction: column; gap: 10px; }
 .co-addr-option {
   display: flex; gap: 12px; align-items: flex-start;
@@ -211,5 +251,6 @@
   .cart-item-remove { grid-area: remove; justify-self: end; }
   .cart-item-qty { grid-area: qty; justify-self: start; }
   .cart-item-line { grid-area: line; justify-self: end; align-self: center; }
-  .account-field-row { grid-template-columns: 1fr; }
+  .co-form .account-field-row,
+  .co-new-addr .account-field-row { grid-template-columns: 1fr; }
 }
