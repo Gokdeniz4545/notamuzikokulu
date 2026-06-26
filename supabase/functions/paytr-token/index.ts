@@ -75,7 +75,11 @@ Deno.serve(async (req) => {
     const userBasket = btoa(unescape(encodeURIComponent(JSON.stringify(basket))));
 
     // 2) PayTR token hash
-    const userIp = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || '0.0.0.0';
+    // PayTR geçerli bir IPv4 ister; Supabase bazen IPv6 verir → IPv4 süz, yoksa 0.0.0.0
+    const xff = req.headers.get('x-forwarded-for') || '';
+    const userIp = xff.split(',')
+      .map((s) => s.trim())
+      .find((ip) => /^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) || '0.0.0.0';
     const noInstallment = '0';
     const maxInstallment = '0';
     const currency = 'TL';
