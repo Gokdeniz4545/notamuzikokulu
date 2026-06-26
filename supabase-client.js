@@ -404,6 +404,8 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
 
   // ---- ürün görselleri (Storage) ----
   function publicUrl(path) {
+    // tam URL ise (Trendyol hotlink) doğrudan döndür; değilse Storage public URL
+    if (path && /^https?:\/\//i.test(path)) return path;
     return window.sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
   }
   async function listProductImages(productId) {

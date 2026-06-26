@@ -5,7 +5,12 @@
   'use strict';
 
   const IMG_BUCKET = 'product-images';
-  const toUrl = (path) => (path && window.sb) ? window.sb.storage.from(IMG_BUCKET).getPublicUrl(path).data.publicUrl : null;
+  // storage_path tam URL ise (Trendyol hotlink) doğrudan kullan; değilse Storage public URL
+  const toUrl = (path) => {
+    if (!path) return null;
+    if (/^https?:\/\//i.test(path)) return path;
+    return window.sb ? window.sb.storage.from(IMG_BUCKET).getPublicUrl(path).data.publicUrl : null;
+  };
   // product_images dizisini sıralı public URL listesine çevir (kapak ilk)
   function sortedImages(images) {
     if (!images || !images.length) return [];

@@ -19,3 +19,6 @@ __pycache__/
 # Yerel ortam (gizli) — varsa
 .env
 .env.local
+
+# Toplu içe aktarma — gizli kimlik bilgileri (asla commit etme)
+scripts/import.config.json
