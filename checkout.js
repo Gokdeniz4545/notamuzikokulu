@@ -36,6 +36,11 @@
   async function boot() {
     session = window.NMAuth ? await window.NMAuth.getSession() : null;
 
+    // PayTR başarısız ödeme dönüşü
+    if (new URLSearchParams(location.search).get('payment') === 'failed') {
+      toast('Ödeme tamamlanamadı. Tekrar deneyebilirsin.');
+    }
+
     const entries = window.NMCart ? window.NMCart.entries() : [];
     if (!entries.length) { renderEmpty(); return; }
 
@@ -81,7 +86,7 @@
         <div class="cart-summary-row"><span>Ara toplam</span><span>${esc(fmtTL(subtotal))}</span></div>
         <div class="cart-summary-row"><span>Kargo</span><span>Ücretsiz</span></div>
         <div class="cart-summary-row cart-summary-total"><span>Toplam</span><span>${esc(fmtTL(subtotal))}</span></div>
-        <p class="co-pay-note">Ödeme entegrasyonu (PayTR) yakında. Şimdilik siparişin "onay bekliyor" olarak oluşturulur.</p>
+        <p class="co-pay-note">Ödeme PayTR güvenli altyapısı ile alınır. Kart bilgilerin sitede saklanmaz.</p>
       </aside>`;
   }
 
@@ -213,7 +218,7 @@
 
     const btn = $('.co-submit', content);
     btn.disabled = true;
-    btn.textContent = 'Sipariş oluşturuluyor…';
+    btn.textContent = 'Ödeme hazırlanıyor…';
 
     // üye + yeni adres kaydet (opsiyonel)
     if (session && saveNew && manual) {
@@ -221,36 +226,46 @@
       catch (e2) { console.error('[checkout] adres kaydı', e2); }
     }
 
-    const p_items = cartRows.map(([id, qty]) => ({ product_id: id, quantity: qty }));
-    const params = { p_items, p_address: address };
-    if (!session) { params.p_guest_email = guestEmail; params.p_guest_phone = guestPhone; }
+    const items = cartRows.map(([id, qty]) => ({ product_id: id, quantity: qty }));
+    const token = session ? session.access_token : window.NM_SUPA.anonKey;
 
-    let res;
+    let data;
     try {
-      res = await window.sb.rpc('create_order', params);
+      const resp = await fetch(window.NM_SUPA.url + '/functions/v1/paytr-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': window.NM_SUPA.anonKey,
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({ items, address, guest_email: guestEmail, guest_phone: guestPhone }),
+      });
+      data = await resp.json();
+      if (!resp.ok || data.error) throw new Error(data.error || 'Ödeme başlatılamadı.');
     } catch (e3) {
-      res = { error: e3 };
-    }
-
-    if (res.error) {
       btn.disabled = false;
       btn.textContent = 'Siparişi Tamamla';
-      const m = res.error.message || '';
-      showMsg(msg, m.includes('Stok') ? m : 'Sipariş oluşturulamadı. Lütfen tekrar dene.', false);
+      const m = (e3 && e3.message) || '';
+      showMsg(msg, m.includes('Stok') ? m : (m || 'Ödeme başlatılamadı. Lütfen tekrar dene.'), false);
       return;
     }
 
-    const orderId = res.data;
-    let orderNumber = null;
-    if (session && orderId) {
-      try {
-        const { data } = await window.sb.from('orders').select('order_number').eq('id', orderId).single();
-        orderNumber = data ? data.order_number : null;
-      } catch { /* RLS / network → numarasız göster */ }
-    }
+    // PayTR ödeme iframe'ini göster (ödeme sonrası order-success.html'e yönlenir)
+    renderPaytr(data.token);
+  }
 
-    if (window.NMCart) await window.NMCart.clear();
-    renderSuccess(orderNumber);
+  function renderPaytr(token) {
+    content.innerHTML = `
+      <div class="co-pay-wrap">
+        <p class="co-pay-head">Ödemeni güvenli PayTR ekranında tamamla</p>
+        <iframe src="https://www.paytr.com/odeme/guest/${encodeURIComponent(token)}"
+                id="paytriframe" frameborder="0" scrolling="no" style="width:100%;"></iframe>
+      </div>`;
+    const s = document.createElement('script');
+    s.src = 'https://www.paytr.com/js/iframeResizer.min.js';
+    s.onload = () => { try { window.iFrameResize({}, '#paytriframe'); } catch (_) {} };
+    document.body.appendChild(s);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function renderSuccess(orderNumber) {

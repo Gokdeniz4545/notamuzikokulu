@@ -13,6 +13,8 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
     },
   });
   console.info('[supabase] client ready →', SUPABASE_URL);
+  // Edge Function çağrıları için (checkout → paytr-token)
+  window.NM_SUPA = { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY };
 } else {
   console.error('[supabase] SDK yüklenmedi. index.html\'de CDN script sırası yanlış olabilir.');
 }

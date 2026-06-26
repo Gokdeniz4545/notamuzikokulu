@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Siparişin Alındı — Nota Müzik Market</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#fafafa" />
+<link rel="icon" type="image/png" href="images/logo-icon.png" />
+<link rel="apple-touch-icon" href="images/logo-icon.png" />
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<link rel="stylesheet" href="styles.css?v=41" />
+<link rel="stylesheet" href="auth.css?v=28" />
+<link rel="stylesheet" href="shop.css?v=31" />
+</head>
+<body class="shop-page">
+
+<header class="site-header" id="siteHeader">
+  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
+    <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
+  </a>
+  <div class="header-right">
+    <div class="auth-slot" id="authSlot" data-state="loading">
+      <a href="account.html" class="account-link" data-when="in" hidden>Hesabım</a>
+    </div>
+  </div>
+</header>
+
+<main class="shop-shell">
+  <div class="co-success">
+    <span class="auth-check-icon" aria-hidden="true">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </span>
+    <h1>Ödemen alındı, teşekkürler! 🎵</h1>
+    <p id="orderNumLine" class="co-success-num"></p>
+    <p>Siparişin hazırlanmaya başlandı. Durumunu hesabından takip edebilirsin.</p>
+    <div class="co-success-actions">
+      <a href="account.html?tab=orders" class="auth-btn-primary">Siparişlerim</a>
+      <a href="index.html" class="auth-btn-ghost">Alışverişe devam et</a>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js?v=41"></script>
+<script src="cart-store.js?v=33"></script>
+<script>
+  // Sepeti temizle (ödeme başarılı). Üye sepetini webhook zaten temizledi; yerel de temizlensin.
+  try { if (window.NMCart) window.NMCart.clear(); } catch (e) {}
+  // Sipariş numarasını ?oid'den biçimle: NM2026000001 → NM-2026-000001
+  var oid = new URLSearchParams(location.search).get('oid') || '';
+  var m = oid.match(/^NM(\d{4})(\d+)$/);
+  var line = document.getElementById('orderNumLine');
+  if (m) line.innerHTML = 'Sipariş no: <strong>NM-' + m[1] + '-' + m[2] + '</strong>';
+</script>
+
+</body>
+</html>
