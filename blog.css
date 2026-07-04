@@ -1,0 +1,395 @@
+/* ============================================================
+   blog.css — Nota Müzik Market Günlük
+   styles.css + auth.css + shop.css token'larını kullanır.
+   İmza: title-only kartlar + altın "porte" çizgisi,
+   kart→makale morph (View Transitions) ile okuma modu.
+   ============================================================ */
+
+.blog-page {
+  /* editoryal serif + marka aksanları */
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --wine: #4f1e23;
+  --wine-soft: rgba(79, 30, 35, 0.08);
+  --gold-grad: linear-gradient(90deg, #c9a060 0%, #f5dc9b 42%, #e8c870 62%, #b88b3a 100%);
+  --measure: 64ch;
+  background: var(--bg);
+}
+
+.blog-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) 20px 72px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.blog-hero { max-width: 720px; margin: 0 0 40px; }
+.blog-eyebrow {
+  margin: 0 0 14px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--wine);
+}
+.blog-hero-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(44px, 11vw, 92px);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-optical-sizing: auto;
+}
+.blog-hero-dek {
+  margin: 20px 0 0;
+  max-width: 46ch;
+  font-size: clamp(15px, 2.2vw, 18px);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* ============================================================
+   KART IZGARASI — sadece başlıklar
+   ============================================================ */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.blog-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 16px;
+  min-height: 132px;
+  padding: 20px 20px 18px;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  color: inherit;
+  transition: transform var(--t-med) var(--ease),
+              box-shadow var(--t-med) var(--ease),
+              border-color var(--t-med) var(--ease);
+}
+
+/* imza: üstte ince "porte" çizgisi — hover'da altın akar */
+.blog-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--line);
+  transition: background var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
+}
+
+.blog-card-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(22px, 3.4vw, 27px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+/* meta satırı: dinlenmede gizli, hover/odakta belirir */
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+.blog-card-cat {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--wine);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.blog-card-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-3); }
+.blog-card-go { margin-left: auto; font-weight: 600; color: var(--ink-2); }
+
+.blog-card:hover,
+.blog-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2);
+  border-color: transparent;
+  outline: none;
+}
+.blog-card:hover::before,
+.blog-card:focus-visible::before {
+  background: var(--gold-grad);
+  height: 4px;
+}
+.blog-card:hover .blog-card-meta,
+.blog-card:focus-visible .blog-card-meta {
+  opacity: 1;
+  transform: none;
+}
+/* klavye erişilebilirliği: görünür odak */
+.blog-card:focus-visible {
+  box-shadow: var(--shadow-2), 0 0 0 3px rgba(79,30,35,0.18);
+}
+
+/* ============================================================
+   OKUMA MODU
+   ============================================================ */
+.reader { display: block; }
+.reader[hidden] { display: none; }
+
+.reader-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 8px;
+}
+
+.reader-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding: 8px 14px 8px 10px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.reader-back:hover { color: var(--ink); border-color: var(--ink-3); }
+.reader-back:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(79,30,35,0.18); }
+
+.reader-eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--wine);
+}
+.reader-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+.reader-meta {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.reader-rule {
+  height: 3px;
+  width: 72px;
+  margin: 24px 0 30px;
+  border-radius: 2px;
+  background: var(--gold-grad);
+}
+
+/* --- gövde tipografisi --- */
+.reader-body {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-2);
+}
+.reader-body > p { margin: 0 0 20px; }
+.reader-body .lead {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+/* drop-cap ilk paragrafta */
+.reader-body .lead::first-letter {
+  float: left;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 3.4em;
+  line-height: 0.78;
+  padding: 6px 12px 0 0;
+  color: var(--wine);
+}
+.reader-body h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 3.6vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 40px 0 12px;
+}
+.reader-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 24px 0 10px;
+}
+.reader-body ul {
+  margin: 0 0 20px;
+  padding-left: 0;
+  list-style: none;
+}
+.reader-body li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 10px;
+}
+.reader-body li::before {
+  content: "";
+  position: absolute;
+  left: 4px; top: 11px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--wine);
+}
+.reader-body a {
+  color: var(--wine);
+  text-decoration: underline;
+  text-decoration-color: rgba(79,30,35,0.35);
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--t-fast) var(--ease);
+}
+.reader-body a:hover { text-decoration-color: var(--wine); }
+.reader-body strong { color: var(--ink); font-weight: 600; }
+.reader-body em { font-style: italic; }
+
+/* "Özetle" kutusu */
+.reader-body .post-takeaway {
+  margin: 36px 0 8px;
+  padding: 22px 24px;
+  background: var(--wine-soft);
+  border-left: 3px solid var(--wine);
+  border-radius: 0 12px 12px 0;
+}
+.reader-body .post-takeaway h3 {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--wine);
+}
+.reader-body .post-takeaway p:last-child,
+.reader-body .post-takeaway ul:last-child { margin-bottom: 0; }
+
+/* --- alt bilgi --- */
+.reader-foot {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.reader-cta {
+  align-self: flex-start;
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.reader-cta:hover { border-bottom-color: var(--wine); }
+.reader-next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.reader-next-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.reader-next-link {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.2;
+  transition: color var(--t-fast) var(--ease);
+}
+.reader-next-link:hover { color: var(--wine); }
+
+/* okuma modu ilerleme çubuğu */
+.reader-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--gold-grad);
+  z-index: 60;
+  opacity: 0;
+  transition: opacity var(--t-med) var(--ease);
+  pointer-events: none;
+}
+.blog-shell[data-view="reader"] ~ * .reader-progress,
+body[data-reader="open"] .reader-progress { opacity: 1; }
+
+/* ============================================================
+   GÖRÜNÜM GEÇİŞİ (View Transitions yoksa fallback)
+   ============================================================ */
+#blogIndex { transition: opacity var(--t-med) var(--ease); }
+.blog-shell[data-view="reader"] #blogIndex { display: none; }
+.blog-shell[data-view="index"] .reader { display: none; }
+
+/* View Transitions destekliyse morph, morph adları JS'te atanır */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 340ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* fallback: reader açılışında yumuşak yükselme */
+@supports not (view-transition-name: none) {
+  .blog-shell[data-view="reader"] .reader-inner {
+    animation: readerRise 360ms var(--ease) both;
+  }
+}
+@keyframes readerRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width: 600px) {
+  .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .blog-card { min-height: 190px; }
+}
+@media (min-width: 900px) {
+  .blog-shell { padding: calc(var(--header-h) + 44px) 32px 88px; }
+  .blog-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .blog-hero { margin-bottom: 52px; }
+  .blog-card { min-height: 210px; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .blog-card,
+  .blog-card-meta,
+  #blogIndex,
+  .reader-progress { transition: none; }
+  .blog-card:hover,
+  .blog-card:focus-visible { transform: none; }
+  .blog-card-meta { opacity: 1; transform: none; }
+  .reader-inner { animation: none; }
+}
