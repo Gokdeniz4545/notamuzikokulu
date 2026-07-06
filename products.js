@@ -172,7 +172,7 @@
     const out = p.stock <= 0;
     const fav = wishSet.has(p.id);
     return `
-      <a class="cat-card" href="product.html?id=${esc(p.id)}">
+      <a class="cat-card" href="${p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id)}">
         <div class="cat-card-media">
           ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
                     : `<span class="cat-card-glyph">${esc((p.categoryName || p.name || '?').charAt(0).toUpperCase())}</span>`}

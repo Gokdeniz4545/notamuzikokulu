@@ -41,7 +41,8 @@
 
   // ---- SEO ----
   const SITE_BASE = 'https://www.notamuzikmarket.com';
-  const pageUrl = () => SITE_BASE + '/product.html?id=' + encodeURIComponent(product.id);
+  // Statik ürün sayfası (urun-<slug>.html) kendi canonical'ını window.__NM_CANONICAL__ ile bildirir.
+  const pageUrl = () => window.__NM_CANONICAL__ || (SITE_BASE + '/product.html?id=' + encodeURIComponent(product.id));
   const excerpt = (s, n = 155) => {
     const t = String(s || '').replace(/\s+/g, ' ').trim();
     return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
@@ -106,12 +107,16 @@
   }
 
   async function boot() {
-    const id = new URLSearchParams(location.search).get('id');
+    // ?id= (product.html) veya gömülü __NM_PID__ (statik urun-<slug>.html)
+    const id = new URLSearchParams(location.search).get('id') || window.__NM_PID__ || null;
     if (!id) { setRobots('noindex'); mainEl.innerHTML = errBox('Ürün belirtilmedi.'); return; }
 
     session = window.NMAuth ? await window.NMAuth.getSession() : null;
     product = window.NMApi ? await window.NMApi.getProductById(id) : null;
-    if (!product) { setRobots('noindex'); mainEl.innerHTML = errBox('Ürün bulunamadı veya yayında değil.'); reviewsEl.innerHTML = ''; recEl.innerHTML = ''; return; }
+    if (!product) {
+      if (window.__NM_PID__) return; // statik sayfa: SSR içerik + head korunur, hydrate edilemedi
+      setRobots('noindex'); mainEl.innerHTML = errBox('Ürün bulunamadı veya yayında değil.'); reviewsEl.innerHTML = ''; recEl.innerHTML = ''; return;
+    }
 
     applyMeta();
     $('#productCrumb').innerHTML = `<a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span> <span>${esc(product.name)}</span>`;
@@ -310,7 +315,7 @@
       <h2>Benzer ürünler</h2>
       <div class="rec-grid">
         ${items.map(p => `
-          <a class="rec-card" href="product.html?id=${esc(p.id)}">
+          <a class="rec-card" href="${p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id)}">
             <div class="rec-media">${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />` : `<span>${esc((p.name || '?').charAt(0).toUpperCase())}</span>`}</div>
             <div class="rec-body"><p class="rec-name">${esc(p.name)}</p><p class="rec-price">${esc(fmtTL(p.price))}</p></div>
           </a>`).join('')}

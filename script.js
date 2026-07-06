@@ -143,7 +143,7 @@
     });
     art.dataset.id = p.id;
     art.dataset.cat = p.category;
-    art.addEventListener('click', () => window.open('product.html?id=' + encodeURIComponent(p.id), '_blank', 'noopener'));
+    art.addEventListener('click', () => window.open(p.slug ? 'urun-' + p.slug + '.html' : 'product.html?id=' + encodeURIComponent(p.id), '_blank', 'noopener'));
     return art;
   }
 

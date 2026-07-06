@@ -55,6 +55,7 @@
     if (error) { console.error('[api] getProductsByCategory', error); return null; }
     return data.map((p) => ({
       id: p.id,
+      slug: p.slug,
       name: p.name,
       category: p.categories?.slug || slug,
       price: parseFloat(p.price),
@@ -75,6 +76,7 @@
     if (error) { console.error('[api] getProductsByIds', error); return []; }
     return data.map((p) => ({
       id: p.id,
+      slug: p.slug,
       name: p.name,
       category: p.categories?.slug || null,
       categoryName: p.categories?.name || '',
@@ -96,6 +98,7 @@
     if (error) { console.error('[api] getAllProducts', error); return null; }
     return data.map((p) => ({
       id: p.id,
+      slug: p.slug,
       name: p.name,
       category: p.categories?.slug || null,
       categoryName: p.categories?.name || '',
