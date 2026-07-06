@@ -25,6 +25,16 @@
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var canVT = typeof document.startViewTransition === 'function' && !prefersReduced;
 
+  // her yazının gerçek (taranabilir) URL'i: blog-<slug>.html
+  function postUrl(slug) { return 'blog-' + slug + '.html'; }
+  // mevcut konumdan slug çöz (gerçek yol veya eski #hash uyumu)
+  function slugFromLocation() {
+    var m = location.pathname.match(/blog-(.+)\.html$/);
+    if (m && bySlug[m[1]]) return m[1];
+    var h = location.hash.replace('#', '');
+    return (h && bySlug[h]) ? h : '';
+  }
+
   var dateFmt = new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
   var origTitle = document.title;
   var descMeta = document.querySelector('meta[name="description"]');
@@ -39,7 +49,7 @@
     POSTS.forEach(function (p) {
       var a = document.createElement('a');
       a.className = 'blog-card';
-      a.href = '#' + p.slug;
+      a.href = postUrl(p.slug);
       a.setAttribute('role', 'listitem');
       a.dataset.slug = p.slug;
       a.setAttribute('aria-label', p.title);
@@ -79,7 +89,7 @@
     var next = POSTS[(p._i + 1) % POSTS.length];
     nextEl.innerHTML =
       '<span class="reader-next-label">Sıradaki yazı</span>' +
-      '<a class="reader-next-link" href="#' + next.slug + '" data-slug="' + next.slug + '">' + next.title + '</a>';
+      '<a class="reader-next-link" href="' + postUrl(next.slug) + '" data-slug="' + next.slug + '">' + next.title + '</a>';
     var nextLink = nextEl.querySelector('.reader-next-link');
     nextLink.addEventListener('click', function (e) {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
@@ -99,7 +109,7 @@
     document.title = p.title + ' — Nota Müzik Market';
     if (descMeta) descMeta.setAttribute('content', p.dek);
 
-    var url = 'https://www.notamuzikmarket.com/blog.html#' + p.slug;
+    var url = 'https://www.notamuzikmarket.com/' + postUrl(p.slug);
     var ld = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -158,7 +168,7 @@
       swap();
     }
 
-    if (push) history.pushState({ slug: slug }, '', '#' + slug);
+    if (push) history.pushState({ slug: slug }, '', postUrl(slug));
     setMeta(p);
     updateProgress();
     backBtn.focus({ preventScroll: true });
@@ -174,7 +184,7 @@
     if (canVT) { document.startViewTransition(swap); }
     else { swap(); }
 
-    if (push) history.pushState({}, '', location.pathname + location.search);
+    if (push) history.pushState({}, '', 'blog.html');
     restoreMeta();
     window.scrollTo(0, savedScroll);
   }
@@ -202,14 +212,14 @@
   });
 
   window.addEventListener('popstate', function () {
-    var slug = location.hash.replace('#', '');
-    if (slug && bySlug[slug]) openReader(slug, false);
+    var slug = slugFromLocation();
+    if (slug) openReader(slug, false);
     else if (document.body.dataset.reader === 'open') closeReader(false);
   });
 
   // ---------- ilk yükleme ----------
   buildCards();
   shell.dataset.view = 'index';
-  var initial = location.hash.replace('#', '');
-  if (initial && bySlug[initial]) openReader(initial, false);
+  var initial = slugFromLocation();
+  if (initial) openReader(initial, false);
 })();

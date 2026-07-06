@@ -2,18 +2,60 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.notamuzikmarket.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-06-26</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/products.html</loc>
+    <lastmod>2026-06-26</lastmod>
   </url>
   <url>
     <loc>https://www.notamuzikmarket.com/blog.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-kisiligine-gore-enstruman.html</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-ice-donukler-icin-enstruman.html</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-disa-donukler-davul.html</loc>
+    <lastmod>2026-06-02</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-yeni-baslayan-elektro-gitar.html</loc>
+    <lastmod>2026-05-24</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-sessiz-davul-aeroband.html</loc>
+    <lastmod>2026-05-15</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-dijital-piyano-mu-keyboard-mu.html</loc>
+    <lastmod>2026-05-06</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-keman-kimlere-gore.html</loc>
+    <lastmod>2026-04-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-kucuk-mekan-buyuk-ses.html</loc>
+    <lastmod>2026-04-18</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-enstruman-bakimi-101.html</loc>
+    <lastmod>2026-04-09</lastmod>
+  </url>
+  <url>
+    <loc>https://www.notamuzikmarket.com/blog-cocuga-ilk-enstruman.html</loc>
+    <lastmod>2026-03-30</lastmod>
   </url>
 </urlset>
 <!--
-  NOT: Ürün sayfaları (product.html?id=...) dinamik (Supabase) olduğu için bu statik
-  sitemap'e dahil edilmedi. Deploy aşamasında ürünleri DB'den çekip sitemap üreten
-  bir script (build/Edge Function) eklenmeli. Blog yazı sayfaları oluşturulduğunda
-  buraya eklenir.
+  Otomatik üretildi: node scripts/build-blog.js
+  Not: <priority>/<changefreq> kaldırıldı (Google yok sayıyor).
+  Ürün detay sayfaları (product.html?id=...) Supabase'den dinamik;
+  deploy'da DB'den çekilip ayrı bir sitemap-products.xml üretilmeli.
 -->
