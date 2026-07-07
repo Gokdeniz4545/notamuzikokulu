@@ -26,3 +26,6 @@ scripts/import.config.json
 # Supabase CLI geçici dosyaları
 supabase/.temp/
 supabase/.branches/
+
+# Playwright MCP test çıktıları
+.playwright-mcp/

@@ -5,7 +5,7 @@
 // Gizli env: PAYTR_MERCHANT_ID, PAYTR_MERCHANT_KEY, PAYTR_MERCHANT_SALT
 // ============================================================
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { corsHeaders, hmacSha256Base64 } from '../_shared/cors.ts';
+import { corsHeadersFor, hmacSha256Base64 } from '../_shared/cors.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_ROLE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -13,13 +13,14 @@ const MERCHANT_ID = Deno.env.get('PAYTR_MERCHANT_ID')!;
 const MERCHANT_KEY = Deno.env.get('PAYTR_MERCHANT_KEY')!;
 const MERCHANT_SALT = Deno.env.get('PAYTR_MERCHANT_SALT')!;
 
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-  });
-
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const cors = corsHeadersFor(req);
+  const json = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status, headers: { ...cors, 'Content-Type': 'application/json' },
+    });
+
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ ok: false, error: 'Method not allowed' }, 405);
 
   try {

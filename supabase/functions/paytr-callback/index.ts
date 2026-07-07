@@ -40,8 +40,11 @@ Deno.serve(async (req) => {
 
     // PayTR bu yanıtı bekler — aksi halde tekrar tekrar dener
     return new Response('OK');
-  } catch (_e) {
-    // Hata olsa bile PayTR'ı döngüye sokmamak için OK dönmüyoruz → PayTR tekrar dener
+  } catch (e) {
+    // Beklenmedik hata (ör. geçici DB hatası). 500 → PayTR sınırlı sayıda tekrar dener;
+    // confirm_order_payment idempotent olduğu için tekrar güvenli. Ödeme kaydını
+    // kaybetmemek adına burada OK DÖNMÜYORUZ. Hata loglanır (görünürlük için).
+    console.error('[paytr-callback] işlenemedi:', e instanceof Error ? e.message : String(e));
     return new Response('error', { status: 500 });
   }
 });

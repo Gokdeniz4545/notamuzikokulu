@@ -7,7 +7,7 @@
 //            (test için) PAYTR_TEST_MODE = "1"
 // ============================================================
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { corsHeaders, hmacSha256Base64 } from '../_shared/cors.ts';
+import { corsHeadersFor, hmacSha256Base64 } from '../_shared/cors.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_ROLE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -16,13 +16,14 @@ const MERCHANT_KEY = Deno.env.get('PAYTR_MERCHANT_KEY')!;
 const MERCHANT_SALT = Deno.env.get('PAYTR_MERCHANT_SALT')!;
 const TEST_MODE = Deno.env.get('PAYTR_TEST_MODE') ?? '1';
 
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-  });
-
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const cors = corsHeadersFor(req);
+  const json = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status, headers: { ...cors, 'Content-Type': 'application/json' },
+    });
+
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
   try {
@@ -38,16 +39,32 @@ Deno.serve(async (req) => {
     let userId: string | null = null;
     let userEmail: string | null = null;
     const authHeader = req.headers.get('Authorization') || '';
-    const jwt = authHeader.replace('Bearer ', '');
+    const jwt = authHeader.replace('Bearer ', '').trim();
+    // Misafirler bearer olarak anon key gönderir; onda getUser çağırma. Diğer durumda
+    // JWT'yi doğrula — geçersiz/expired ise sessizce misafir olarak devam et.
     if (jwt && jwt !== Deno.env.get('SUPABASE_ANON_KEY')) {
-      const { data } = await admin.auth.getUser(jwt);
-      if (data?.user) { userId = data.user.id; userEmail = data.user.email ?? null; }
+      try {
+        const { data } = await admin.auth.getUser(jwt);
+        if (data?.user) { userId = data.user.id; userEmail = data.user.email ?? null; }
+      } catch (_e) { /* geçersiz JWT → misafir akışı */ }
     }
 
     // Misafir için e-posta/telefon zorunlu
     const email = userId ? (userEmail || guestEmail) : guestEmail;
     if (!email) return json({ error: 'E-posta gerekli.' }, 400);
     if (!userId && !guestPhone) return json({ error: 'Telefon gerekli.' }, 400);
+
+    // Rate-limit: aynı kullanıcı/e-postadan son 10 dk'da çok fazla sipariş → 429
+    // (sahte sipariş spam'i / DoS önlemi; service_role RLS'i bypass eder, sayım güvenilir)
+    try {
+      const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      let rl = admin.from('orders').select('id', { count: 'exact', head: true }).gte('created_at', since);
+      rl = userId ? rl.eq('user_id', userId) : rl.eq('guest_email', email);
+      const { count } = await rl;
+      if ((count ?? 0) >= 10) {
+        return json({ error: 'Çok fazla sipariş denemesi. Lütfen birkaç dakika sonra tekrar dene.' }, 429);
+      }
+    } catch (_rl) { /* rate-limit sorgusu başarısız olsa da normal akışı durdurma */ }
 
     // 1) PENDING sipariş oluştur (fiyat/total DB'den, stok düşmez)
     const { data: order, error: orderErr } = await admin.rpc('create_order', {

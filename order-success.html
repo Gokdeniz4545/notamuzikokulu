@@ -42,18 +42,10 @@
   </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="supabase-client.js?v=41"></script>
 <script src="cart-store.js?v=33"></script>
-<script>
-  // Sepeti temizle (ödeme başarılı). Üye sepetini webhook zaten temizledi; yerel de temizlensin.
-  try { if (window.NMCart) window.NMCart.clear(); } catch (e) {}
-  // Sipariş numarasını ?oid'den biçimle: NM2026000001 → NM-2026-000001
-  var oid = new URLSearchParams(location.search).get('oid') || '';
-  var m = oid.match(/^NM(\d{4})(\d+)$/);
-  var line = document.getElementById('orderNumLine');
-  if (m) line.innerHTML = 'Sipariş no: <strong>NM-' + m[1] + '-' + m[2] + '</strong>';
-</script>
+<script src="order-success.js?v=1"></script>
 
 </body>
 </html>

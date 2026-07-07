@@ -1,0 +1,55 @@
+# ============================================================
+# Nota Müzik Market — Güvenlik yapılandırması (Apache / Hostinger)
+# P0.1 güvenlik başlıkları + CSP  ·  P0.3 hassas dosya erişim engeli
+# ============================================================
+
+# ---- 1) HTTPS'e yönlendir (HSTS bunu varsayar) ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---- 2) Güvenlik başlıkları ----
+<IfModule mod_headers.c>
+  # HTTPS'i tarayıcıda zorla (1 yıl). Emin olunca sonuna "; preload" eklenip
+  # hstspreload.org'a kaydedilebilir.
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # MIME tipi tahminini kapat (drive-by içerik saldırıları)
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Clickjacking: sayfayı yalnız kendi domain'imiz iframe'e alabilir
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Referrer bilgisini kısıtla
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Kullanılmayan tarayıcı yeteneklerini kapat
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+
+  # ---- CSP — ÖNCE RAPOR MODU ----
+  # Bu modda siteyi KIRMAZ; ihlaller sadece tarayıcı konsoluna düşer.
+  # Konsolda birkaç gün ihlal olmadığını doğrulayınca, aşağıdaki satırı
+  # "Content-Security-Policy" (Report-Only olmadan) yapıp zorunlu kıl.
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://www.paytr.com; style-src 'self' 'unsafe-inline' https://rsms.me https://fonts.googleapis.com; font-src 'self' https://rsms.me https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://kwjtfqhhctqwrfhxghai.supabase.co wss://kwjtfqhhctqwrfhxghai.supabase.co; frame-src https://www.paytr.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
+
+  # Hassas dosyalar için cache'i kapat (aşağıda erişim zaten engelli, ek güvence)
+  <FilesMatch "\.(json|mjs|md|env)$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+</IfModule>
+
+# ---- 3) Dizin listelemeyi kapat ----
+Options -Indexes
+
+# ---- 4) Hassas dosya/uzantılara web erişimini engelle ----
+# Sunucuya repo kökü olduğu gibi yüklendiyse bunlar public_html altında olabilir;
+# gizli anahtarların (ör. scripts/import.config.json → service_role) sızmasını önler.
+<FilesMatch "(^\.|\.(env|mjs|md|sql|toml|lock|log|sh|yml|yaml)$|import\.config\.json)">
+  Require all denied
+</FilesMatch>
+
+# ---- 5) Hassas dizinlere web erişimini engelle ----
+RedirectMatch 404 (?i)^/(\.git|scripts|supabase|node_modules|\.playwright-mcp)(/|$)

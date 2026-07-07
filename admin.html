@@ -46,16 +46,16 @@
 
 <div class="account-gate" id="adminGate">
   <p class="account-gate-text" id="adminGateText">Yükleniyor…</p>
-  <button type="button" class="auth-btn-primary" id="adminGateLogin" hidden onclick="openAuthModal('login')">Giriş Yap</button>
+  <button type="button" class="auth-btn-primary" id="adminGateLogin" hidden data-auth-open="login">Giriş Yap</button>
   <a href="index.html" class="account-gate-home">Ana sayfaya dön</a>
 </div>
 
 <div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="supabase-client.js?v=41"></script>
 <script src="api.js?v=41"></script>
-<script src="auth-modal.js?v=30" defer></script>
+<script src="auth-modal.js?v=31" defer></script>
 <script src="header-auth.js?v=30" defer></script>
 <script src="admin.js?v=40" defer></script>
 

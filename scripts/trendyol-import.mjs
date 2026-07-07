@@ -5,7 +5,10 @@
 // Çalıştır:  node scripts/trendyol-import.mjs
 //   --dry    sadece önizleme yapar, hiçbir şey yazmaz
 //
-// Kimlik bilgileri: scripts/import.config.json (git'e gönderilmez)
+// Kimlik bilgileri: önce ORTAM DEĞİŞKENİ, yoksa scripts/import.config.json (ikisi de git'e gitmez)
+//   Önerilen: `node --env-file=scripts/.env scripts/trendyol-import.mjs`
+//   Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
+//        TRENDYOL_SUPPLIER_ID, TRENDYOL_API_KEY, TRENDYOL_API_SECRET
 // ============================================================
 import fs from 'node:fs';
 import path from 'node:path';
@@ -15,16 +18,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DRY = process.argv.includes('--dry');
 
 // ---- config ----
-const cfgPath = path.join(__dirname, 'import.config.json');
-if (!fs.existsSync(cfgPath)) {
-  console.error('HATA: scripts/import.config.json bulunamadı.');
-  process.exit(1);
+// Öncelik: ortam değişkeni (güvenli). Yoksa scripts/import.config.json (fallback).
+const env = process.env;
+let TY, SB;
+if (env.SUPABASE_SERVICE_ROLE_KEY && env.SUPABASE_URL && env.TRENDYOL_API_KEY) {
+  TY = { supplierId: env.TRENDYOL_SUPPLIER_ID, apiKey: env.TRENDYOL_API_KEY, apiSecret: env.TRENDYOL_API_SECRET };
+  SB = { url: env.SUPABASE_URL, serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY };
+} else {
+  const cfgPath = path.join(__dirname, 'import.config.json');
+  if (!fs.existsSync(cfgPath)) {
+    console.error('HATA: Kimlik bilgisi yok. Ortam değişkenlerini ayarla (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, TRENDYOL_API_KEY ...) veya scripts/import.config.json oluştur.');
+    process.exit(1);
+  }
+  const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  TY = cfg.trendyol;
+  SB = cfg.supabase;
 }
-const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
-const TY = cfg.trendyol;
-const SB = cfg.supabase;
-if (!SB.serviceRoleKey || SB.serviceRoleKey.includes('BURAYA')) {
-  console.error('HATA: Supabase service_role anahtarını import.config.json içine ekle.');
+if (!SB || !SB.serviceRoleKey || SB.serviceRoleKey.includes('BURAYA')) {
+  console.error('HATA: Supabase service_role anahtarı eksik (env: SUPABASE_SERVICE_ROLE_KEY veya import.config.json).');
   process.exit(1);
 }
 
