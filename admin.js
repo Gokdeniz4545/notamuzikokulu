@@ -309,8 +309,27 @@
       if (e) return toast('Güncellenemedi'); toast('Durum güncellendi'); renderOrderDetail(id);
     });
     $('#ordTrackSave').addEventListener('click', async () => {
-      const { error: e } = await window.NMAdmin.setTracking(id, $('#ordTrack').value.trim(), $('#ordCargo').value.trim());
-      if (e) return toast('Güncellenemedi'); toast('Kargo bilgisi kaydedildi');
+      const track = $('#ordTrack').value.trim();
+      const { error: e } = await window.NMAdmin.setTracking(id, track, $('#ordCargo').value.trim());
+      if (e) return toast('Güncellenemedi');
+      toast('Kargo bilgisi kaydedildi');
+      // Takip kodu varsa müşteriye kargo bildirimi göndermeyi öner
+      if (track && order.paytr_merchant_oid && confirm('Müşteriye kargo bildirimi e-postası gönderilsin mi?')) {
+        try {
+          const session = await window.NMAuth.getSession();
+          const resp = await fetch(window.NM_SUPA.url + '/functions/v1/send-order-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': window.NM_SUPA.anonKey,
+              'Authorization': 'Bearer ' + (session ? session.access_token : window.NM_SUPA.anonKey),
+            },
+            body: JSON.stringify({ merchant_oid: order.paytr_merchant_oid, type: 'shipped' }),
+          });
+          const data = await resp.json();
+          toast(data.ok ? 'Kargo bildirimi gönderildi ✓' : ('E-posta gönderilemedi: ' + (data.error || '')));
+        } catch (_) { toast('E-posta gönderilemedi'); }
+      }
     });
     $('#ordCancel').addEventListener('click', async () => {
       const reason = prompt('İptal nedeni (opsiyonel):') ;

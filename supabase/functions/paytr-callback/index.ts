@@ -7,6 +7,7 @@
 // ============================================================
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { hmacSha256Base64 } from '../_shared/cors.ts';
+import { loadOrderForEmail, orderConfirmationEmail, sendEmail } from '../_shared/email.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_ROLE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -32,7 +33,25 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
     if (status === 'success') {
+      // Zaten ödenmiş mi? (mükerrer webhook'ta onay e-postasını tekrar gönderme)
+      const { data: pre } = await admin.from('orders')
+        .select('payment_status').eq('paytr_merchant_oid', merchantOid).single();
+      const wasAlreadyPaid = pre?.payment_status === 'paid';
+
       await admin.rpc('confirm_order_payment', { p_merchant_oid: merchantOid });
+
+      // İlk kez onaylandıysa sipariş onay e-postası gönder (hata olsa da webhook'u bozma)
+      if (!wasAlreadyPaid) {
+        try {
+          const loaded = await loadOrderForEmail(admin, merchantOid);
+          if (loaded?.email) {
+            const tpl = orderConfirmationEmail(loaded.order, loaded.items);
+            await sendEmail(loaded.email, tpl.subject, tpl.html);
+          }
+        } catch (mailErr) {
+          console.error('[paytr-callback] onay e-postası gönderilemedi:', mailErr instanceof Error ? mailErr.message : String(mailErr));
+        }
+      }
     } else {
       const reason = String(form.get('failed_reason_msg') || form.get('failed_reason_code') || '');
       await admin.rpc('fail_order_payment', { p_merchant_oid: merchantOid, p_reason: reason });
