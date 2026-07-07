@@ -90,7 +90,7 @@ const FOOTER = `<footer class="site-footer">
       <a href="#" aria-label="X">X</a>
     </div>
   </div>
-  <p class="footer-legal-note">© 2026 <span class="legal-ph">[FIRMA_UNVANI]</span> · Tüm hakları saklıdır · ETBİS: <span class="legal-ph">[ETBIS_NO]</span></p>
+  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
 </footer>`;
 
 const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -238,7 +238,7 @@ function buildSitemap() {
   ];
   // Yasal sayfalar CANLIYA alınınca (commit + deploy) aşağıdaki satırı
   // staticPages'e ekle; sitemap'te henüz yayında olmayan URL = 404 riski.
-  const LEGAL_LIVE = false;
+  const LEGAL_LIVE = true;
   const legalPages = [
     { loc: SITE + '/mesafeli-satis.html',     lastmod: today },
     { loc: SITE + '/on-bilgilendirme.html',   lastmod: today },

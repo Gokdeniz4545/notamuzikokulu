@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 <link rel="stylesheet" href="styles.css?v=38" />
 <link rel="stylesheet" href="auth.css?v=28" />
+<link rel="stylesheet" href="legal.css?v=1" />
 
 <script type="application/ld+json">
 {
@@ -150,12 +151,23 @@
       <p class="footer-logo">NOTA MÜZİK MARKET<sup>®</sup></p>
       <p class="footer-tag">Müziğin dokunuşu — 2026</p>
     </div>
+    <nav class="footer-legal" aria-label="Yasal bilgiler">
+      <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
+      <a href="on-bilgilendirme.html">Ön Bilgilendirme Formu</a>
+      <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
+      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
+      <a href="gizlilik.html">Gizlilik Politikası</a>
+      <a href="cerez-politikasi.html">Çerez Politikası</a>
+      <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+      <a href="iletisim.html">İletişim &amp; Künye</a>
+    </nav>
     <div class="footer-social" aria-label="Sosyal medya">
       <a href="#" aria-label="Instagram">Instagram</a>
       <a href="#" aria-label="YouTube">YouTube</a>
       <a href="#" aria-label="X">X</a>
     </div>
   </div>
+  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
 </footer>
 
 <!-- Ürün detay paneli (sağdan slide-in) -->
@@ -286,7 +298,7 @@
         </div>
         <label class="auth-check">
           <input type="checkbox" name="kvkk" required />
-          <span>KVKK metnini okudum ve onaylıyorum.</span>
+          <span><a href="kvkk-aydinlatma.html" target="_blank" rel="noopener">KVKK Aydınlatma Metni</a>'ni okudum, <a href="kullanim-kosullari.html" target="_blank" rel="noopener">Kullanım Koşulları</a> ve <a href="gizlilik.html" target="_blank" rel="noopener">Gizlilik Politikası</a>'nı kabul ediyorum.</span>
         </label>
         <p class="auth-error" hidden></p>
         <button type="submit" class="auth-btn-primary">Kayıt Ol</button>
@@ -360,14 +372,14 @@
 </div>
 
 <!-- Lenis smooth scroll -->
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" integrity="sha384-eD5ubmuCcvTdCADWuSchJYE7wcj2nzNr0itbrh6w/KJyBiltSZ8w3VFRBSWu5YQ8" crossorigin="anonymous"></script>
 <!-- Supabase JS SDK (UMD) — window.supabase global'i sağlar -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="data.js?v=28"></script>
 <script src="supabase-client.js?v=41"></script>
 <script src="api.js?v=41"></script>
 <script src="cart-store.js?v=33"></script>
-<script src="auth-modal.js?v=30" defer></script>
+<script src="auth-modal.js?v=31" defer></script>
 <script src="script.js?v=38" defer></script>
 
 </body>

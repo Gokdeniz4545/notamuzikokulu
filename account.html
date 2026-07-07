@@ -48,7 +48,7 @@
 <!-- Guard bekleme ekranı -->
 <div class="account-gate" id="accountGate">
   <p class="account-gate-text">Hesabına erişmek için giriş yapman gerekiyor.</p>
-  <button type="button" class="auth-btn-primary" onclick="openAuthModal('login')">Giriş Yap</button>
+  <button type="button" class="auth-btn-primary" data-auth-open="login">Giriş Yap</button>
   <a href="index.html" class="account-gate-home">Ana sayfaya dön</a>
 </div>
 
@@ -108,7 +108,7 @@
         </div>
         <label class="auth-check">
           <input type="checkbox" name="kvkk" required />
-          <span>KVKK metnini okudum ve onaylıyorum.</span>
+          <span><a href="kvkk-aydinlatma.html" target="_blank" rel="noopener">KVKK Aydınlatma Metni</a>'ni okudum, <a href="kullanim-kosullari.html" target="_blank" rel="noopener">Kullanım Koşulları</a> ve <a href="gizlilik.html" target="_blank" rel="noopener">Gizlilik Politikası</a>'nı kabul ediyorum.</span>
         </label>
         <p class="auth-error" hidden></p>
         <button type="submit" class="auth-btn-primary">Kayıt Ol</button>
@@ -178,10 +178,10 @@
 </div>
 
 <!-- Supabase JS SDK (UMD) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="supabase-client.js?v=41"></script>
 <script src="cart-store.js?v=33"></script>
-<script src="auth-modal.js?v=30" defer></script>
+<script src="auth-modal.js?v=31" defer></script>
 <script src="account.js?v=30" defer></script>
 
 </body>

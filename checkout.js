@@ -148,6 +148,12 @@
         <form class="co-form" id="checkoutForm" novalidate>
           <h2 class="co-section-title">Teslimat adresi</h2>
           ${addressSection}
+          <div class="co-consent" style="display:grid;gap:8px;margin:16px 0 6px;">
+            <label class="auth-check"><input type="checkbox" id="coPreInfo" required />
+              <span><a href="on-bilgilendirme.html" target="_blank" rel="noopener">Ön Bilgilendirme Formu</a>'nu okudum, onaylıyorum.</span></label>
+            <label class="auth-check"><input type="checkbox" id="coContract" required />
+              <span><a href="mesafeli-satis.html" target="_blank" rel="noopener">Mesafeli Satış Sözleşmesi</a>'ni okudum, onaylıyorum.</span></label>
+          </div>
           <p class="account-form-msg" hidden></p>
           <button type="submit" class="auth-btn-primary co-submit">Siparişi Tamamla</button>
         </form>
@@ -201,9 +207,14 @@
   function validate(addr, guestEmail) {
     const a = addr;
     if (!a.full_name || !a.phone || !a.address_line || !a.city || !a.district) return 'Lütfen zorunlu alanları doldur.';
+    // Telefon: sadece rakamları say (boşluk/tire/parantez yok say). TR: 10 haneli (5xx…)
+    // ya da +90 / 0 önekli 11-13 hane.
+    const digits = String(a.phone).replace(/\D/g, '');
+    if (digits.length < 10 || digits.length > 13) return 'Geçerli bir telefon numarası gir.';
     if (!session) {
       if (!guestEmail) return 'E-posta adresi gerekli.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) return 'Geçerli bir e-posta gir.';
+      // TLD en az 2 harf olmalı → 'test@a.c' gibi geçersizleri de ele
+      if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(guestEmail)) return 'Geçerli bir e-posta gir.';
     }
     return null;
   }
@@ -215,6 +226,14 @@
 
     const err = validate(address, guestEmail);
     if (err) { showMsg(msg, err, false); return; }
+
+    // Mesafeli satış: Ön Bilgilendirme + sözleşme onayı zorunlu (ödeme öncesi)
+    const preInfo = $('#coPreInfo', content);
+    const contract = $('#coContract', content);
+    if (!preInfo || !preInfo.checked || !contract || !contract.checked) {
+      showMsg(msg, 'Devam etmek için Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi\'ni onaylamalısın.', false);
+      return;
+    }
 
     const btn = $('.co-submit', content);
     btn.disabled = true;

@@ -41,7 +41,7 @@
         <div class="auth-field"><label for="authRegPassword">Şifre</label>
           <input id="authRegPassword" name="password" type="password" autocomplete="new-password" minlength="6" required /></div>
         <label class="auth-check"><input type="checkbox" name="kvkk" required />
-          <span>KVKK metnini okudum ve onaylıyorum.</span></label>
+          <span><a href="kvkk-aydinlatma.html" target="_blank" rel="noopener">KVKK Aydınlatma Metni</a>'ni okudum, <a href="kullanim-kosullari.html" target="_blank" rel="noopener">Kullanım Koşulları</a> ve <a href="gizlilik.html" target="_blank" rel="noopener">Gizlilik Politikası</a>'nı kabul ediyorum.</span></label>
         <p class="auth-error" hidden></p>
         <button type="submit" class="auth-btn-primary">Kayıt Ol</button>
       </form>
@@ -134,6 +134,13 @@
     // ESC
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) closeAuthModal();
+    });
+
+    // data-auth-open="login|register|forgot" → modalı aç
+    // (inline onclick="openAuthModal(...)" yerine — CSP script-src'yi katı tutmak için)
+    document.addEventListener('click', (e) => {
+      const opener = e.target.closest('[data-auth-open]');
+      if (opener) { e.preventDefault(); openAuthModal(opener.getAttribute('data-auth-open') || 'login'); }
     });
 
     // PASSWORD_RECOVERY event (Supabase tetikleyebilir)
