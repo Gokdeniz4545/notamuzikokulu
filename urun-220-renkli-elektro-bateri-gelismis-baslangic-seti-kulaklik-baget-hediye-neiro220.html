@@ -47,7 +47,9 @@
     "@type": "Offer",
     "price": 18999,
     "priceCurrency": "TRY",
+    "itemCondition": "https://schema.org/NewCondition",
     "availability": "https://schema.org/InStock",
+    "priceValidUntil": "2026-08-07",
     "url": "https://www.notamuzikmarket.com/urun-220-renkli-elektro-bateri-gelismis-baslangic-seti-kulaklik-baget-hediye-neiro220.html"
   }
 }
@@ -87,7 +89,6 @@
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="shop.css?v=32" />
 <link rel="stylesheet" href="product.css?v=3" />
-
 </head>
 <body class="shop-page">
 
@@ -95,6 +96,10 @@
   <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
     <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
   </a>
+  <nav class="site-nav" aria-label="Birincil">
+    <a href="products.html">Ürünler</a>
+    <a href="blog.html">Blog</a>
+  </nav>
   <div class="header-right">
     <div class="auth-slot" id="authSlot" data-state="loading">
       <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
@@ -126,7 +131,7 @@
 
   <div id="productMain" class="product-main">
     <div class="product-gallery">
-      <div class="product-gallery-main" id="galMain"><img id="galImg" src="https://cdn.dsmcdn.com/ty1921/prod/QC_PREP/20260504/18/38ce10a3-b1d1-373e-80e0-966950d814f8/1_org_zoom.jpg" alt="220 Renkli Elektro Bateri - Gelişmiş Başlangıç Seti (Kulaklık + Baget Hediye)" decoding="async" /></div><div class="product-thumbs"><button type="button" class="product-thumb is-active" data-i="0"><img src="https://cdn.dsmcdn.com/ty1921/prod/QC_PREP/20260504/18/38ce10a3-b1d1-373e-80e0-966950d814f8/1_org_zoom.jpg" alt="" /></button><button type="button" class="product-thumb " data-i="1"><img src="https://cdn.dsmcdn.com/ty1918/prod/QC_PREP/20260504/18/554f273f-c9d6-3a83-9b3d-586f2725ef20/1_org_zoom.jpg" alt="" /></button><button type="button" class="product-thumb " data-i="2"><img src="https://cdn.dsmcdn.com/ty1896/prod/QC_PREP/20260504/18/3b6e84ad-9be6-36b2-b6fa-d16e8b86ac87/1_org_zoom.jpg" alt="" /></button><button type="button" class="product-thumb " data-i="3"><img src="https://cdn.dsmcdn.com/ty1911/prod/QC_PREP/20260504/18/c7d36d1a-781f-3be1-bad7-bbe8790ffc14/1_org_zoom.jpg" alt="" /></button></div>
+      <div class="product-gallery-main" id="galMain"><img id="galImg" src="https://cdn.dsmcdn.com/ty1921/prod/QC_PREP/20260504/18/38ce10a3-b1d1-373e-80e0-966950d814f8/1_org_zoom.jpg" alt="220 Renkli Elektro Bateri - Gelişmiş Başlangıç Seti (Kulaklık + Baget Hediye)" decoding="async" width="800" height="800" fetchpriority="high" /></div><div class="product-thumbs"><button type="button" class="product-thumb is-active" data-i="0"><img src="https://cdn.dsmcdn.com/ty1921/prod/QC_PREP/20260504/18/38ce10a3-b1d1-373e-80e0-966950d814f8/1_org_zoom.jpg" alt="" loading="lazy" decoding="async" width="72" height="72" /></button><button type="button" class="product-thumb " data-i="1"><img src="https://cdn.dsmcdn.com/ty1918/prod/QC_PREP/20260504/18/554f273f-c9d6-3a83-9b3d-586f2725ef20/1_org_zoom.jpg" alt="" loading="lazy" decoding="async" width="72" height="72" /></button><button type="button" class="product-thumb " data-i="2"><img src="https://cdn.dsmcdn.com/ty1896/prod/QC_PREP/20260504/18/3b6e84ad-9be6-36b2-b6fa-d16e8b86ac87/1_org_zoom.jpg" alt="" loading="lazy" decoding="async" width="72" height="72" /></button><button type="button" class="product-thumb " data-i="3"><img src="https://cdn.dsmcdn.com/ty1911/prod/QC_PREP/20260504/18/c7d36d1a-781f-3be1-bad7-bbe8790ffc14/1_org_zoom.jpg" alt="" loading="lazy" decoding="async" width="72" height="72" /></button></div>
     </div>
     <div class="product-info">
       <p class="product-cat">Davul &amp; Perküsyon</p>
@@ -152,6 +157,32 @@
   <section id="productReviews" class="product-section"></section>
   <section id="productRecommended" class="product-section"></section>
 </main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-logo">NOTA MÜZİK MARKET<sup>&reg;</sup></p>
+      <p class="footer-tag">Müziğin dokunuşu — 2026</p>
+      <p class="footer-credit" style="margin:10px 0 0;font-size:11px;color:#a8a8a8;letter-spacing:0.02em;">Tasarım &amp; geliştirme · <strong style="font-weight:600;color:#8a8a8a;">Gökdeniz KESİCİ</strong></p>
+    </div>
+    <nav class="footer-legal" aria-label="Yasal bilgiler">
+      <a href="products.html">Tüm Ürünler</a>
+      <a href="blog.html">Blog</a>
+      <a href="siparis-sorgula.html">Sipariş Sorgula</a>
+      <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
+      <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
+      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
+      <a href="gizlilik.html">Gizlilik Politikası</a>
+      <a href="iletisim.html">İletişim &amp; Künye</a>
+    </nav>
+    <div class="footer-social" aria-label="Sosyal medya">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="YouTube">YouTube</a>
+      <a href="#" aria-label="X">X</a>
+    </div>
+  </div>
+  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
+</footer>
 
 <div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
 

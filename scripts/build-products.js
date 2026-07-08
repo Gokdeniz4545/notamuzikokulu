@@ -48,6 +48,10 @@ const HEADER = `<header class="site-header" id="siteHeader">
   <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
     <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
   </a>
+  <nav class="site-nav" aria-label="Birincil">
+    <a href="products.html">Ürünler</a>
+    <a href="blog.html">Blog</a>
+  </nav>
   <div class="header-right">
     <div class="auth-slot" id="authSlot" data-state="loading">
       <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
@@ -78,13 +82,78 @@ const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 <script src="header-auth.js?v=30" defer></script>
 <script src="product.js?v=4" defer></script>`;
 
+// ---- ortak footer (ürün sayfalarını yetimlikten çıkarır: yasal + kategori iç linkleri) ----
+const FOOTER = `<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-logo">NOTA MÜZİK MARKET<sup>&reg;</sup></p>
+      <p class="footer-tag">Müziğin dokunuşu — 2026</p>
+      <p class="footer-credit" style="margin:10px 0 0;font-size:11px;color:#a8a8a8;letter-spacing:0.02em;">Tasarım &amp; geliştirme · <strong style="font-weight:600;color:#8a8a8a;">Gökdeniz KESİCİ</strong></p>
+    </div>
+    <nav class="footer-legal" aria-label="Yasal bilgiler">
+      <a href="products.html">Tüm Ürünler</a>
+      <a href="blog.html">Blog</a>
+      <a href="siparis-sorgula.html">Sipariş Sorgula</a>
+      <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
+      <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
+      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
+      <a href="gizlilik.html">Gizlilik Politikası</a>
+      <a href="iletisim.html">İletişim &amp; Künye</a>
+    </nav>
+    <div class="footer-social" aria-label="Sosyal medya">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="YouTube">YouTube</a>
+      <a href="#" aria-label="X">X</a>
+    </div>
+  </div>
+  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
+</footer>`;
+
+// ---- katalog kartı (products.js card() ile birebir markup; JS hydrate edince sıçrama olmaz) ----
+function catCard(p) {
+  const imgs = imageUrls(p.product_images);
+  const out = p.stock <= 0;
+  const catName = p.categories ? p.categories.name : '';
+  const media = imgs.length
+    ? `<img src="${esc(imgs[0])}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
+    : `<span class="cat-card-glyph">${esc((catName || p.name || '?').charAt(0).toUpperCase())}</span>`;
+  return `
+      <a class="cat-card" href="urun-${esc(p.slug)}.html">
+        <div class="cat-card-media">
+          ${media}
+          ${out ? '<span class="cat-card-oos">Tükendi</span>' : ''}
+          <button type="button" class="cat-fav" data-id="${esc(p.id)}" aria-pressed="false" aria-label="Favorilere ekle" title="Favorilere ekle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          </button>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-card-cat">${esc(catName)}</span>
+          <p class="cat-card-name">${esc(p.name)}</p>
+          <p class="cat-card-price">${esc(fmtTL(p.price))}</p>
+        </div>
+      </a>`;
+}
+
+// İşaretçiler arasına HTML enjekte et (crawler için statik içerik). Yoksa uyar, atla.
+function injectBetween(file, tag, html) {
+  const fp = path.join(ROOT, file);
+  if (!fs.existsSync(fp)) { console.warn(`  ⚠ ${file} yok, atlandı`); return; }
+  let s = fs.readFileSync(fp, 'utf8');
+  const re = new RegExp(`(<!--BUILD:${tag}:START-->)[\\s\\S]*?(<!--BUILD:${tag}:END-->)`);
+  if (!re.test(s)) { console.warn(`  ⚠ ${file}: BUILD:${tag} işaretçisi yok, atlandı`); return; }
+  s = s.replace(re, `$1${html}\n      $2`);
+  fs.writeFileSync(fp, s, 'utf8');
+}
+
 // ---- tek ürün sayfası ----
 function productHtml(p, noindex) {
   const url = `${SITE}/urun-${p.slug}.html`;
   const imgs = imageUrls(p.product_images);
   const img = imgs[0] || `${SITE}/images/hero-guitar.png`;
   const catName = p.categories ? p.categories.name : '';
-  const desc = excerpt(p.description) || `${p.name} — Nota Müzik Market`;
+  const rawDesc = excerpt(p.description, 155);
+  const desc = (rawDesc && rawDesc.length >= 70) ? rawDesc
+    : `${p.name} — ${catName || 'müzik enstrümanı'}. ${fmtTL(p.price)}, PayTR güvenli ödeme, hızlı kargo. Nota Müzik Market.`;
   const inStock = p.stock > 0;
   const glyph = esc((catName || p.name || '?').charAt(0).toUpperCase());
   const priceNum = Number(p.price);
@@ -103,7 +172,9 @@ function productHtml(p, noindex) {
       '@type': 'Offer',
       price: priceNum,
       priceCurrency: 'TRY',
+      itemCondition: 'https://schema.org/NewCondition',
       availability: inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      priceValidUntil: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
       url: url,
     },
   };
@@ -119,10 +190,10 @@ function productHtml(p, noindex) {
   };
 
   const gallery = imgs.length
-    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(imgs[0])}" alt="${esc(p.name)}" decoding="async" /></div>` +
+    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(imgs[0])}" alt="${esc(p.name)}" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
       (imgs.length > 1
         ? `<div class="product-thumbs">${imgs.map((u, i) =>
-            `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(u)}" alt="" /></button>`).join('')}</div>`
+            `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(u)}" alt="" loading="lazy" decoding="async" width="72" height="72" /></button>`).join('')}</div>`
         : '')
     : `<div class="product-gallery-main" id="galMain"><span class="product-gallery-glyph">${glyph}</span></div>`;
 
@@ -209,6 +280,8 @@ ${HEADER}
   <section id="productRecommended" class="product-section"></section>
 </main>
 
+${FOOTER}
+
 <div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
 
 ${SCRIPTS}
@@ -253,7 +326,11 @@ async function main() {
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap-products.xml'), buildSitemap(indexable), 'utf8');
 
+  // products.html'e statik katalog grid'i enjekte et (crawler/JS'siz için gerçek <a> linkleri)
+  injectBetween('products.html', 'GRID', indexable.map(catCard).join(''));
+
   console.log(`  ✓ ${raw.length} ürün sayfası üretildi (${indexable.length} indexlenebilir)`);
+  console.log(`  ✓ products.html statik grid (${indexable.length} ürün linki)`);
   if (skipped.length) console.log(`  ⤫ noindex + sitemap dışı: ${skipped.map((p) => p.slug).join(', ')}`);
   console.log(`  ✓ sitemap-products.xml (${indexable.length} URL)`);
   const noImg = indexable.filter((p) => !imageUrls(p.product_images).length).length;

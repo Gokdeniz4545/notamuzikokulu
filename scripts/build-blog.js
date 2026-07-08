@@ -93,11 +93,11 @@ const FOOTER = `<footer class="site-footer">
   <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
 </footer>`;
 
-const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="supabase-client.js?v=43"></script>
-<script src="api.js?v=41"></script>
+<script src="api.js?v=43"></script>
 <script src="cart-store.js?v=33"></script>
-<script src="auth-modal.js?v=30" defer></script>
+<script src="auth-modal.js?v=31" defer></script>
 <script src="header-auth.js?v=30" defer></script>`;
 
 // ---- tek yazı sayfası ----

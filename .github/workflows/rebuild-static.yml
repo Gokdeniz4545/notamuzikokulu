@@ -1,0 +1,37 @@
+name: Rebuild static pages
+
+# Statik ürün/blog sayfalarını gece yeniden üretir → fiyat/stok bayatlığını ≤24 saatte tutar.
+# build-products.js Supabase'den ANON (public) anahtarla okur; ekstra secret gerekmez.
+# Değişiklik varsa commit+push eder → Hostinger otomatik deploy alır.
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # 00:00 UTC = 03:00 (Türkiye)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Statik sayfaları üret
+        run: |
+          node scripts/build-products.js
+          node scripts/build-blog.js
+      - name: Değişiklik varsa commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Değişiklik yok, atlandı."
+          else
+            git add -A
+            git commit -m "chore: gece statik yeniden üretim (fiyat/stok tazeleme)"
+            git push
+          fi

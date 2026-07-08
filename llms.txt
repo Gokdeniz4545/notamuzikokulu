@@ -1,0 +1,26 @@
+# Nota Müzik Market
+
+> Türkiye merkezli online müzik enstrümanı mağazası. Gitar, klavye & piyano, davul & perküsyon, yaylı çalgılar ve müzik aksesuarları satışı. Güvenli ödeme PayTR altyapısıyla; tüm Türkiye'ye kargo.
+
+## Hakkında
+Nota Müzik Market (Süleyman Kesici – Nota Müzik), Çiğli / İzmir merkezli bir müzik enstrümanı e-ticaret sitesidir. Ürünler taranabilir statik sayfalar olarak yayımlanır; fiyat ve stok bilgisi canlı veritabanından güncellenir.
+
+## Kategoriler
+- Gitarlar — elektro, klasik ve akustik gitarlar
+- Klavye & Piyano — dijital piyano, org, keyboard
+- Davul & Perküsyon — akustik ve elektronik davul setleri, perküsyon
+- Yaylı Çalgılar — keman ve yaylı enstrümanlar
+- Aksesuarlar — tel, baget, amfi, kablo, stand ve diğer ekipmanlar
+
+## Önemli Sayfalar
+- Ürün kataloğu: https://www.notamuzikmarket.com/products.html
+- Blog & enstrüman rehberleri: https://www.notamuzikmarket.com/blog.html
+- İletişim & künye: https://www.notamuzikmarket.com/iletisim.html
+- Sipariş sorgulama (üyeliksiz): https://www.notamuzikmarket.com/siparis-sorgula.html
+
+## Site Haritaları
+- https://www.notamuzikmarket.com/sitemap.xml
+- https://www.notamuzikmarket.com/sitemap-products.xml
+
+## İletişim
+E-posta: info@notamuzikokulu.com · Telefon: 0543 766 35 37 · Çalışma saatleri: her gün 10:00–21:00
