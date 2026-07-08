@@ -58,7 +58,9 @@ Deno.serve(async (req) => {
     // (sahte sipariş spam'i / DoS önlemi; service_role RLS'i bypass eder, sayım güvenilir)
     try {
       const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
-      let rl = admin.from('orders').select('id', { count: 'exact', head: true }).gte('created_at', since);
+      // Başarısız/süresi dolmuş siparişleri SAYMA (kartı reddedilen müşteri kendini kilitlemesin)
+      let rl = admin.from('orders').select('id', { count: 'exact', head: true })
+        .gte('created_at', since).neq('payment_status', 'failed').neq('status', 'expired');
       rl = userId ? rl.eq('user_id', userId) : rl.eq('guest_email', email);
       const { count } = await rl;
       if ((count ?? 0) >= 10) {

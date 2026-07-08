@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Açık Rıza Metni — Nota Müzik Market</title>
-<meta name="description" content="Pazarlama/ticari elektronik ileti ve yurt dışına veri aktarımı için isteğe bağlı açık rıza metni. KVKK aydınlatma metninden ayrı düzenlenmiştir." />
-<meta name="robots" content="index, follow" />
+<title>Sipariş Sorgula — Nota Müzik Market</title>
+<meta name="description" content="Üye olmadan verdiğin siparişin durumunu sipariş numaran ve e-posta adresinle sorgula." />
+<meta name="robots" content="noindex, follow" />
 <meta name="theme-color" content="#fafafa" />
-<link rel="canonical" href="https://www.notamuzikmarket.com/acik-riza.html" />
+<link rel="canonical" href="https://www.notamuzikmarket.com/siparis-sorgula.html" />
 <link rel="icon" type="image/png" href="images/logo-icon.png" />
 <link rel="apple-touch-icon" href="images/logo-icon.png" />
 <link rel="preconnect" href="https://rsms.me/" />
@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="styles.css?v=38" />
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="shop.css?v=32" />
+<link rel="stylesheet" href="account.css?v=30" />
 <link rel="stylesheet" href="legal.css?v=1" />
 </head>
 <body class="shop-page legal-page">
@@ -51,45 +52,30 @@
   <a href="index.html" class="legal-back">← Ana sayfa</a>
 
   <div class="legal-hero">
-    <p class="legal-eyebrow">Yasal · 6698 sayılı KVKK</p>
-    <h1 class="legal-title">Açık Rıza Metni</h1>
-    <p class="legal-updated">Son güncelleme: 6 Temmuz 2026</p>
+    <p class="legal-eyebrow">Sipariş</p>
+    <h1 class="legal-title">Sipariş Sorgula</h1>
+    <p class="legal-updated">Üye olmadan sipariş verdiysen, durumunu buradan takip edebilirsin.</p>
   </div>
 
   <div class="legal-body">
-    <div class="legal-note">
-      <strong>Açık rıza vermek zorunlu değildir.</strong> Aşağıdaki izinler tamamen isteğe bağlıdır;
-      vermemeniz hâlinde de sitemizden alışveriş yapabilir, üyeliğinizi kullanabilirsiniz. Verdiğiniz
-      rızayı dilediğiniz zaman geri alabilirsiniz. Verilerinizin işlenmesine dair genel bilgi için
-      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>'ni inceleyiniz.
-    </div>
+    <form id="lookupForm" class="auth-form" autocomplete="on" novalidate>
+      <div class="account-field">
+        <label for="lkOrder">Sipariş numarası</label>
+        <input id="lkOrder" name="order_number" type="text" inputmode="text" placeholder="NM-2026-000123" autocomplete="off" required />
+      </div>
+      <div class="account-field">
+        <label for="lkEmail">Sipariş verirken kullandığın e-posta</label>
+        <input id="lkEmail" name="email" type="email" inputmode="email" autocomplete="email" required />
+      </div>
+      <p class="account-hint" id="lookupMsg" role="alert"></p>
+      <button type="submit" class="auth-btn-primary">Sorgula</button>
+    </form>
 
-    <h2>1. Ticari elektronik ileti (pazarlama) rızası</h2>
-    <p>
-      Kampanya, indirim, yeni ürün ve tanıtım içeriklerinin tarafıma <strong>e-posta ve/veya SMS</strong>
-      ile gönderilmesi ve bu amaçla iletişim bilgilerimin işlenmesi için açık rıza veriyorum. Ticari
-      elektronik iletiler, İleti Yönetim Sistemi (İYS) üzerinden yönetilir ve her iletide yer alan
-      bağlantı ile aboneliğimi sonlandırabilirim.
-    </p>
+    <div id="lookupResult" aria-live="polite"></div>
 
-    <h2>2. Yurt dışına aktarım rızası (gerektiğinde)</h2>
-    <p>
-      Bazı altyapı ve hizmet sağlayıcılarının sunucuları yurt dışında bulunabilir. Sözleşmenin ifası
-      için zorunlu olmayan hâllerde, muhtemel riskler konusunda bilgilendirilmiş olarak, kişisel
-      verilerimin bu sağlayıcılar aracılığıyla yurt dışına aktarılmasına açık rıza veriyorum.
-    </p>
-
-    <h2>3. Rızanın geri alınması</h2>
-    <p>
-      Açık rızalarınızı, info@notamuzikokulu.com adresine e-posta göndererek veya hesabınız
-      üzerinden dilediğiniz zaman geri alabilirsiniz. Geri alma, geçmişe etkili olmayıp geri alma
-      tarihinden itibaren geçerli olur.
-    </p>
-
-    <hr />
-    <p style="font-size:13px;color:var(--ink-3);">
-      Bu metin, KVKK Aydınlatma Metni'nden ayrı olarak düzenlenmiştir (Kişisel Verileri Koruma Kurulu'nun
-      açık rıza ile aydınlatmanın ayrı sunulması gerektiğine ilişkin ilke kararı gereği).
+    <p class="account-hint" style="margin-top:22px">
+      Üyeysen siparişlerini <a href="account.html?tab=orders">hesabından</a> görebilirsin.
+      Sorun yaşarsan <a href="iletisim.html">iletişim</a> sayfasından bize ulaş.
     </p>
   </div>
 </main>
@@ -102,12 +88,12 @@
       <p class="footer-credit" style="margin:10px 0 0;font-size:11px;color:#a8a8a8;letter-spacing:0.02em;">Tasarım &amp; geliştirme · <strong style="font-weight:600;color:#8a8a8a;">Gökdeniz KESİCİ</strong></p>
     </div>
     <nav class="footer-legal" aria-label="Yasal bilgiler">
+      <a href="siparis-sorgula.html">Sipariş Sorgula</a>
       <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
       <a href="on-bilgilendirme.html">Ön Bilgilendirme Formu</a>
       <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
       <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
       <a href="gizlilik.html">Gizlilik Politikası</a>
-      <a href="cerez-politikasi.html">Çerez Politikası</a>
       <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
       <a href="iletisim.html">İletişim &amp; Künye</a>
     </nav>
@@ -123,9 +109,9 @@
 <div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
 <script src="supabase-client.js?v=43"></script>
-<script src="api.js?v=43"></script>
 <script src="cart-store.js?v=33"></script>
 <script src="auth-modal.js?v=31" defer></script>
 <script src="header-auth.js?v=30" defer></script>
+<script src="siparis-sorgula.js?v=1" defer></script>
 </body>
 </html>

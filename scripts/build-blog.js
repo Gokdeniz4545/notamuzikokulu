@@ -94,7 +94,7 @@ const FOOTER = `<footer class="site-footer">
 </footer>`;
 
 const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js?v=41"></script>
+<script src="supabase-client.js?v=43"></script>
 <script src="api.js?v=41"></script>
 <script src="cart-store.js?v=33"></script>
 <script src="auth-modal.js?v=30" defer></script>

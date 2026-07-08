@@ -43,6 +43,10 @@ Deno.serve(async (req) => {
 
     const res = await sendEmail(loaded.email, tpl.subject, tpl.html);
     if (!res.ok) return json({ ok: false, error: res.error }, 400);
+    // Onay e-postası elle yeniden gönderildiyse durumu 'sent' yap (admin "yeniden gönder")
+    if (type === 'confirmation') {
+      try { await admin.from('orders').update({ email_status: 'sent' }).eq('paytr_merchant_oid', merchantOid); } catch (_) {}
+    }
     return json({ ok: true, sent_to: loaded.email });
   } catch (e) {
     return json({ ok: false, error: 'Sunucu hatası: ' + (e instanceof Error ? e.message : String(e)) }, 500);

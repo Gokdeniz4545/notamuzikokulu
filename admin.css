@@ -178,3 +178,11 @@
   .account-field-row { grid-template-columns: 1fr; }
   .admin-form-row .admin-input { min-width: 0; flex: 1 1 100%; }
 }
+
+/* Dikkat gerektiren sipariş (oversell / e-posta hatası) */
+.admin-attn {
+  margin: 10px 0; padding: 9px 13px; border-radius: 6px;
+  background: #fff4f3; color: #b3251e; border: 1px solid #f3c9c6;
+  font-size: 13px; line-height: 1.45;
+}
+.admin-attn-dot { color: #e63946; font-size: 14px; margin-left: 4px; }

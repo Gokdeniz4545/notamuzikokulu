@@ -8,4 +8,7 @@
   var m = oid.match(/^NM(\d{4})(\d+)$/);
   var line = document.getElementById('orderNumLine');
   if (m && line) line.innerHTML = 'Sipariş no: <strong>NM-' + m[1] + '-' + m[2] + '</strong>';
+  // Misafir takip linkine sipariş no'yu taşı (siparis-sorgula ön-doldursun)
+  var gl = document.getElementById('guestTrackLink');
+  if (gl && oid) gl.href = 'siparis-sorgula.html?oid=' + encodeURIComponent(oid);
 })();

@@ -71,7 +71,7 @@ const HEADER = `<header class="site-header" id="siteHeader">
 </header>`;
 
 const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
-<script src="supabase-client.js?v=41"></script>
+<script src="supabase-client.js?v=43"></script>
 <script src="api.js?v=43"></script>
 <script src="cart-store.js?v=33"></script>
 <script src="auth-modal.js?v=31" defer></script>

@@ -45,9 +45,35 @@
   const ORDER_STATUS = {
     pending:   'Onay bekliyor', paid: 'Ödendi', preparing: 'Hazırlanıyor',
     shipped:   'Kargoda', delivered: 'Teslim edildi', cancelled: 'İptal edildi',
-    refunded:  'İade edildi',
+    refunded:  'İade edildi', expired: 'Süresi doldu',
+  };
+  // Yasal ileri geçişler (0009 durum makinesi trigger'ıyla birebir). Boşsa dropdown pasif.
+  // pending → paid yalnız ödeme webhook'uyla; iptal 'İptal et' butonuyla. refunded/cancelled dropdown'da YOK.
+  const NEXT_STATUS = {
+    pending: [], paid: ['preparing', 'shipped', 'delivered'],
+    preparing: ['shipped', 'delivered'], shipped: ['delivered'],
+    delivered: [], cancelled: [], refunded: [], expired: [],
   };
   const statusCls = (s) => 's-' + s;
+
+  // Sipariş e-postası tetikle (kargo bildirimi / onay yeniden gönderimi). Ortak yardımcı.
+  async function sendOrderEmail(merchantOid, type) {
+    try {
+      const session = await window.NMAuth.getSession();
+      const resp = await fetch(window.NM_SUPA.url + '/functions/v1/send-order-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': window.NM_SUPA.anonKey,
+          'Authorization': 'Bearer ' + (session ? session.access_token : window.NM_SUPA.anonKey),
+        },
+        body: JSON.stringify({ merchant_oid: merchantOid, type }),
+      });
+      const data = await resp.json();
+      toast(data.ok ? 'E-posta gönderildi ✓' : ('E-posta gönderilemedi: ' + (data.error || '')));
+      return !!data.ok;
+    } catch (_) { toast('E-posta gönderilemedi'); return false; }
+  }
 
   // ---- guard + boot ----
   async function boot() {
@@ -210,7 +236,7 @@
       <td>${esc(fmtDate(o.created_at))}</td>
       <td>${esc(customerName(o))}</td>
       <td>${esc(fmtTL(o.total_amount))}</td>
-      <td><span class="status-badge ${statusCls(o.status)}">${esc(ORDER_STATUS[o.status] || o.status)}</span></td>
+      <td><span class="status-badge ${statusCls(o.status)}">${esc(ORDER_STATUS[o.status] || o.status)}</span>${o.needs_attention ? ' <span class="admin-attn-dot" title="Dikkat gerekiyor">⚠</span>' : ''}</td>
     </tr>`;
   }
   function openOrderDetail(id) {
@@ -233,13 +259,20 @@
       <span class="timeline-dot ${statusCls(h.status)}"></span>
       <span class="timeline-body"><span class="timeline-status">${esc(ORDER_STATUS[h.status] || h.status)}</span>
       <span class="timeline-date">${esc(fmtDate(h.changed_at))}</span></span></div>`).join('') || '<p class="account-hint">Geçmiş yok.</p>';
-    const statusOptions = Object.keys(ORDER_STATUS).map(s => `<option value="${s}" ${s === order.status ? 'selected' : ''}>${esc(ORDER_STATUS[s])}</option>`).join('');
+    const nexts = NEXT_STATUS[order.status] || [];
+    const statusOptions = [order.status, ...nexts].map(s => `<option value="${s}" ${s === order.status ? 'selected' : ''}>${esc(ORDER_STATUS[s] || s)}</option>`).join('');
+    const canAdvance = nexts.length > 0;
+    const attn = order.needs_attention
+      ? `<div class="admin-attn">⚠ ${esc(order.attention_note || 'Bu sipariş dikkat gerektiriyor.')}</div>` : '';
+    const emailLine = order.payment_status === 'paid'
+      ? `<p class="account-hint">Onay e-postası: ${order.email_status === 'sent' ? 'gönderildi ✓' : order.email_status === 'failed' ? '<b>gönderilemedi</b>' : 'beklemede'} · <button type="button" class="admin-mini" id="resendConfirm">Yeniden gönder</button></p>` : '';
 
     panel.innerHTML = `
       <button type="button" class="order-back" id="orderBack">← Siparişler</button>
       <div class="order-detail-head"><h2 class="account-panel-title">#${esc(order.order_number)}</h2>
         <span class="status-badge ${statusCls(order.status)}">${esc(ORDER_STATUS[order.status] || order.status)}</span></div>
       <p class="account-hint">${esc(fmtDate(order.created_at))} · ${esc(fmtTL(order.total_amount))}</p>
+      ${attn}${emailLine}
 
       <h3 class="order-section-title">Müşteri / Teslimat</h3>
       <p class="admin-addr">${esc(a.full_name || '')}${a.phone ? ' · ' + esc(a.phone) : ''}${order.guest_email ? ' · ' + esc(order.guest_email) : ''}<br>
@@ -250,9 +283,10 @@
 
       <h3 class="order-section-title">Durumu güncelle</h3>
       <div class="admin-form-row">
-        <select id="ordStatus" class="admin-input">${statusOptions}</select>
-        <button type="button" class="auth-btn-primary" id="ordStatusSave">Kaydet</button>
+        <select id="ordStatus" class="admin-input" ${canAdvance ? '' : 'disabled'}>${statusOptions}</select>
+        <button type="button" class="auth-btn-primary" id="ordStatusSave" ${canAdvance ? '' : 'disabled'}>Kaydet</button>
       </div>
+      ${canAdvance ? '' : `<p class="account-hint">${order.status === 'pending' ? 'Ödeme onayı bekleniyor; ileri durumlar ödemeden sonra açılır.' : 'İleri durum yok.'}</p>`}
 
       <h3 class="order-section-title">Kargo</h3>
       <div class="admin-form-row">
@@ -270,13 +304,16 @@
       <div class="admin-form-row">
         <input id="refundAmt" class="admin-input" type="number" min="0" step="0.01" placeholder="Tutar (boş = kalan tümü)" />
         <button type="button" class="admin-danger-btn" id="refundBtn">İade Et</button>
-      </div>` : (Number(order.refunded_amount) > 0 ? `
+      </div>
+      <p class="account-hint">Kısmi iade stoğu geri EKLEMEZ — ürün fiziken döndüyse stoğu Ürünler sekmesinden düzelt.</p>` : (Number(order.refunded_amount) > 0 ? `
       <h3 class="order-section-title">İade</h3>
       <p class="account-hint">Bu sipariş iade edildi — toplam ${esc(fmtTL(order.refunded_amount))}.</p>` : '')}
 
+      ${order.status === 'pending' ? `
       <div class="admin-danger-row">
         <button type="button" class="admin-danger-btn" id="ordCancel">Siparişi iptal et</button>
-      </div>`;
+      </div>` : (['paid', 'preparing', 'shipped', 'delivered'].includes(order.status) ? `
+      <p class="account-hint">Ödenmiş sipariş iptal edilemez — kapatmak için yukarıdan <b>İade Et</b> kullan.</p>` : '')}`;
 
     $('#orderBack').addEventListener('click', () => selectTab('orders', true));
     const refundBtn = $('#refundBtn');
@@ -304,9 +341,25 @@
         refundBtn.disabled = false;
       }
     });
-    $('#ordStatusSave').addEventListener('click', async () => {
-      const { error: e } = await window.NMAdmin.updateOrderStatus(id, $('#ordStatus').value);
-      if (e) return toast('Güncellenemedi'); toast('Durum güncellendi'); renderOrderDetail(id);
+    const statusSaveBtn = $('#ordStatusSave');
+    if (statusSaveBtn && canAdvance) statusSaveBtn.addEventListener('click', async () => {
+      const newStatus = $('#ordStatus').value;
+      if (newStatus === order.status) return;
+      statusSaveBtn.disabled = true;
+      const { error: e } = await window.NMAdmin.updateOrderStatus(id, newStatus);
+      if (e) { statusSaveBtn.disabled = false; return toast('Güncellenemedi: ' + (e.message || '')); }
+      toast('Durum güncellendi');
+      // 'shipped'e geçince müşteriye kargo bildirimi öner
+      if (newStatus === 'shipped' && order.paytr_merchant_oid && confirm('Müşteriye kargo bildirimi e-postası gönderilsin mi?')) {
+        await sendOrderEmail(order.paytr_merchant_oid, 'shipped');
+      }
+      renderOrderDetail(id);
+    });
+    const resendBtn = $('#resendConfirm');
+    if (resendBtn) resendBtn.addEventListener('click', async () => {
+      resendBtn.disabled = true;
+      const ok = await sendOrderEmail(order.paytr_merchant_oid, 'confirmation');
+      if (ok) renderOrderDetail(id); else resendBtn.disabled = false;
     });
     $('#ordTrackSave').addEventListener('click', async () => {
       const track = $('#ordTrack').value.trim();
@@ -315,27 +368,15 @@
       toast('Kargo bilgisi kaydedildi');
       // Takip kodu varsa müşteriye kargo bildirimi göndermeyi öner
       if (track && order.paytr_merchant_oid && confirm('Müşteriye kargo bildirimi e-postası gönderilsin mi?')) {
-        try {
-          const session = await window.NMAuth.getSession();
-          const resp = await fetch(window.NM_SUPA.url + '/functions/v1/send-order-email', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': window.NM_SUPA.anonKey,
-              'Authorization': 'Bearer ' + (session ? session.access_token : window.NM_SUPA.anonKey),
-            },
-            body: JSON.stringify({ merchant_oid: order.paytr_merchant_oid, type: 'shipped' }),
-          });
-          const data = await resp.json();
-          toast(data.ok ? 'Kargo bildirimi gönderildi ✓' : ('E-posta gönderilemedi: ' + (data.error || '')));
-        } catch (_) { toast('E-posta gönderilemedi'); }
+        await sendOrderEmail(order.paytr_merchant_oid, 'shipped');
       }
     });
-    $('#ordCancel').addEventListener('click', async () => {
-      const reason = prompt('İptal nedeni (opsiyonel):') ;
+    const cancelBtn = $('#ordCancel');
+    if (cancelBtn) cancelBtn.addEventListener('click', async () => {
+      const reason = prompt('İptal nedeni (opsiyonel):');
       if (reason === null) return;
       const { error: e } = await window.NMAdmin.cancelOrder(id, reason);
-      if (e) return toast('İptal edilemedi'); toast('Sipariş iptal edildi'); renderOrderDetail(id);
+      if (e) return toast('İptal edilemedi: ' + (e.message || '')); toast('Sipariş iptal edildi'); renderOrderDetail(id);
     });
   }
 

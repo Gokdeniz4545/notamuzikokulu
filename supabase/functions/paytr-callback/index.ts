@@ -33,28 +33,44 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
     if (status === 'success') {
-      // Zaten ödenmiş mi? (mükerrer webhook'ta onay e-postasını tekrar gönderme)
-      const { data: pre } = await admin.from('orders')
-        .select('payment_status').eq('paytr_merchant_oid', merchantOid).single();
-      const wasAlreadyPaid = pre?.payment_status === 'paid';
-
-      await admin.rpc('confirm_order_payment', { p_merchant_oid: merchantOid });
-
-      // İlk kez onaylandıysa sipariş onay e-postası gönder (hata olsa da webhook'u bozma)
-      if (!wasAlreadyPaid) {
+      // confirm_order_payment: JSONB döner { ok, already_paid, send_email, stock_shortage }.
+      // Tek-atımlık e-posta bayrağı + stok kilidi + oversell tespiti DB tarafında.
+      const { data, error } = await admin.rpc('confirm_order_payment', { p_merchant_oid: merchantOid });
+      if (error) {
+        // Geçici DB hatası → 500 dön ki PayTR tekrar denesin (RPC idempotent → güvenli)
+        console.error('[paytr-callback] confirm_order_payment hatası:', error.message);
+        return new Response('error', { status: 500 });
+      }
+      if (!data || data.ok !== true) {
+        // Kalıcı durum (not_found / invalid_state) — retry çözmez. Logla, PayTR'ı döngüye sokma.
+        console.error('[paytr-callback] confirm ok=false:', JSON.stringify(data));
+        return new Response('OK');
+      }
+      // Onay e-postası yalnız İLK onayda (send_email=true). Sonucu email_status'a yaz.
+      if (data.send_email === true) {
+        let sent = false;
         try {
           const loaded = await loadOrderForEmail(admin, merchantOid);
           if (loaded?.email) {
             const tpl = orderConfirmationEmail(loaded.order, loaded.items);
-            await sendEmail(loaded.email, tpl.subject, tpl.html);
+            const res = await sendEmail(loaded.email, tpl.subject, tpl.html);
+            sent = !!(res && res.ok);
           }
         } catch (mailErr) {
           console.error('[paytr-callback] onay e-postası gönderilemedi:', mailErr instanceof Error ? mailErr.message : String(mailErr));
         }
+        try {
+          await admin.from('orders').update({ email_status: sent ? 'sent' : 'failed' })
+            .eq('paytr_merchant_oid', merchantOid);
+        } catch (_) { /* email_status yazımı kritik değil */ }
       }
     } else {
       const reason = String(form.get('failed_reason_msg') || form.get('failed_reason_code') || '');
-      await admin.rpc('fail_order_payment', { p_merchant_oid: merchantOid, p_reason: reason });
+      const { error } = await admin.rpc('fail_order_payment', { p_merchant_oid: merchantOid, p_reason: reason });
+      if (error) {
+        console.error('[paytr-callback] fail_order_payment hatası:', error.message);
+        return new Response('error', { status: 500 });
+      }
     }
 
     // PayTR bu yanıtı bekler — aksi halde tekrar tekrar dener

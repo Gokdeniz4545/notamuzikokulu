@@ -353,7 +353,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   // ---- siparişler ----
   async function listOrders(status) {
     let q = window.sb.from('orders')
-      .select('id, order_number, status, total_amount, created_at, guest_email, shipping_address')
+      .select('id, order_number, status, total_amount, created_at, guest_email, shipping_address, needs_attention')
       .order('created_at', { ascending: false });
     if (status && status !== 'all') q = q.eq('status', status);
     const { data, error } = await q;
