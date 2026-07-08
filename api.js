@@ -115,6 +115,28 @@
     return arr[0] || null;
   }
 
+  // Statik SEO sayfaları (urun-<slug>.html) ürünü slug ile çözer (inline script'e gerek yok → CSP uyumlu)
+  async function getProductBySlug(slug) {
+    if (!window.sb || !slug) return null;
+    const { data, error } = await window.sb
+      .from('products')
+      .select('id, slug, name, price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .maybeSingle();
+    if (error) { console.error('[api] getProductBySlug', error); return null; }
+    if (!data) return null;
+    const p = data;
+    return {
+      id: p.id, slug: p.slug, name: p.name,
+      category: p.categories?.slug || null,
+      categoryName: p.categories?.name || '',
+      price: parseFloat(p.price), stock: p.stock, description: p.description,
+      image: primaryImageUrl(p.product_images),
+      images: allImageUrls(p.product_images),
+    };
+  }
+
   // Admin'in seçtiği önerilen ürünler; yoksa aynı kategoriden doldur
   async function getRecommended(productId, categorySlug) {
     if (!window.sb) return [];
@@ -139,5 +161,5 @@
     return items;
   }
 
-  window.NMApi = { getCategories, getProductsByCategory, getProductsByIds, getProductById, getRecommended, getAllProducts };
+  window.NMApi = { getCategories, getProductsByCategory, getProductsByIds, getProductById, getProductBySlug, getRecommended, getAllProducts };
 })();

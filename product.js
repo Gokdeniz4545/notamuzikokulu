@@ -41,8 +41,10 @@
 
   // ---- SEO ----
   const SITE_BASE = 'https://www.notamuzikmarket.com';
-  // Statik ürün sayfası (urun-<slug>.html) kendi canonical'ını window.__NM_CANONICAL__ ile bildirir.
-  const pageUrl = () => window.__NM_CANONICAL__ || (SITE_BASE + '/product.html?id=' + encodeURIComponent(product.id));
+  // Statik ürün sayfası canonical'ı: önce (varsa) global, sonra sayfadaki <link rel=canonical>, sonra dinamik URL.
+  const pageUrl = () => window.__NM_CANONICAL__
+    || document.querySelector('link[rel="canonical"]')?.getAttribute('href')
+    || (SITE_BASE + '/product.html?id=' + encodeURIComponent(product.id));
   const excerpt = (s, n = 155) => {
     const t = String(s || '').replace(/\s+/g, ' ').trim();
     return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
@@ -107,14 +109,22 @@
   }
 
   async function boot() {
-    // ?id= (product.html) veya gömülü __NM_PID__ (statik urun-<slug>.html)
+    // Kimlik: ?id= (product.html), gömülü __NM_PID__, ya da statik sayfa URL'sinden slug (urun-<slug>.html).
+    // Not: statik sayfalarda __NM_PID__ inline script CSP tarafından engellenebildiği için slug birincil yoldur.
     const id = new URLSearchParams(location.search).get('id') || window.__NM_PID__ || null;
-    if (!id) { setRobots('noindex'); mainEl.innerHTML = errBox('Ürün belirtilmedi.'); return; }
+    let slug = null;
+    if (!id) {
+      const m = location.pathname.match(/\/urun-(.+)\.html$/);
+      if (m) slug = decodeURIComponent(m[1]);
+    }
+    if (!id && !slug) { setRobots('noindex'); mainEl.innerHTML = errBox('Ürün belirtilmedi.'); return; }
 
     session = window.NMAuth ? await window.NMAuth.getSession() : null;
-    product = window.NMApi ? await window.NMApi.getProductById(id) : null;
+    product = window.NMApi
+      ? (id ? await window.NMApi.getProductById(id) : await window.NMApi.getProductBySlug(slug))
+      : null;
     if (!product) {
-      if (window.__NM_PID__) return; // statik sayfa: SSR içerik + head korunur, hydrate edilemedi
+      if (window.__NM_PID__ || slug) return; // statik sayfa: SSR içerik + head korunur, hydrate edilemedi
       setRobots('noindex'); mainEl.innerHTML = errBox('Ürün bulunamadı veya yayında değil.'); reviewsEl.innerHTML = ''; recEl.innerHTML = ''; return;
     }
 
