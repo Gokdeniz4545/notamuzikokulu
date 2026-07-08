@@ -29,11 +29,10 @@
   # Kullanılmayan tarayıcı yeteneklerini kapat
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
 
-  # ---- CSP — ÖNCE RAPOR MODU ----
-  # Bu modda siteyi KIRMAZ; ihlaller sadece tarayıcı konsoluna düşer.
-  # Konsolda birkaç gün ihlal olmadığını doğrulayınca, aşağıdaki satırı
-  # "Content-Security-Policy" (Report-Only olmadan) yapıp zorunlu kıl.
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://www.paytr.com; style-src 'self' 'unsafe-inline' https://rsms.me https://fonts.googleapis.com; font-src 'self' https://rsms.me https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://kwjtfqhhctqwrfhxghai.supabase.co wss://kwjtfqhhctqwrfhxghai.supabase.co; frame-src https://www.paytr.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
+  # ---- CSP — ZORUNLU (enforce) ----
+  # 2026-07-08: tüm sayfalar enforce CSP altında tarandı, ihlal yok → zorunlu kılındı.
+  # Sorun çıkarsa geçici olarak başlık adını "Content-Security-Policy-Report-Only" yap.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://www.paytr.com; style-src 'self' 'unsafe-inline' https://rsms.me https://fonts.googleapis.com; font-src 'self' https://rsms.me https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://kwjtfqhhctqwrfhxghai.supabase.co wss://kwjtfqhhctqwrfhxghai.supabase.co; frame-src https://www.paytr.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
 
   # Hassas dosyalar için cache'i kapat (aşağıda erişim zaten engelli, ek güvence)
   <FilesMatch "\.(json|mjs|md|env)$">
