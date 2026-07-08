@@ -33,7 +33,11 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
 
   function translateAuthError(err) {
     if (!err) return '';
-    const msg = (err.message || String(err)).trim();
+    let msg = '';
+    if (typeof err === 'string') msg = err;
+    else msg = String(err.message || err.msg || err.error_description || err.error || '').trim();
+    // Hâlâ boşsa nesneyi stringle — ama boş '{}' asla gösterme
+    if (!msg) { try { const s = JSON.stringify(err); msg = (s && s !== '{}') ? s : ''; } catch { msg = ''; } }
     const map = {
       'Invalid login credentials':              'E-posta veya şifre hatalı.',
       'Email not confirmed':                    'E-postanı doğrulamadın. Gelen kutunu kontrol et.',
@@ -45,11 +49,14 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
       'Unable to validate email address: invalid format': 'Geçersiz e-posta formatı.',
     };
     if (map[msg]) return map[msg];
+    if (/error sending .*email/i.test(msg) || /sending email/i.test(msg)) {
+      return 'Doğrulama e-postası şu an gönderilemedi. Lütfen birkaç dakika sonra tekrar dene.';
+    }
     if (/only request this once every (\d+) seconds/i.test(msg)) {
       const s = msg.match(/(\d+) seconds/)[1];
       return `Çok sık istek gönderdin. ${s} saniye sonra tekrar dene.`;
     }
-    return msg;
+    return msg || 'Bir hata oluştu. Lütfen tekrar dene.';
   }
 
   async function signUp({ email, password, fullName }) {
