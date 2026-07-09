@@ -187,10 +187,11 @@
     $('#qMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); qVal.textContent = qty; });
     $('#qPlus').addEventListener('click', () => { const max = inStock ? product.stock : 1; qty = Math.min(max, qty + 1); qVal.textContent = qty; });
 
-    // sepete ekle
-    $('#addCartBtn').addEventListener('click', () => {
+    // sepete ekle (stok tavanı: fazladan tıklama stoğu aşamaz)
+    $('#addCartBtn').addEventListener('click', async () => {
       if (!inStock || !window.NMCart) return;
-      window.NMCart.add(product.id, qty);
+      const full = await window.NMCart.add(product.id, qty, product.stock);
+      if (!full) { toast('Stok sınırına ulaşıldı'); return; }
       toast('Sepete eklendi');
       const b = $('#addCartBtn'); const old = b.textContent;
       b.textContent = 'Eklendi ✓'; b.disabled = true;

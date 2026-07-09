@@ -244,7 +244,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   async function listWishlist() {
     const { data, error } = await window.sb
       .from('wishlist')
-      .select('product_id, added_at, products(id, slug, name, price, stock)')
+      .select('product_id, added_at, products(id, slug, name, price, stock, product_images(storage_path, is_primary, display_order))')
       .order('added_at', { ascending: false });
     return { data, error };
   }

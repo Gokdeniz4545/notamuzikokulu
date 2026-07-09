@@ -14,8 +14,13 @@
   const listeners = new Set();
 
   function load() {
-    try { return new Map(JSON.parse(localStorage.getItem(CART_KEY) || '[]')); }
-    catch { return new Map(); }
+    try {
+      const arr = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      if (!Array.isArray(arr)) return new Map();
+      // Bozuk/geçersiz girdileri süz (id string + qty pozitif sonlu sayı)
+      return new Map(arr.filter((e) =>
+        Array.isArray(e) && typeof e[0] === 'string' && Number.isFinite(e[1]) && e[1] > 0));
+    } catch { return new Map(); }
   }
   function persist() {
     try { localStorage.setItem(CART_KEY, JSON.stringify([...items.entries()])); }
@@ -37,14 +42,23 @@
   }
 
   // ---- mutasyonlar (optimistic: local önce, DB arkadan) ----
-  async function add(id, qty = 1) {
-    items.set(id, (items.get(id) || 0) + qty);
-    persist(); emit();
-    const uid = await uidOf();
-    if (uid) await dbUpsert(uid, id, items.get(id));
+  // max verilirse (ör. stok) tavan uygulanır. Dönüş: true = tam eklendi, false = stok tavanına takıldı.
+  async function add(id, qty = 1, max) {
+    const cur = items.get(id) || 0;
+    const want = cur + qty;
+    const next = (typeof max === 'number' && max >= 0) ? Math.min(want, max) : want;
+    if (next !== cur) {
+      items.set(id, next);
+      persist(); emit();
+      const uid = await uidOf();
+      if (uid) await dbUpsert(uid, id, next);
+    }
+    return next >= want;
   }
-  async function setQty(id, qty) {
-    if (qty <= 0) return remove(id);
+  async function setQty(id, qty, max) {
+    qty = Math.floor(Number(qty));
+    if (!Number.isFinite(qty) || qty <= 0) return remove(id);
+    if (typeof max === 'number' && max >= 0) qty = Math.min(qty, max);
     items.set(id, qty);
     persist(); emit();
     const uid = await uidOf();
@@ -142,6 +156,14 @@
       }
     });
   }
+
+  // ---- sekmeler arası senkron ----
+  // Başka bir sekme sepeti değiştirince (localStorage 'storage' olayı) bu sekmede de yansıt.
+  window.addEventListener('storage', (e) => {
+    if (e.key === CART_KEY || (e.key === OWNER_KEY && e.newValue === null)) {
+      items = load(); emit();
+    }
+  });
 
   window.NMCart = { entries, getQty, count, isEmpty, add, setQty, remove, clear, subscribe, updateBadges, syncOnLogin };
 

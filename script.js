@@ -767,7 +767,7 @@
   addToCart.addEventListener('click', () => {
     if (!currentProduct || addToCart.disabled) return;
     const id = currentProduct.id;
-    if (window.NMCart) window.NMCart.add(id, currentQty);
+    if (window.NMCart) window.NMCart.add(id, currentQty, currentProduct.stock);
 
     // fly animasyonu için kaynak: panel-media
     flyToCart(panelMedia.getBoundingClientRect());

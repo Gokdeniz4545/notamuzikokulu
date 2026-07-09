@@ -470,14 +470,26 @@
     });
   }
 
+  function wishImgUrl(imgs) {
+    if (!imgs || !imgs.length) return null;
+    const s = imgs.slice().sort((a, b) =>
+      ((!!b.is_primary) - (!!a.is_primary)) || ((a.display_order || 0) - (b.display_order || 0)));
+    const p = s[0] && s[0].storage_path;
+    if (!p) return null;
+    return /^https?:\/\//i.test(p) ? p
+      : `${(window.NM_SUPA && window.NM_SUPA.url) || ''}/storage/v1/object/public/product-images/${p}`;
+  }
   function wishlistCard(w) {
     const p = w.products;
-    const initial = (p.name || '?').charAt(0).toUpperCase();
+    // Favori kartı artık gerçek ürün sayfasına gider + kapak görselini gösterir (önceden index.html + glyph).
+    const href = p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id);
+    const img = wishImgUrl(p.product_images);
+    const media = img
+      ? `<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
+      : `<span class="wishlist-glyph" aria-hidden="true">${esc((p.name || '?').charAt(0).toUpperCase())}</span>`;
     return `
       <article class="wishlist-card" data-id="${esc(p.id)}">
-        <a class="wishlist-media" href="index.html" aria-label="${esc(p.name)}">
-          <span class="wishlist-glyph" aria-hidden="true">${esc(initial)}</span>
-        </a>
+        <a class="wishlist-media" href="${href}" aria-label="${esc(p.name)}">${media}</a>
         <div class="wishlist-body">
           <p class="wishlist-name">${esc(p.name)}</p>
           <p class="wishlist-price">${esc(fmtTL(p.price))}</p>

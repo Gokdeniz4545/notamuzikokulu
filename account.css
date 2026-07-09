@@ -380,7 +380,9 @@
   aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, var(--bg-soft), #ececea);
   text-decoration: none;
+  overflow: hidden;
 }
+.wishlist-media img { width: 100%; height: 100%; object-fit: cover; }
 .wishlist-glyph { font-size: 40px; font-weight: 700; color: var(--ink-3); }
 .wishlist-body { padding: 10px 12px 4px; flex: 1; }
 .wishlist-name { margin: 0 0 4px; font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }

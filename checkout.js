@@ -36,9 +36,10 @@
   async function boot() {
     session = window.NMAuth ? await window.NMAuth.getSession() : null;
 
-    // PayTR başarısız ödeme dönüşü
+    // PayTR başarısız ödeme dönüşü (toast göster + param'ı temizle → yenilemede tekrar çıkmasın)
     if (new URLSearchParams(location.search).get('payment') === 'failed') {
       toast('Ödeme tamamlanamadı. Tekrar deneyebilirsin.');
+      history.replaceState(null, '', location.pathname);
     }
 
     const entries = window.NMCart ? window.NMCart.entries() : [];
@@ -46,6 +47,8 @@
 
     const ids = entries.map(([id]) => id);
     const list = (window.NMApi ? await window.NMApi.getProductsByIds(ids) : []) || [];
+    // Sepette ürün var ama hiçbiri yüklenemedi → "boş" değil, bağlantı sorunu göster
+    if (ids.length && !list.length) { renderConnError(); return; }
     products = {};
     list.forEach(p => { products[p.id] = p; });
     cartRows = entries.filter(([id]) => products[id]);
@@ -71,6 +74,13 @@
       <div class="shop-empty">
         <p>Sepetin boş — ödeme yapılacak ürün yok.</p>
         <a href="index.html" class="auth-btn-primary">Alışverişe başla</a>
+      </div>`;
+  }
+  function renderConnError() {
+    content.innerHTML = `
+      <div class="shop-empty">
+        <p>Ürünler yüklenemedi — bağlantı sorunu olabilir.</p>
+        <a href="checkout.html" class="auth-btn-primary">Tekrar dene</a>
       </div>`;
   }
 
@@ -287,22 +297,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function renderSuccess(orderNumber) {
-    content.innerHTML = `
-      <div class="co-success">
-        <span class="auth-check-icon" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </span>
-        <h2>Siparişin alındı!</h2>
-        ${orderNumber ? `<p class="co-success-num">Sipariş no: <strong>${esc(orderNumber)}</strong></p>` : ''}
-        <p>Siparişin "onay bekliyor" durumunda oluşturuldu. Ödeme entegrasyonu (PayTR) yakında eklenecek.</p>
-        <div class="co-success-actions">
-          ${session ? '<a href="account.html?tab=orders" class="auth-btn-primary">Siparişlerim</a>' : ''}
-          <a href="index.html" class="auth-btn-ghost">Alışverişe devam et</a>
-        </div>
-      </div>`;
-    if (window.NMCart) window.NMCart.updateBadges();
-  }
 
   function showMsg(el, text, ok) {
     if (!el) return;
