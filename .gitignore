@@ -31,5 +31,4 @@ supabase/.branches/
 .playwright-mcp/
 
 # Playwright test çıktıları
-.playwright-mcp/
 *-kategoriler.png
