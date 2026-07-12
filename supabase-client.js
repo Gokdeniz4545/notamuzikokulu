@@ -426,21 +426,36 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   }
   async function uploadProductImage(productId, file, makePrimary) {
     const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-    const path = `${productId}/${Date.now()}.${ext}`;
+    // Çoklu yüklemede aynı milisaniyede çakışmasın diye rastgele son ek
+    const path = `${productId}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
     const up = await window.sb.storage.from(BUCKET).upload(path, file, { upsert: false, contentType: file.type });
     if (up.error) return { error: up.error };
+    // Sıradaki display_order'ı hesapla (önceden hep 0 kalıyordu → sıra rastgeleydi)
+    const { data: existing } = await window.sb.from('product_images')
+      .select('display_order').eq('product_id', productId);
+    const count = (existing || []).length;
+    const nextOrder = count ? Math.max(...existing.map(i => i.display_order || 0)) + 1 : 0;
     // ilk görselse primary yap
-    if (makePrimary === undefined) {
-      const { count } = await window.sb.from('product_images').select('*', { count: 'exact', head: true }).eq('product_id', productId);
-      makePrimary = (count || 0) === 0;
-    }
+    if (makePrimary === undefined) makePrimary = count === 0;
     if (makePrimary) {
       await window.sb.from('product_images').update({ is_primary: false }).eq('product_id', productId);
     }
     const { data, error } = await window.sb.from('product_images')
-      .insert({ product_id: productId, storage_path: path, is_primary: !!makePrimary })
+      .insert({ product_id: productId, storage_path: path, is_primary: !!makePrimary, display_order: nextOrder })
       .select().single();
     return { data: data ? { ...data, url: publicUrl(data.storage_path) } : null, error };
+  }
+
+  // Görsel sırasını kaydet: orderedIds = yeni sıra. İlk görsel kapak (is_primary) olur.
+  async function setImagesOrder(productId, orderedIds) {
+    for (let i = 0; i < orderedIds.length; i++) {
+      const { error } = await window.sb.from('product_images')
+        .update({ display_order: i, is_primary: i === 0 })
+        .eq('id', orderedIds[i])
+        .eq('product_id', productId);
+      if (error) return { error };
+    }
+    return { error: null };
   }
   async function deleteProductImage(imgId, storagePath) {
     await window.sb.storage.from(BUCKET).remove([storagePath]);
@@ -538,7 +553,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
     getStats, getSalesStats,
     listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder,
     listProducts, createProduct, updateProduct, setStock, toggleActive, deleteProduct,
-    listProductImages, uploadProductImage, deleteProductImage, setPrimaryImage, publicUrl,
+    listProductImages, uploadProductImage, deleteProductImage, setPrimaryImage, setImagesOrder, publicUrl,
     listCategories, createCategory, updateCategory, deleteCategory, categoryProductCount, categoryChildCount,
     uploadCategoryImage, clearCategoryImage,
     getRecommendations, setRecommendations,

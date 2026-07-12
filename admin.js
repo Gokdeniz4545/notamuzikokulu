@@ -384,6 +384,8 @@
   // ÜRÜNLER
   // ============================================================
   let categoriesCache = [];
+  let productsCache = [];   // tüm ürünler (arama client-side filtreler)
+  let prodSearch = '';      // ürün arama sorgusu
   function primaryImg(p) {
     const imgs = p.product_images || [];
     const pick = imgs.find(i => i.is_primary) || imgs[0];
@@ -418,19 +420,59 @@
         <p class="account-hint">Şu an <b>${esc(indirimli)}</b> üründe indirim var. Ürün seçersen sadece onlara, seçmezsen tüm aktif ürünlere uygulanır.</p>
       </div>
 
+      <div class="prod-search-row">
+        <input type="search" id="prodSearch" class="admin-input" autocomplete="off"
+               placeholder="Ürün ara — ad, kategori veya slug…" value="${esc(prodSearch)}" />
+        <span class="account-hint" id="prodCount"></span>
+      </div>
+
       <div id="prodFormHost"></div>
       ${list.length ? `<div class="admin-table-wrap"><table class="admin-table">
         <thead><tr>
           <th><input type="checkbox" id="discAll" aria-label="Tümünü seç" /></th>
           <th></th><th>Ad</th><th>Kategori</th><th>Fiyat</th><th>Stok</th><th>Durum</th><th></th>
         </tr></thead>
-        <tbody>${list.map(productRow).join('')}</tbody></table></div>`
+        <tbody id="prodTbody"></tbody></table></div>`
         : '<div class="account-empty"><p>Ürün yok.</p></div>'}`;
+    productsCache = list;
     $('#addProdBtn').addEventListener('click', () => openProductForm(null));
-    $$('.prod-edit', panel).forEach(b => b.addEventListener('click', () => {
-      openProductForm(list.find(x => x.id === b.dataset.id));
-    }));
+    const search = $('#prodSearch');
+    if (search) {
+      search.addEventListener('input', () => { prodSearch = search.value; renderProductRows(); });
+    }
+    renderProductRows();
     wireDiscountBar();
+  }
+
+  // Arama sonucuna göre tablo satırlarını çiz (yeniden sorgu atmadan, anında)
+  function renderProductRows() {
+    const tbody = $('#prodTbody');
+    if (!tbody) return;
+    const q = prodSearch.trim().toLocaleLowerCase('tr');
+    const shown = q
+      ? productsCache.filter(p =>
+          (p.name || '').toLocaleLowerCase('tr').includes(q) ||
+          (p.categories?.name || '').toLocaleLowerCase('tr').includes(q) ||
+          (p.slug || '').toLowerCase().includes(q))
+      : productsCache;
+
+    tbody.innerHTML = shown.length
+      ? shown.map(productRow).join('')
+      : '<tr><td colspan="8"><p class="account-hint" style="padding:14px 0;">Eşleşen ürün yok.</p></td></tr>';
+
+    const cnt = $('#prodCount');
+    if (cnt) cnt.textContent = q
+      ? `${shown.length} / ${productsCache.length} ürün`
+      : `${productsCache.length} ürün`;
+
+    // satırlar yeniden çizildi → olayları yeniden bağla
+    $$('.prod-edit', tbody).forEach(b => b.addEventListener('click', () => {
+      openProductForm(productsCache.find(x => x.id === b.dataset.id));
+    }));
+    $$('.disc-pick', tbody).forEach(c => c.addEventListener('change', updateDiscScope));
+    const all = $('#discAll');
+    if (all) all.checked = false;
+    updateDiscScope();
   }
   function productRow(p) {
     const img = primaryImg(p);
@@ -634,35 +676,63 @@
     const host = $('#prodImages'); if (!host) return;
     const { data } = await window.NMAdmin.listProductImages(productId);
     const imgs = data || [];
+    const last = imgs.length - 1;
     host.innerHTML = `
-      <h4 class="admin-img-title">Görseller</h4>
+      <h4 class="admin-img-title">Görseller
+        <span class="account-hint">— oklarla sırala, <b>ilk görsel kapak</b> olur</span></h4>
       <div class="admin-img-grid">
-        ${imgs.map(i => `<div class="admin-img-cell ${i.is_primary ? 'is-primary' : ''}" data-id="${esc(i.id)}" data-path="${esc(i.storage_path)}">
+        ${imgs.map((i, idx) => `<div class="admin-img-cell ${idx === 0 ? 'is-primary' : ''}" data-id="${esc(i.id)}">
           <img src="${esc(i.url)}" alt="" />
-          ${i.is_primary ? '<span class="admin-img-badge">Kapak</span>' : `<button type="button" class="admin-img-primary" data-id="${esc(i.id)}">Kapak yap</button>`}
+          ${idx === 0 ? '<span class="admin-img-badge">Kapak</span>' : ''}
+          <div class="admin-img-ops">
+            <button type="button" class="img-move" data-idx="${idx}" data-dir="-1" ${idx === 0 ? 'disabled' : ''} aria-label="Öne al" title="Öne al">‹</button>
+            <span class="img-pos">${idx + 1}</span>
+            <button type="button" class="img-move" data-idx="${idx}" data-dir="1" ${idx === last ? 'disabled' : ''} aria-label="Geri al" title="Geri al">›</button>
+          </div>
           <button type="button" class="admin-img-del" data-id="${esc(i.id)}" data-path="${esc(i.storage_path)}" aria-label="Sil">×</button>
         </div>`).join('')}
       </div>
       <label class="admin-upload">
-        <input type="file" accept="image/*" id="prodImgInput" hidden />
-        <span>+ Görsel yükle</span>
-      </label>`;
+        <input type="file" accept="image/*" id="prodImgInput" multiple hidden />
+        <span>+ Görsel yükle <b>(birden fazla seçebilirsin)</b></span>
+      </label>
+      <p class="account-hint" id="imgUploadMsg" hidden></p>`;
+
+    // ---- çoklu görsel yükleme (sırayla, ilerleme göstererek) ----
     $('#prodImgInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0]; if (!file) return;
-      toast('Yükleniyor…');
-      const { error } = await window.NMAdmin.uploadProductImage(productId, file);
-      if (error) { toast('Yüklenemedi: ' + (error.message || '')); return; }
-      toast('Görsel yüklendi'); renderProductImages(productId);
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      const msg = $('#imgUploadMsg');
+      msg.hidden = false;
+      let ok = 0, fail = 0;
+      for (let i = 0; i < files.length; i++) {
+        msg.textContent = `Yükleniyor… ${i + 1}/${files.length}`;
+        const { error } = await window.NMAdmin.uploadProductImage(productId, files[i]);
+        if (error) { fail++; console.error('[admin] görsel', files[i].name, error); }
+        else ok++;
+      }
+      toast(fail ? `${ok} yüklendi, ${fail} başarısız` : `${ok} görsel yüklendi`);
+      renderProductImages(productId);
     });
+
+    // ---- sıra değiştir (komşuyla yer değiştir) ----
+    $$('.img-move', host).forEach(b => b.addEventListener('click', async () => {
+      const idx = parseInt(b.dataset.idx, 10);
+      const target = idx + parseInt(b.dataset.dir, 10);
+      if (target < 0 || target > last) return;
+      const ids = imgs.map(i => i.id);
+      [ids[idx], ids[target]] = [ids[target], ids[idx]];
+      $$('.img-move', host).forEach(x => { x.disabled = true; });
+      const { error } = await window.NMAdmin.setImagesOrder(productId, ids);
+      if (error) { toast('Sıra kaydedilemedi'); renderProductImages(productId); return; }
+      renderProductImages(productId);
+    }));
+
     $$('.admin-img-del', host).forEach(b => b.addEventListener('click', async () => {
       if (!confirm('Görseli sil?')) return;
       const { error } = await window.NMAdmin.deleteProductImage(b.dataset.id, b.dataset.path);
       if (error) { toast('Silinemedi'); return; }
       toast('Görsel silindi'); renderProductImages(productId);
-    }));
-    $$('.admin-img-primary', host).forEach(b => b.addEventListener('click', async () => {
-      await window.NMAdmin.setPrimaryImage(productId, b.dataset.id);
-      toast('Kapak güncellendi'); renderProductImages(productId);
     }));
   }
 
