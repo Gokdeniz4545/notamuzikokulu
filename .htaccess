@@ -9,6 +9,14 @@
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ---- 1b) Yeni ürünün statik sayfası henüz üretilmediyse 404 verme ----
+  # Admin'den ürün eklenince DB'ye düşer ve katalogda görünür, ama statik
+  # urun-<slug>.html dosyası ancak gece rebuild'inde üretilir. Dosya yoksa
+  # product.html'i sun: product.js slug'ı URL'den okuyup ürünü canlı yükler.
+  # (product.html noindex → gece statik sayfa üretilince o indexlenir.)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^urun-[A-Za-z0-9._-]+\.html$ /product.html [L]
 </IfModule>
 
 # ---- 2) Güvenlik başlıkları ----
