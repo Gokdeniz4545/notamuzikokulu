@@ -104,7 +104,7 @@ const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 function articleHtml(p, i) {
   const url = `${SITE}/blog-${p.slug}.html`;
   const next = POSTS[(i + 1) % POSTS.length];
-  const img = `${SITE}/images/hero-guitar.png`;
+  const img = `${SITE}/images/og-image.png`;
 
   const ld = {
     '@context': 'https://schema.org',

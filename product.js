@@ -54,7 +54,7 @@
 
   function applyMeta() {
     const desc = excerpt(product.description) || `${product.name} — Nota Müzik Market`;
-    const img = product.image || (SITE_BASE + '/images/hero-guitar.png');
+    const img = product.image || (SITE_BASE + '/images/og-image.png');
     const url = pageUrl();
     document.title = product.name + ' — Nota Müzik Market';
     setAttr('metaDesc', 'content', desc);

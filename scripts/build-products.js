@@ -149,7 +149,7 @@ function injectBetween(file, tag, html) {
 function productHtml(p, noindex) {
   const url = `${SITE}/urun-${p.slug}.html`;
   const imgs = imageUrls(p.product_images);
-  const img = imgs[0] || `${SITE}/images/hero-guitar.png`;
+  const img = imgs[0] || `${SITE}/images/og-image.png`;
   const catName = p.categories ? p.categories.name : '';
   const rawDesc = excerpt(p.description, 155);
   const desc = (rawDesc && rawDesc.length >= 70) ? rawDesc
