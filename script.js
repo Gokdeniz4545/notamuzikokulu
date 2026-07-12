@@ -701,6 +701,41 @@
   mobileMenuBackdrop.addEventListener('click', closeMobileMenu);
   $$('a', mobileMenu).forEach(a => a.addEventListener('click', closeMobileMenu));
 
+  // --------- mobil menü: "Ürünler" akordeonu (kategoriler aşağı açılır) ----------
+  const mmToggle = $('#mmProductsToggle');
+  const mmCats   = $('#mmCats');
+  if (mmToggle && mmCats) {
+    mmToggle.addEventListener('click', () => {
+      const open = mmToggle.getAttribute('aria-expanded') === 'true';
+      mmToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      mmCats.classList.toggle('is-open', !open);
+    });
+  }
+
+  // Kategorileri mobil menüye doldur (üst seviye) — DB'den gelen catNodes ile
+  function fillMobileCats() {
+    if (!mmCats) return;
+    const inner = document.createElement('div');
+    inner.className = 'mm-sub-inner';
+
+    const all = document.createElement('a');
+    all.href = 'products.html';
+    all.className = 'mm-all';
+    all.textContent = 'Tüm Ürünler';
+    inner.appendChild(all);
+
+    catNodes.filter(c => !c.parentId).forEach((c) => {
+      const a = document.createElement('a');
+      a.href = 'products.html?cat=' + encodeURIComponent(c.slug);
+      a.textContent = c.name;
+      a.addEventListener('click', closeMobileMenu);
+      inner.appendChild(a);
+    });
+
+    mmCats.innerHTML = '';
+    mmCats.appendChild(inner);
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (!panel.hidden) closePanel();
@@ -915,7 +950,7 @@
     initAuthUI();
     updateCartBadge(); // localStorage'dan restore edilen sepet sayısı
     body.classList.toggle('is-grid', gridMode);
-    loadCategoryData().then(() => { renderLevel(); onScroll(); if (!gridMode) update(); });
+    loadCategoryData().then(() => { renderLevel(); fillMobileCats(); onScroll(); if (!gridMode) update(); });
     onScroll();
 
     backBtn.addEventListener('click', goBack);
