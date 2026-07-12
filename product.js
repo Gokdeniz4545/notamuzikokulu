@@ -147,6 +147,7 @@
     mainEl.innerHTML = `
       <div class="product-gallery">
         <div class="product-gallery-main" id="galMain">
+          ${product.discountPercent > 0 ? `<span class="disc-badge" aria-label="%${esc(product.discountPercent)} indirim">%${esc(product.discountPercent)}</span>` : ''}
           ${imgs.length ? `<img id="galImg" src="${esc(imgs[0])}" alt="${esc(product.name)}" decoding="async" />`
                         : `<span class="product-gallery-glyph">${esc(glyph)}</span>`}
         </div>
@@ -157,7 +158,9 @@
         <p class="product-cat">${esc(product.categoryName || '')}</p>
         <h1 class="product-title">${esc(product.name)}</h1>
         <div class="product-rating-line" id="ratingLine"></div>
-        <p class="product-price">${esc(fmtTL(product.price))}</p>
+        <p class="product-price">${product.discountPercent > 0
+          ? `<span class="price-old">${esc(fmtTL(product.oldPrice))}</span> ${esc(fmtTL(product.price))} <span class="disc-tag">-%${esc(product.discountPercent)}</span>`
+          : esc(fmtTL(product.price))}</p>
         <p class="product-stock ${inStock ? '' : 'is-out'}">${inStock ? 'Stokta — ' + product.stock + ' adet' : 'Tükendi'}</p>
         <p class="product-desc">${esc(product.description || '')}</p>
         <div class="product-buy">
@@ -328,7 +331,9 @@
         ${items.map(p => `
           <a class="rec-card" href="${p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id)}">
             <div class="rec-media">${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />` : `<span>${esc((p.name || '?').charAt(0).toUpperCase())}</span>`}</div>
-            <div class="rec-body"><p class="rec-name">${esc(p.name)}</p><p class="rec-price">${esc(fmtTL(p.price))}</p></div>
+            <div class="rec-body"><p class="rec-name">${esc(p.name)}</p><p class="rec-price">${p.discountPercent > 0
+              ? `<span class="price-old">${esc(fmtTL(p.oldPrice))}</span> ${esc(fmtTL(p.price))}`
+              : esc(fmtTL(p.price))}</p></div>
           </a>`).join('')}
       </div>`;
   }

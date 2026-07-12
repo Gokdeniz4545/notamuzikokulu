@@ -27,6 +27,22 @@
     return allImageUrls(images)[0] || null;
   }
 
+  // ---- İndirim / efektif fiyat ----
+  // price          → müşterinin ödeyeceği fiyat (indirim varsa indirimli)
+  // oldPrice       → indirim varsa üstü çizilecek normal fiyat, yoksa null
+  // discountPercent→ rozet için yüzde (indirim yoksa 0)
+  // Not: create_order da COALESCE(discount_price, price) kullanır → gösterilen = ödenen.
+  function priceFields(p) {
+    const base = parseFloat(p.price);
+    const dp = (p.discount_price == null) ? null : parseFloat(p.discount_price);
+    const on = dp != null && dp > 0 && dp < base;
+    return {
+      price: on ? dp : base,
+      oldPrice: on ? base : null,
+      discountPercent: on ? Math.round((1 - dp / base) * 100) : 0,
+    };
+  }
+
   async function getCategories() {
     if (!window.sb) return null;
     const { data, error } = await window.sb
@@ -49,7 +65,7 @@
     if (!window.sb) return null;
     const { data, error } = await window.sb
       .from('products')
-      .select('id, slug, name, price, stock, description, is_active, categories!inner(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, description, is_active, categories!inner(slug, name), product_images(storage_path, is_primary, display_order)')
       .eq('categories.slug', slug)
       .eq('is_active', true);
     if (error) { console.error('[api] getProductsByCategory', error); return null; }
@@ -58,7 +74,7 @@
       slug: p.slug,
       name: p.name,
       category: p.categories?.slug || slug,
-      price: parseFloat(p.price),
+      ...priceFields(p),
       stock: p.stock,
       description: p.description,
       image: primaryImageUrl(p.product_images), // kapak (yoksa null → placeholder gradient)
@@ -70,7 +86,7 @@
     if (!window.sb || !ids || !ids.length) return [];
     const { data, error } = await window.sb
       .from('products')
-      .select('id, slug, name, price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
       .in('id', ids)
       .eq('is_active', true);
     if (error) { console.error('[api] getProductsByIds', error); return []; }
@@ -80,7 +96,7 @@
       name: p.name,
       category: p.categories?.slug || null,
       categoryName: p.categories?.name || '',
-      price: parseFloat(p.price),
+      ...priceFields(p),
       stock: p.stock,
       description: p.description,
       image: primaryImageUrl(p.product_images),
@@ -92,7 +108,7 @@
     if (!window.sb) return null;
     const { data, error } = await window.sb
       .from('products')
-      .select('id, slug, name, price, stock, description, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, description, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
       .eq('is_active', true)
       .order('created_at', { ascending: false });
     if (error) { console.error('[api] getAllProducts', error); return null; }
@@ -102,7 +118,7 @@
       name: p.name,
       category: p.categories?.slug || null,
       categoryName: p.categories?.name || '',
-      price: parseFloat(p.price),
+      ...priceFields(p),
       stock: p.stock,
       description: p.description,
       image: primaryImageUrl(p.product_images),
@@ -120,7 +136,7 @@
     if (!window.sb || !slug) return null;
     const { data, error } = await window.sb
       .from('products')
-      .select('id, slug, name, price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, description, is_active, categories(slug, name), product_images(storage_path, is_primary, display_order)')
       .eq('slug', slug)
       .eq('is_active', true)
       .maybeSingle();
@@ -131,7 +147,7 @@
       id: p.id, slug: p.slug, name: p.name,
       category: p.categories?.slug || null,
       categoryName: p.categories?.name || '',
-      price: parseFloat(p.price), stock: p.stock, description: p.description,
+      ...priceFields(p), stock: p.stock, description: p.description,
       image: primaryImageUrl(p.product_images),
       images: allImageUrls(p.product_images),
     };
@@ -161,5 +177,20 @@
     return items;
   }
 
-  window.NMApi = { getCategories, getProductsByCategory, getProductsByIds, getProductById, getProductBySlug, getRecommended, getAllProducts };
+  // İndirimli aktif ürünü olan kategori slug'ları (kategori kartına rozet koymak için)
+  async function getDiscountedCategorySlugs() {
+    if (!window.sb) return new Set();
+    const { data, error } = await window.sb
+      .from('products')
+      .select('categories(slug)')
+      .eq('is_active', true)
+      .not('discount_price', 'is', null);
+    if (error) { console.error('[api] getDiscountedCategorySlugs', error); return new Set(); }
+    return new Set((data || []).map((r) => r.categories?.slug).filter(Boolean));
+  }
+
+  window.NMApi = {
+    getCategories, getProductsByCategory, getProductsByIds, getProductById,
+    getProductBySlug, getRecommended, getAllProducts, getDiscountedCategorySlugs,
+  };
 })();

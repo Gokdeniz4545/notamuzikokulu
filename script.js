@@ -132,15 +132,21 @@
   function buildProductCard(p) {
     const cat = categoryByCat.get(p.category);
     const tone = accentByCat.get(p.category) || { c1: '#333', c2: '#666' };
+    // İndirim varsa: yeni fiyat + üstü çizili eski fiyat
+    const footRight = p.discountPercent > 0
+      ? `<span class="price-old">${fmtPrice(p.oldPrice)}</span> ${fmtPrice(p.price)}`
+      : fmtPrice(p.price);
     const art = buildBaseCard({
       topTag:    cat?.name ?? '',
       glyph:     (cat?.name || '?').charAt(0),
       name:      p.name,
-      footRight: fmtPrice(p.price),
+      footRight,
       tone,
       imageSrc:  p.image,
       imageAlt:  p.name,
     });
+    // Sol üst köşe indirim rozeti
+    if (p.discountPercent > 0) art.appendChild(discountBadge(p.discountPercent));
     art.dataset.id = p.id;
     art.dataset.cat = p.category;
     art.addEventListener('click', () => window.open(p.slug ? 'urun-' + p.slug + '.html' : 'product.html?id=' + encodeURIComponent(p.id), '_blank', 'noopener'));
@@ -152,6 +158,9 @@
   let navPath = [];    // drill-down yolu (kök → ... → mevcut düğüm)
   const childrenOf = (pid) => catNodes.filter(c => (c.parentId || null) === (pid || null));
   const isLeaf = (node) => childrenOf(node.id).length === 0;
+
+  // İndirimli ürünü olan kategori slug'ları (kategori kartı rozeti için)
+  let discountedCatSlugs = new Set();
 
   async function loadCategoryData() {
     let cats = window.NMApi ? await window.NMApi.getCategories() : null;
@@ -165,6 +174,34 @@
     catNodes = cats;
     // ürün kartı / panel için isim eşlemesini zenginleştir (yeni kategoriler dahil)
     catNodes.forEach(c => { if (!categoryByCat.has(c.slug)) categoryByCat.set(c.slug, { slug: c.slug, name: c.name }); });
+
+    try {
+      discountedCatSlugs = window.NMApi ? await window.NMApi.getDiscountedCategorySlugs() : new Set();
+    } catch (_) { discountedCatSlugs = new Set(); }
+  }
+
+  // Sol üst köşe indirim rozeti
+  function discountBadge(pct) {
+    const b = document.createElement('span');
+    b.className = 'disc-badge';
+    b.setAttribute('aria-label', `%${pct} indirim`);
+    b.textContent = `%${pct}`;
+    return b;
+  }
+
+  // Bu kategoride (ya da alt kategorilerinde) indirimli ürün var mı?
+  function catHasDiscount(node) {
+    if (discountedCatSlugs.has(node.slug)) return true;
+    const stack = [node.id];
+    while (stack.length) {
+      const pid = stack.pop();
+      for (const c of catNodes) {
+        if ((c.parentId || null) !== pid) continue;
+        if (discountedCatSlugs.has(c.slug)) return true;
+        stack.push(c.id);
+      }
+    }
+    return false;
   }
 
   function buildCategoryCard(node) {
@@ -187,6 +224,14 @@
         </div>
       </div>
     `;
+    // Kategoride indirimli ürün varsa sol üstte rozet
+    if (catHasDiscount(node)) {
+      const b = document.createElement('span');
+      b.className = 'disc-badge is-cat-badge';
+      b.setAttribute('aria-label', 'İndirimli ürünler var');
+      b.textContent = 'İNDİRİM';
+      art.appendChild(b);
+    }
     art.addEventListener('click', () => enterCategory(node));
     return art;
   }
@@ -222,7 +267,8 @@
     visibleCards = cardEls.slice();
     state = 'cats';
     activeCat = null;
-    stackCatName.textContent = parentNode ? parentNode.name : 'Koleksiyon';
+    // Ana seviyede etiket yok; alt kategoriye girilince o kategorinin adı görünür
+    stackCatName.textContent = parentNode ? parentNode.name : '';
     backBtn.hidden = navPath.length === 0;
     updateRunway();
   }

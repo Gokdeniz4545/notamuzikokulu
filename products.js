@@ -177,6 +177,7 @@
           ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
                     : `<span class="cat-card-glyph">${esc((p.categoryName || p.name || '?').charAt(0).toUpperCase())}</span>`}
           ${out ? '<span class="cat-card-oos">Tükendi</span>' : ''}
+          ${p.discountPercent > 0 ? `<span class="disc-badge${out ? ' disc-below' : ''}" aria-label="%${esc(p.discountPercent)} indirim">%${esc(p.discountPercent)}</span>` : ''}
           <button type="button" class="cat-fav" data-id="${esc(p.id)}" aria-pressed="${fav ? 'true' : 'false'}" aria-label="Favorilere ekle" title="Favorilere ekle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
           </button>
@@ -184,7 +185,9 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">${esc(p.categoryName || '')}</span>
           <p class="cat-card-name">${esc(p.name)}</p>
-          <p class="cat-card-price">${esc(fmtTL(p.price))}</p>
+          <p class="cat-card-price">${p.discountPercent > 0
+            ? `<span class="price-old">${esc(fmtTL(p.oldPrice))}</span> ${esc(fmtTL(p.price))}`
+            : esc(fmtTL(p.price))}</p>
         </div>
       </a>`;
   }

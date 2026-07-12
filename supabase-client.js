@@ -385,7 +385,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   // ---- ürünler ----
   async function listProducts() {
     const { data, error } = await window.sb.from('products')
-      .select('id, slug, name, price, stock, description, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, description, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
       .order('created_at', { ascending: false });
     return { data, error };
   }
@@ -515,7 +515,26 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
     return { error };
   }
 
+  // ---- İndirimler (RPC'ler is_admin() ile korunur) ----
+  // p_ids null/boş → TÜM aktif ürünler
+  async function applyDiscountPercent(percent, ids) {
+    return window.sb.rpc('apply_discount_percent', {
+      p_percent: Number(percent),
+      p_ids: (ids && ids.length) ? ids : null,
+    });
+  }
+  async function applyDiscountAmount(amount, ids) {
+    return window.sb.rpc('apply_discount_amount', {
+      p_amount: Number(amount),
+      p_ids: (ids && ids.length) ? ids : null,
+    });
+  }
+  async function clearDiscount(ids) {
+    return window.sb.rpc('clear_discount', { p_ids: (ids && ids.length) ? ids : null });
+  }
+
   window.NMAdmin = {
+    applyDiscountPercent, applyDiscountAmount, clearDiscount,
     getStats, getSalesStats,
     listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder,
     listProducts, createProduct, updateProduct, setStock, toggleActive, deleteProduct,

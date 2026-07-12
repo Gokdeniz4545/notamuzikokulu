@@ -396,31 +396,118 @@
     categoriesCache = cats || [];
     if (error) { panel.innerHTML = errorBox('Ürünler yüklenemedi.'); return; }
     const list = prods || [];
+    const indirimli = list.filter(p => p.discount_price != null).length;
     panel.innerHTML = `
       <div class="account-panel-head"><h2 class="account-panel-title">Ürünler</h2>
         <button type="button" class="account-add-btn" id="addProdBtn">+ Yeni ürün</button></div>
+
+      <div class="disc-bar">
+        <div class="disc-bar-head">
+          <strong>İndirim Uygula</strong>
+          <span class="account-hint" id="discScope">Hiç ürün seçili değil → <b>tüm aktif ürünlere</b> uygulanır</span>
+        </div>
+        <div class="disc-bar-row">
+          <select id="discMode" class="admin-input">
+            <option value="percent">Yüzde (%)</option>
+            <option value="amount">Tutar (TL)</option>
+          </select>
+          <input id="discValue" class="admin-input" type="number" min="1" step="0.01" placeholder="örn. 10" />
+          <button type="button" class="auth-btn-primary" id="discApply">Uygula</button>
+          <button type="button" class="admin-danger-btn" id="discClear">İndirimi Kaldır</button>
+        </div>
+        <p class="account-hint">Şu an <b>${esc(indirimli)}</b> üründe indirim var. Ürün seçersen sadece onlara, seçmezsen tüm aktif ürünlere uygulanır.</p>
+      </div>
+
       <div id="prodFormHost"></div>
       ${list.length ? `<div class="admin-table-wrap"><table class="admin-table">
-        <thead><tr><th></th><th>Ad</th><th>Kategori</th><th>Fiyat</th><th>Stok</th><th>Durum</th><th></th></tr></thead>
+        <thead><tr>
+          <th><input type="checkbox" id="discAll" aria-label="Tümünü seç" /></th>
+          <th></th><th>Ad</th><th>Kategori</th><th>Fiyat</th><th>Stok</th><th>Durum</th><th></th>
+        </tr></thead>
         <tbody>${list.map(productRow).join('')}</tbody></table></div>`
         : '<div class="account-empty"><p>Ürün yok.</p></div>'}`;
     $('#addProdBtn').addEventListener('click', () => openProductForm(null));
     $$('.prod-edit', panel).forEach(b => b.addEventListener('click', () => {
       openProductForm(list.find(x => x.id === b.dataset.id));
     }));
+    wireDiscountBar();
   }
   function productRow(p) {
     const img = primaryImg(p);
     const low = p.stock <= 5;
+    const dp = p.discount_price != null ? Number(p.discount_price) : null;
+    const on = dp != null && dp > 0 && dp < Number(p.price);
+    const pct = on ? Math.round((1 - dp / Number(p.price)) * 100) : 0;
+    const fiyat = on
+      ? `<span class="disc-old">${esc(fmtTL(p.price))}</span>
+         <strong class="disc-new">${esc(fmtTL(dp))}</strong>
+         <span class="disc-tag">-%${esc(pct)}</span>`
+      : esc(fmtTL(p.price));
     return `<tr>
+      <td><input type="checkbox" class="disc-pick" value="${esc(p.id)}" aria-label="Seç" /></td>
       <td>${img ? `<img class="admin-thumb" src="${esc(img)}" alt="" />` : '<span class="admin-thumb admin-thumb-ph">♪</span>'}</td>
       <td>${esc(p.name)}</td>
       <td>${esc(p.categories?.name || '—')}</td>
-      <td>${esc(fmtTL(p.price))}</td>
+      <td>${fiyat}</td>
       <td class="${low ? 'stock-low' : ''}">${esc(p.stock)}</td>
       <td>${p.is_active ? '<span class="status-badge s-delivered">Aktif</span>' : '<span class="status-badge s-cancelled">Pasif</span>'}</td>
       <td><button type="button" class="admin-mini prod-edit" data-id="${esc(p.id)}">Düzenle</button></td>
     </tr>`;
+  }
+
+  // ---- indirim çubuğu ----
+  function selectedProductIds() {
+    return $$('.disc-pick:checked', panel).map(c => c.value);
+  }
+  function updateDiscScope() {
+    const n = selectedProductIds().length;
+    const el = $('#discScope');
+    if (!el) return;
+    el.innerHTML = n
+      ? `<b>${n} ürün</b> seçili → sadece onlara uygulanır`
+      : 'Hiç ürün seçili değil → <b>tüm aktif ürünlere</b> uygulanır';
+  }
+  function wireDiscountBar() {
+    const all = $('#discAll');
+    if (all) all.addEventListener('change', () => {
+      $$('.disc-pick', panel).forEach(c => { c.checked = all.checked; });
+      updateDiscScope();
+    });
+    $$('.disc-pick', panel).forEach(c => c.addEventListener('change', updateDiscScope));
+
+    const apply = $('#discApply');
+    if (apply) apply.addEventListener('click', async () => {
+      const mode = $('#discMode').value;
+      const val = parseFloat($('#discValue').value);
+      const ids = selectedProductIds();
+      if (!(val > 0)) { toast('Geçerli bir değer gir'); return; }
+      if (mode === 'percent' && val >= 100) { toast('Yüzde 1-99 arasında olmalı'); return; }
+      const kapsam = ids.length ? `${ids.length} seçili ürüne` : 'TÜM aktif ürünlere';
+      const ne = mode === 'percent' ? `%${val} indirim` : `${val} TL indirim`;
+      if (!confirm(`${kapsam} ${ne} uygulansın mı?`)) return;
+
+      apply.disabled = true;
+      const res = mode === 'percent'
+        ? await window.NMAdmin.applyDiscountPercent(val, ids)
+        : await window.NMAdmin.applyDiscountAmount(val, ids);
+      apply.disabled = false;
+      if (res.error) { toast('Uygulanamadı: ' + (res.error.message || '')); return; }
+      toast(`${res.data} üründe indirim uygulandı`);
+      renderProducts();
+    });
+
+    const clear = $('#discClear');
+    if (clear) clear.addEventListener('click', async () => {
+      const ids = selectedProductIds();
+      const kapsam = ids.length ? `${ids.length} seçili üründeki` : 'TÜM ürünlerdeki';
+      if (!confirm(`${kapsam} indirimler kaldırılsın mı?`)) return;
+      clear.disabled = true;
+      const res = await window.NMAdmin.clearDiscount(ids);
+      clear.disabled = false;
+      if (res.error) { toast('Kaldırılamadı: ' + (res.error.message || '')); return; }
+      toast(`${res.data} üründen indirim kaldırıldı`);
+      renderProducts();
+    });
   }
   function openProductForm(p) {
     const host = $('#prodFormHost');
@@ -443,6 +530,7 @@
         <div class="account-field-row">
           <div class="account-field"><label>Kategori</label><select name="category_id" required><option value="">Seç…</option>${catOpts}</select></div>
           <div class="account-field"><label>Fiyat (TL)</label><input name="price" type="number" min="0" step="0.01" value="${esc(a.price ?? '')}" required /></div>
+          <div class="account-field"><label>İndirimli fiyat</label><input name="discount_price" type="number" min="0" step="0.01" value="${esc(a.discount_price ?? '')}" placeholder="boş = indirim yok" /></div>
           <div class="account-field"><label>Stok</label><input name="stock" type="number" min="0" step="1" value="${esc(a.stock ?? 0)}" required /></div>
         </div>
         <div class="account-field"><label>Açıklama</label><textarea name="description" rows="2">${esc(a.description || '')}</textarea></div>
@@ -504,16 +592,21 @@
   async function onProductSubmit(e, id) {
     e.preventDefault();
     const f = e.target, msg = $('.account-form-msg', f);
+    const dpRaw = f.discount_price ? f.discount_price.value.trim() : '';
     const payload = {
       name: f.name.value.trim(),
       slug: (f.slug.value.trim() || slugify(f.name.value)),
       category_id: f.category_id.value || null,
       price: parseFloat(f.price.value),
+      discount_price: dpRaw === '' ? null : parseFloat(dpRaw),
       stock: parseInt(f.stock.value, 10) || 0,
       description: f.description.value.trim(),
       is_active: f.is_active.checked,
     };
     if (!payload.name || !payload.category_id || isNaN(payload.price)) { showMsg(msg, 'Ad, kategori ve fiyat zorunlu.', false); return; }
+    if (payload.discount_price != null && !(payload.discount_price > 0 && payload.discount_price < payload.price)) {
+      showMsg(msg, 'İndirimli fiyat 0\'dan büyük ve normal fiyattan küçük olmalı.', false); return;
+    }
     const btn = f.querySelector('button[type=submit]'); btn.disabled = true;
     const res = id ? await window.NMAdmin.updateProduct(id, payload) : await window.NMAdmin.createProduct(payload);
     btn.disabled = false;

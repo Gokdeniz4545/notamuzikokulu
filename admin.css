@@ -53,6 +53,33 @@
 }
 .admin-section-title:first-of-type { margin-top: 14px; }
 .admin-section-note { font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--ink-3); }
+/* ---- indirim çubuğu (ürünler sekmesi) ---- */
+.disc-bar {
+  margin: 4px 0 18px;
+  padding: 16px 18px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.disc-bar-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.disc-bar-head strong { font-size: 15px; }
+.disc-bar-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.disc-bar-row .admin-input { max-width: 170px; }
+.disc-bar .account-hint { margin-top: 10px; }
+
+/* tablo içi indirim gösterimi */
+.disc-old { color: var(--ink-3); text-decoration: line-through; font-size: 12px; margin-right: 5px; }
+.disc-new { color: var(--ink); font-weight: 700; }
+.disc-tag {
+  display: inline-block; margin-left: 6px;
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(230,57,70,0.12); color: var(--accent);
+  font-size: 11px; font-weight: 800;
+}
+
 .admin-quick { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
 .admin-quick .auth-btn-ghost { align-self: auto; margin-top: 0; }
 
