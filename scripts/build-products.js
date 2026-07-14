@@ -249,6 +249,10 @@ ${HEADER}
     </div>
   </div>
 
+  <section id="paytrTaksit" class="product-section" hidden>
+    <h2>Taksit Seçenekleri</h2>
+    <div id="paytr_taksit_tablosu"></div>
+  </section>
   <section id="productReviews" class="product-section"></section>
   <section id="productRecommended" class="product-section"></section>
 </main>

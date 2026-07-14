@@ -132,6 +132,8 @@
     $('#productCrumb').innerHTML = `<a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span> <span>${esc(product.name)}</span>`;
 
     renderMain();
+    // PayTR taksit tablosu — indirimli (nihai) fiyat üzerinden, TL cinsinden
+    if (window.NMTaksit) window.NMTaksit.render(product.price);
     renderReviews();
     renderRecommended();
   }
