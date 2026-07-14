@@ -1300,6 +1300,72 @@ body.is-grid .scene.is-fading { opacity: 0.35; }
   vertical-align: middle;
 }
 
+/* ============================================================
+   ÇEREZ ONAY BANDI (KVKK)
+   ============================================================ */
+.cc-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 1300;
+  padding: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex; justify-content: center;
+  transform: translateY(110%);
+  transition: transform var(--t-slow) var(--ease);
+  pointer-events: none;
+}
+.cc-bar.is-open { transform: translateY(0); }
+.cc-card {
+  pointer-events: auto;
+  width: 100%; max-width: 900px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.cc-title { margin: 0 0 4px; font-size: 15px; font-weight: 800; color: var(--ink); }
+.cc-text { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.cc-text a { color: #b88b3a; text-decoration: underline; }
+
+.cc-opts { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.cc-opt {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13px; line-height: 1.5; color: var(--ink-2);
+  cursor: pointer;
+}
+.cc-opt input { margin-top: 2px; accent-color: #4f1e23; flex: 0 0 auto; }
+.cc-opt.is-locked { color: var(--ink-3); cursor: default; }
+.cc-opt b { color: var(--ink); font-weight: 700; }
+
+.cc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.cc-btn {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.cc-btn:active { transform: scale(0.98); }
+/* Reddetmek kabul etmek kadar kolay ve eşit görünürlükte (KVKK) */
+.cc-primary { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+.cc-primary:hover { background: #2a2a2a; }
+.cc-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.cc-ghost:hover { border-color: var(--ink-3); background: var(--bg-soft); }
+
+@media (min-width: 640px) {
+  .cc-card { flex-direction: row; align-items: center; gap: 20px; padding: 18px 22px; }
+  .cc-main { flex: 1 1 auto; }
+  .cc-actions { flex: 0 0 auto; flex-wrap: nowrap; }
+  .cc-btn { flex: 0 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cc-bar { transition: none; }
+}
+
 /* Görsel olarak gizli, ekran okuyucu/SEO için okunur */
 .sr-only {
   position: absolute;

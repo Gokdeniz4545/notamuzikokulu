@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" href="images/logo-icon.png" />
 <link rel="preconnect" href="https://rsms.me/" />
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-<link rel="stylesheet" href="styles.css?v=45" />
+<link rel="stylesheet" href="styles.css?v=46" />
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="legal.css?v=1" />
 
@@ -86,7 +86,7 @@
     <a href="products.html">Ürünler</a>
     <a href="blog.html">Blog</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
-    <a href="https://www.notamuzikokulu.com/iletisim/" target="_blank" rel="noopener noreferrer">İletişim</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
 
   <div class="header-right">
@@ -161,6 +161,7 @@
       <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
       <a href="gizlilik.html">Gizlilik Politikası</a>
       <a href="cerez-politikasi.html">Çerez Politikası</a>
+      <a href="cerez-politikasi.html" data-cookie-settings>Çerez Ayarları</a>
       <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
       <a href="iletisim.html">İletişim &amp; Künye</a>
     </nav>
@@ -249,7 +250,27 @@
     </div>
     <a href="blog.html">Blog</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
-    <a href="https://www.notamuzikokulu.com/iletisim/" target="_blank" rel="noopener noreferrer">İletişim</a>
+    <a href="iletisim.html">İletişim</a>
+
+    <div class="mm-group">
+      <button type="button" class="mm-toggle" id="mmLegalToggle" aria-expanded="false" aria-controls="mmLegal">
+        <span>Yasal Bilgiler</span>
+        <svg class="mm-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      <div class="mm-sub" id="mmLegal">
+        <div class="mm-sub-inner">
+          <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
+          <a href="on-bilgilendirme.html">Ön Bilgilendirme Formu</a>
+          <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
+          <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
+          <a href="gizlilik.html">Gizlilik Politikası</a>
+          <a href="cerez-politikasi.html">Çerez Politikası</a>
+          <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <div class="mobile-menu-auth" id="mobileMenuAuth" data-state="loading">
@@ -404,7 +425,9 @@
 <script src="api.js?v=44"></script>
 <script src="cart-store.js?v=34"></script>
 <script src="auth-modal.js?v=31" defer></script>
-<script src="script.js?v=42" defer></script>
+<script src="script.js?v=43" defer></script>
+
+<script src="cookie-consent.js?v=1" defer></script>
 
 </body>
 </html>

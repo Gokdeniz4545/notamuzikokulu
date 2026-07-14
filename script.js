@@ -452,7 +452,7 @@
   // --------- 3D silindir engine ----------
   // Kartlar bir silindir etrafında dizilir, scroll ile silindir döner.
   // TURNS: scroll boyunca silindir kaç tam tur döner (sonsuz hissi için yüksek).
-  const TURNS = 4;
+  const TURNS = 1;   // 1 tam tur — tüm kategoriler bir kez geçer (4 tur gereksiz uzun scroll yaratıyordu, footer/yasal linkler ulaşılamıyordu)
   let rafId = 0;
   let needsUpdate = true;
   // Mobilde silindir scroll'dan bağımsız döner: cylRotOverride state'i swipe ile güncellenir
@@ -748,15 +748,20 @@
   $$('a', mobileMenu).forEach(a => a.addEventListener('click', closeMobileMenu));
 
   // --------- mobil menü: "Ürünler" akordeonu (kategoriler aşağı açılır) ----------
-  const mmToggle = $('#mmProductsToggle');
-  const mmCats   = $('#mmCats');
-  if (mmToggle && mmCats) {
-    mmToggle.addEventListener('click', () => {
-      const open = mmToggle.getAttribute('aria-expanded') === 'true';
-      mmToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-      mmCats.classList.toggle('is-open', !open);
+  // Akordeon başlıklarını bağla (Ürünler + Yasal Bilgiler)
+  function wireAccordion(toggleSel, panelSel) {
+    const t = $(toggleSel), p = $(panelSel);
+    if (!t || !p) return;
+    t.addEventListener('click', () => {
+      const open = t.getAttribute('aria-expanded') === 'true';
+      t.setAttribute('aria-expanded', open ? 'false' : 'true');
+      p.classList.toggle('is-open', !open);
     });
   }
+  wireAccordion('#mmProductsToggle', '#mmCats');
+  wireAccordion('#mmLegalToggle', '#mmLegal');   // yasal sayfalar üst menüden de erişilebilir
+
+  const mmCats = $('#mmCats');
 
   // Kategorileri mobil menüye doldur (üst seviye) — DB'den gelen catNodes ile
   function fillMobileCats() {
