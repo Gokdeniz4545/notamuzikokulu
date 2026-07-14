@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { productScripts, footer, pinVersions } = require('./shared-chrome');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://www.notamuzikmarket.com';
@@ -74,40 +75,12 @@ const HEADER = `<header class="site-header" id="siteHeader">
   </div>
 </header>`;
 
-const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
-<script src="supabase-client.js?v=44"></script>
-<script src="api.js?v=43"></script>
-<script src="cart-store.js?v=34"></script>
-<script src="auth-modal.js?v=31" defer></script>
-<script src="header-auth.js?v=30" defer></script>
-<script src="product.js?v=5" defer></script>`;
+// product.html'den türetilir — elle sürüm listesi tutmak bayatlamaya yol açıyordu
+const SCRIPTS = productScripts();
 
 // ---- ortak footer (ürün sayfalarını yetimlikten çıkarır: yasal + kategori iç linkleri) ----
-const FOOTER = `<footer class="site-footer">
-  <div class="footer-inner">
-    <div>
-      <p class="footer-logo">NOTA MÜZİK MARKET<sup>&reg;</sup></p>
-      <p class="footer-tag">Müziğin dokunuşu — 2026</p>
-      <p class="footer-credit" style="margin:10px 0 0;font-size:11px;color:#a8a8a8;letter-spacing:0.02em;">Tasarım &amp; geliştirme · <strong style="font-weight:600;color:#8a8a8a;">Gökdeniz KESİCİ</strong></p>
-    </div>
-    <nav class="footer-legal" aria-label="Yasal bilgiler">
-      <a href="products.html">Tüm Ürünler</a>
-      <a href="blog.html">Blog</a>
-      <a href="siparis-sorgula.html">Sipariş Sorgula</a>
-      <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
-      <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
-      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
-      <a href="gizlilik.html">Gizlilik Politikası</a>
-      <a href="iletisim.html">İletişim &amp; Künye</a>
-    </nav>
-    <div class="footer-social" aria-label="Sosyal medya">
-      <a href="#" aria-label="Instagram">Instagram</a>
-      <a href="#" aria-label="YouTube">YouTube</a>
-      <a href="#" aria-label="X">X</a>
-    </div>
-  </div>
-  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
-</footer>`;
+// cerez-politikasi.html'den türetilir; ilk 3 link ürün sayfalarını iç linkle besler
+const FOOTER = footer([['products.html', 'Tüm Ürünler'], ['blog.html', 'Blog'], ['siparis-sorgula.html', 'Sipariş Sorgula']]);
 
 // ---- katalog kartı (products.js card() ile birebir markup; JS hydrate edince sıçrama olmaz) ----
 function catCard(p) {
@@ -322,7 +295,7 @@ async function main() {
   fs.readdirSync(ROOT).filter((f) => /^urun-.+\.html$/.test(f)).forEach((f) => fs.unlinkSync(path.join(ROOT, f)));
 
   raw.forEach((p) => {
-    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), productHtml(p, isTest(p)), 'utf8');
+    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), pinVersions(productHtml(p, isTest(p))), 'utf8');
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap-products.xml'), buildSitemap(indexable), 'utf8');
 

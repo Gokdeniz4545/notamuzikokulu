@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sharedScripts, footer, pinVersions } = require('./shared-chrome');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://www.notamuzikmarket.com';
@@ -44,7 +45,7 @@ const HEADER = `<header class="site-header" id="siteHeader">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
-    <a href="https://www.notamuzikokulu.com/iletisim/" target="_blank" rel="noopener noreferrer">İletişim</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
   <div class="header-right">
     <div class="auth-slot" id="authSlot" data-state="loading">
@@ -68,37 +69,11 @@ const HEADER = `<header class="site-header" id="siteHeader">
   </div>
 </header>`;
 
-const FOOTER = `<footer class="site-footer">
-  <div class="footer-inner">
-    <div>
-      <p class="footer-logo">NOTA MÜZİK MARKET<sup>®</sup></p>
-      <p class="footer-tag">Müziğin dokunuşu — 2026</p>
-    </div>
-    <nav class="footer-legal" aria-label="Yasal bilgiler">
-      <a href="mesafeli-satis.html">Mesafeli Satış Sözleşmesi</a>
-      <a href="on-bilgilendirme.html">Ön Bilgilendirme Formu</a>
-      <a href="iade-teslimat.html">İade, Teslimat &amp; Cayma</a>
-      <a href="kvkk-aydinlatma.html">KVKK Aydınlatma Metni</a>
-      <a href="gizlilik.html">Gizlilik Politikası</a>
-      <a href="cerez-politikasi.html">Çerez Politikası</a>
-      <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
-      <a href="iletisim.html">İletişim &amp; Künye</a>
-    </nav>
-    <div class="footer-social" aria-label="Sosyal medya">
-      <a href="#" aria-label="Instagram">Instagram</a>
-      <a href="#" aria-label="YouTube">YouTube</a>
-      <a href="#" aria-label="X">X</a>
-    </div>
-  </div>
-  <p class="footer-legal-note">© 2026 Süleyman Kesici – Nota Müzik · Tüm hakları saklıdır</p>
-</footer>`;
+// cerez-politikasi.html'den türetilir
+const FOOTER = footer();
 
-const SCRIPTS = `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.0/dist/umd/supabase.js" integrity="sha384-3wY11tldQ5+yWqAvmTN4XtQvnjoTva0cV15O/O/O5NTtp0ivVopSzLOzsVXWZse9" crossorigin="anonymous"></script>
-<script src="supabase-client.js?v=44"></script>
-<script src="api.js?v=43"></script>
-<script src="cart-store.js?v=34"></script>
-<script src="auth-modal.js?v=31" defer></script>
-<script src="header-auth.js?v=30" defer></script>`;
+// product.html'den türetilir — elle sürüm listesi tutmak bayatlamaya yol açıyordu
+const SCRIPTS = sharedScripts();
 
 // ---- tek yazı sayfası ----
 function articleHtml(p, i) {
@@ -280,7 +255,7 @@ ${body}
 let n = 0;
 POSTS.forEach((p, i) => {
   const file = path.join(ROOT, `blog-${p.slug}.html`);
-  fs.writeFileSync(file, articleHtml(p, i), 'utf8');
+  fs.writeFileSync(file, pinVersions(articleHtml(p, i)), 'utf8');
   console.log('  ✓ blog-' + p.slug + '.html');
   n++;
 });
