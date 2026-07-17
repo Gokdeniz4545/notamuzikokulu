@@ -3,6 +3,16 @@
    Mobile-first. 3D stack desktop'ta, ≤768px'te grid'e bozulur.
    ============================================================ */
 
+/* Self-hosted Inter (değişken font) — rsms.me render-blocking bağımlılığı kaldırıldı.
+   font-display: swap → metin hemen sistem fontuyla görünür, Inter yüklenince değişir (blocking yok). */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/InterVariable.woff2') format('woff2');
+}
+
 :root {
   --bg: #fafafa;
   --bg-soft: #f3f3f1;

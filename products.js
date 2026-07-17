@@ -168,13 +168,17 @@
     gridEl.innerHTML = list.map(card).join('');
   }
 
+  // Responsive görsel: NMApi thumb/srcset (varyant yoksa orijinali döndürür)
+  const cThumb = (u, w) => { const a = window.NMApi; return a && a.thumb ? a.thumb(u, w) : u; };
+  const cSrcset = (u) => { const a = window.NMApi; return a && a.srcset ? a.srcset(u) : ''; };
+
   function card(p) {
     const out = p.stock <= 0;
     const fav = wishSet.has(p.id);
     return `
       <a class="cat-card" href="${p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id)}">
         <div class="cat-card-media">
-          ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
+          ${p.image ? `<img src="${esc(cThumb(p.image, 360))}" srcset="${esc(cSrcset(p.image))}" sizes="(max-width: 768px) 45vw, 240px" data-full="${esc(p.image)}" alt="${esc(p.name)}" width="600" height="800" loading="lazy" decoding="async" />`
                     : `<span class="cat-card-glyph">${esc((p.categoryName || p.name || '?').charAt(0).toUpperCase())}</span>`}
           ${out ? '<span class="cat-card-oos">Tükendi</span>' : ''}
           ${p.discountPercent > 0 ? `<span class="disc-badge${out ? ' disc-below' : ''}" aria-label="%${esc(p.discountPercent)} indirim">%${esc(p.discountPercent)}</span>` : ''}

@@ -27,6 +27,68 @@
     return allImageUrls(images)[0] || null;
   }
 
+  // ---- Responsive görsel varyantları ----
+  // Supabase image-transform (render/image) bu tenant'ta KAPALI. Onun yerine
+  // generate-thumbnails.mjs Storage'a _360/_720/_1200.webp varyantları koyuyor.
+  // Burada tam public URL'den varyant URL'i türetiyoruz (DB'de ek alan yok).
+  const RESP_WIDTHS = [360, 720, 1200];
+  // Kaynak görsel mi? product-images bucket'ında jpg/jpeg/png/webp — ama zaten _<N>.webp varyantı DEĞİL.
+  const SRC_IMG_RE = /\/object\/public\/product-images\/.+\.(jpe?g|png|webp)(\?.*)?$/i;
+  const IS_VARIANT_RE = /_\d+\.webp(\?.*)?$/i;
+  const canVariant = (url) => !!url && SRC_IMG_RE.test(url) && !IS_VARIANT_RE.test(url);
+  // Tek varyant URL'i (yalnız kendi Storage'ımızdaki kaynak görsel için; harici/legacy/zaten-varyant → değişmez)
+  function thumb(url, w) {
+    if (!canVariant(url)) return url;
+    return url.replace(/\.(jpe?g|png|webp)(\?.*)?$/i, `_${w}.webp`);
+  }
+  // srcset: "url_360.webp 360w, url_720.webp 720w, url_1200.webp 1200w"
+  function srcset(url, widths = RESP_WIDTHS) {
+    if (!canVariant(url)) return '';
+    return widths.map((w) => `${thumb(url, w)} ${w}w`).join(', ');
+  }
+  // Eksik varyant güvencesi: bir _<N>.webp yüklenemezse orijinale (data-full) düş.
+  // CSP-uyumlu (inline onerror yok); img error olayları bubble etmez → capture:true.
+  function installImgFallback() {
+    if (window.__nmImgFb) return; window.__nmImgFb = true;
+    document.addEventListener('error', (e) => {
+      const img = e.target;
+      if (!img || img.tagName !== 'IMG' || img.dataset.fb === '1') return;
+      const full = img.getAttribute('data-full');
+      if (!full) return;
+      const cur = img.currentSrc || img.src || '';
+      if (/_\d+\.webp(\?.*)?$/i.test(cur)) {
+        img.dataset.fb = '1';
+        img.removeAttribute('srcset');
+        img.src = full;
+      }
+    }, true);
+  }
+  installImgFallback();
+
+  const DEFAULT_SIZES = '(max-width: 768px) 45vw, 240px';
+  // DOM'da oluşturulan bir <img>'e responsive varyantları uygular.
+  // opts: { sizes, width, height, eager, onLoad, onFail }
+  function applyResponsive(img, full, opts = {}) {
+    if (!img || !full) return;
+    if (opts.width) img.setAttribute('width', opts.width);
+    if (opts.height) img.setAttribute('height', opts.height);
+    if (opts.eager) { img.loading = 'eager'; img.fetchPriority = 'high'; }
+    const ss = srcset(full);
+    img.setAttribute('data-full', full);
+    if (ss) {
+      img.srcset = ss;
+      img.sizes = opts.sizes || DEFAULT_SIZES;
+      img.src = thumb(full, 360);
+    } else {
+      img.src = full; // harici/legacy → varyant yok
+    }
+    if (opts.onLoad) img.addEventListener('load', opts.onLoad, { once: true });
+    if (opts.onFail) img.addEventListener('error', () => {
+      // Yalnız orijinal de yüklenemezse başarısızlık say (varyant hatasını global fallback devralır)
+      if (!/_\d+\.webp(\?.*)?$/i.test(img.currentSrc || img.src || '')) opts.onFail();
+    });
+  }
+
   // ---- İndirim / efektif fiyat ----
   // price          → müşterinin ödeyeceği fiyat (indirim varsa indirimli)
   // oldPrice       → indirim varsa üstü çizilecek normal fiyat, yoksa null
@@ -192,5 +254,6 @@
   window.NMApi = {
     getCategories, getProductsByCategory, getProductsByIds, getProductById,
     getProductBySlug, getRecommended, getAllProducts, getDiscountedCategorySlugs,
+    thumb, srcset, applyResponsive, RESP_WIDTHS,
   };
 })();

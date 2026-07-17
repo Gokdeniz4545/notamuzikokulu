@@ -44,6 +44,13 @@ function imageUrls(images) {
   }).map((i) => toUrl(i.storage_path)).filter(Boolean);
 }
 
+// Responsive varyantlar (api.js ile aynı konvansiyon; generate-thumbnails.mjs üretir)
+const RESP_WIDTHS = [360, 720, 1200];
+// Kaynak görsel mi? jpg/jpeg/png/webp — ama zaten _<N>.webp varyantı DEĞİL.
+const canVariant = (u) => !!u && /\/object\/public\/product-images\/.+\.(jpe?g|png|webp)$/i.test(u) && !/_\d+\.webp$/i.test(u);
+const thumb = (u, w) => canVariant(u) ? u.replace(/\.(jpe?g|png|webp)$/i, `_${w}.webp`) : u;
+const srcset = (u) => canVariant(u) ? RESP_WIDTHS.map((w) => `${thumb(u, w)} ${w}w`).join(', ') : '';
+
 // ---- ortak chrome (product.html ile aynı) ----
 const HEADER = `<header class="site-header" id="siteHeader">
   <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
@@ -88,7 +95,7 @@ function catCard(p) {
   const out = p.stock <= 0;
   const catName = p.categories ? p.categories.name : '';
   const media = imgs.length
-    ? `<img src="${esc(imgs[0])}" alt="${esc(p.name)}" loading="lazy" decoding="async" />`
+    ? `<img src="${esc(thumb(imgs[0], 360))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 45vw, 240px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" width="600" height="800" loading="lazy" decoding="async" />`
     : `<span class="cat-card-glyph">${esc((catName || p.name || '?').charAt(0).toUpperCase())}</span>`;
   return `
       <a class="cat-card" href="urun-${esc(p.slug)}.html">
@@ -163,10 +170,10 @@ function productHtml(p, noindex) {
   };
 
   const gallery = imgs.length
-    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(imgs[0])}" alt="${esc(p.name)}" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
+    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(thumb(imgs[0], 720))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
       (imgs.length > 1
         ? `<div class="product-thumbs">${imgs.map((u, i) =>
-            `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(u)}" alt="" loading="lazy" decoding="async" width="72" height="72" /></button>`).join('')}</div>`
+            `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(thumb(u, 360))}" data-full="${esc(u)}" alt="" loading="lazy" decoding="async" width="72" height="72" /></button>`).join('')}</div>`
         : '')
     : `<div class="product-gallery-main" id="galMain"><span class="product-gallery-glyph">${glyph}</span></div>`;
 
@@ -206,9 +213,8 @@ ${JSON.stringify(breadcrumbLd, null, 2)}
 
 <link rel="icon" type="image/png" href="images/logo-icon.png" />
 <link rel="apple-touch-icon" href="images/logo-icon.png" />
-<link rel="preconnect" href="https://rsms.me/" />
-<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-<link rel="stylesheet" href="styles.css?v=38" />
+<link rel="preconnect" href="https://kwjtfqhhctqwrfhxghai.supabase.co" crossorigin />
+${imgs.length ? `<link rel="preload" as="image" href="${esc(thumb(imgs[0], 720))}" imagesrcset="${esc(srcset(imgs[0]))}" imagesizes="(max-width: 768px) 92vw, 460px" fetchpriority="high" />\n` : ''}<link rel="stylesheet" href="styles.css?v=38" />
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="shop.css?v=32" />
 <link rel="stylesheet" href="product.css?v=3" />

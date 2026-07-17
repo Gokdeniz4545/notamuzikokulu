@@ -144,8 +144,6 @@ function articleHtml(p, i) {
 
 <link rel="icon" type="image/png" href="images/logo-icon.png" />
 <link rel="apple-touch-icon" href="images/logo-icon.png" />
-<link rel="preconnect" href="https://rsms.me/" />
-<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" />

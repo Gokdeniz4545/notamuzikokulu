@@ -140,6 +140,10 @@
 
   function errBox(t) { return `<div class="shop-empty"><p>${esc(t)}</p><a href="index.html" class="auth-btn-primary">Ana sayfaya dön</a></div>`; }
 
+  // Responsive görsel yardımcıları (NMApi thumb/srcset — varyant yoksa orijinali döndürür)
+  const gThumb = (u, w) => { const a = window.NMApi; return a && a.thumb ? a.thumb(u, w) : u; };
+  const gSrcset = (u) => { const a = window.NMApi; return a && a.srcset ? a.srcset(u) : ''; };
+
   // ---- üst: galeri + bilgi ----
   function renderMain() {
     const imgs = product.images && product.images.length ? product.images : (product.image ? [product.image] : []);
@@ -150,11 +154,11 @@
       <div class="product-gallery">
         <div class="product-gallery-main" id="galMain">
           ${product.discountPercent > 0 ? `<span class="disc-badge" aria-label="%${esc(product.discountPercent)} indirim">%${esc(product.discountPercent)}</span>` : ''}
-          ${imgs.length ? `<img id="galImg" src="${esc(imgs[0])}" alt="${esc(product.name)}" decoding="async" />`
+          ${imgs.length ? `<img id="galImg" src="${esc(gThumb(imgs[0], 720))}" srcset="${esc(gSrcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(product.name)}" width="800" height="800" fetchpriority="high" decoding="async" />`
                         : `<span class="product-gallery-glyph">${esc(glyph)}</span>`}
         </div>
         ${imgs.length > 1 ? `<div class="product-thumbs">${imgs.map((u, i) =>
-          `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(u)}" alt="" /></button>`).join('')}</div>` : ''}
+          `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(gThumb(u, 360))}" data-full="${esc(u)}" alt="" width="72" height="96" loading="lazy" decoding="async" /></button>`).join('')}</div>` : ''}
       </div>
       <div class="product-info">
         <p class="product-cat">${esc(product.categoryName || '')}</p>
@@ -182,7 +186,13 @@
     let idx = 0;
     $$('.product-thumb', mainEl).forEach(btn => btn.addEventListener('click', () => {
       idx = parseInt(btn.dataset.i, 10);
-      const img = $('#galImg'); if (img) img.src = imgs[idx];
+      const img = $('#galImg');
+      if (img) {
+        img.setAttribute('data-full', imgs[idx]);
+        const ss = gSrcset(imgs[idx]);
+        if (ss) { img.srcset = ss; img.src = gThumb(imgs[idx], 720); }
+        else { img.removeAttribute('srcset'); img.src = imgs[idx]; }
+      }
       $$('.product-thumb', mainEl).forEach(b => b.classList.toggle('is-active', b === btn));
     }));
 
@@ -332,7 +342,7 @@
       <div class="rec-grid">
         ${items.map(p => `
           <a class="rec-card" href="${p.slug ? 'urun-' + esc(p.slug) + '.html' : 'product.html?id=' + esc(p.id)}">
-            <div class="rec-media">${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async" />` : `<span>${esc((p.name || '?').charAt(0).toUpperCase())}</span>`}</div>
+            <div class="rec-media">${p.image ? `<img src="${esc(gThumb(p.image, 360))}" srcset="${esc(gSrcset(p.image))}" sizes="(max-width: 768px) 40vw, 200px" data-full="${esc(p.image)}" alt="${esc(p.name)}" width="600" height="800" loading="lazy" decoding="async" />` : `<span>${esc((p.name || '?').charAt(0).toUpperCase())}</span>`}</div>
             <div class="rec-body"><p class="rec-name">${esc(p.name)}</p><p class="rec-price">${p.discountPercent > 0
               ? `<span class="price-old">${esc(fmtTL(p.oldPrice))}</span> ${esc(fmtTL(p.price))}`
               : esc(fmtTL(p.price))}</p></div>

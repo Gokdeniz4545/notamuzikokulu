@@ -98,6 +98,10 @@
   let state = 'cats';
   let activeCat = null;
 
+  // Responsive görsel yardımcıları (NMApi thumb/srcset — varyant yoksa orijinali döndürür)
+  const sThumb = (u, w) => { const a = window.NMApi; return a && a.thumb ? a.thumb(u, w) : u; };
+  const sSrcset = (u) => { const a = window.NMApi; return a && a.srcset ? a.srcset(u) : ''; };
+
   // Ortak kart iskeletinin parçalarını üretir
   function buildBaseCard({ topTag, glyph, name, footRight, tone, imageSrc, imageAlt, classes }) {
     const art = document.createElement('article');
@@ -120,9 +124,19 @@
     const img = $('img', art);
     const placeholder = $('.placeholder-glyph', art);
     if (imageSrc) {
-      img.src = imageSrc;
-      img.addEventListener('load',  () => placeholder.style.display = 'none', { once: true });
-      img.addEventListener('error', () => img.remove(), { once: true });
+      const applyR = window.NMApi && window.NMApi.applyResponsive;
+      if (applyR) {
+        applyR(img, imageSrc, {
+          sizes: '(max-width: 768px) 45vw, 240px',
+          width: 600, height: 800,
+          onLoad: () => placeholder.style.display = 'none',
+          onFail: () => img.remove(),
+        });
+      } else {
+        img.src = imageSrc;
+        img.addEventListener('load',  () => placeholder.style.display = 'none', { once: true });
+        img.addEventListener('error', () => img.remove(), { once: true });
+      }
     } else {
       img.remove();
     }
@@ -216,7 +230,7 @@
     art.innerHTML = `
       <div class="card-inner">
         <div class="card-media">
-          ${node.image ? `<img src="${node.image}" alt="${node.name}" decoding="async" />` : ''}
+          ${node.image ? `<img src="${sThumb(node.image, 720)}" srcset="${sSrcset(node.image)}" sizes="(max-width: 768px) 80vw, 460px" data-full="${node.image}" alt="${node.name}" width="600" height="800" decoding="async" />` : ''}
         </div>
         <div class="card-overlay">
           <span class="card-overlay-name">${node.name}</span>
@@ -637,9 +651,22 @@
       mainImg.className = 'panel-media-main';
       mainImg.alt = p.name;
       mainImg.decoding = 'async';
+      const T = window.NMApi;
+      const setPanelImg = (url) => {
+        mainImg.setAttribute('data-full', url);
+        const ss = T && T.srcset ? T.srcset(url) : '';
+        if (ss) {
+          mainImg.sizes = '(max-width: 768px) 90vw, 460px';
+          mainImg.srcset = ss;
+          mainImg.src = T.thumb(url, 720);
+        } else {
+          mainImg.removeAttribute('srcset');
+          mainImg.src = url;
+        }
+      };
       mainImg.addEventListener('load', () => phSpan.style.display = 'none', { once: true });
-      mainImg.addEventListener('error', () => mainImg.remove(), { once: true });
-      mainImg.src = gallery[0];
+      mainImg.addEventListener('error', () => { if (!/_\d+\.webp(\?.*)?$/i.test(mainImg.currentSrc || mainImg.src || '')) mainImg.remove(); });
+      setPanelImg(gallery[0]);
       panelMedia.appendChild(mainImg);
 
       if (gallery.length > 1) {
@@ -647,7 +674,7 @@
         dots.className = 'panel-dots';
         const show = (i) => {
           idx = (i + gallery.length) % gallery.length;
-          mainImg.src = gallery[idx];
+          setPanelImg(gallery[idx]);
           phSpan.style.display = 'none';
           $$('.panel-dot', dots).forEach((d, di) => d.classList.toggle('is-active', di === idx));
         };
@@ -1026,6 +1053,22 @@
     if (!gridMode) {
       lenisStart();
       startLoop();
+    }
+
+    // Pil/CPU tasarrufu: sürekli çalışan 3D güncelleme döngüsünü yalnız sekme görünür
+    // VE 3D sahne ekrandayken çalıştır (arka planda/footer'da boşa dönmesin).
+    let sceneInView = true;
+    const syncLoop = () => {
+      if (!gridMode && !document.hidden && sceneInView) startLoop();
+      else stopLoop();
+    };
+    document.addEventListener('visibilitychange', syncLoop);
+    const stackSection = document.querySelector('.stack-section');
+    if (stackSection && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        sceneInView = entries[0].isIntersecting;
+        syncLoop();
+      }, { rootMargin: '150px' }).observe(stackSection);
     }
   }
 

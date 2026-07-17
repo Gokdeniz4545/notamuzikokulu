@@ -7,6 +7,9 @@ desktop.ini
 __pycache__/
 *.pyc
 
+# Node bağımlılıkları — yalnız yerel build (sharp) için; sunucuya/repo'ya girmez
+node_modules/
+
 # Test / araç çıktıları
 .test-shots/
 
