@@ -90,8 +90,8 @@
         <aside class="cart-summary">
           <h2 class="cart-summary-title">Özet</h2>
           <div class="cart-summary-row"><span>Ara toplam</span><span data-subtotal>${esc(fmtTL(subtotal))}</span></div>
-          <div class="cart-summary-row"><span>Kargo</span><span>Ücretsiz</span></div>
-          <div class="cart-summary-row cart-summary-total"><span>Toplam</span><span data-total>${esc(fmtTL(subtotal))}</span></div>
+          <div class="cart-summary-row"><span>Kargo</span><span data-shipping>${esc(shipLabel(subtotal))}</span></div>
+          <div class="cart-summary-row cart-summary-total"><span>Toplam</span><span data-total>${esc(fmtTL(subtotal + shipFee(subtotal)))}</span></div>
           <a href="checkout.html" class="auth-btn-primary cart-checkout-btn">Ödemeye Geç</a>
         </aside>
       </div>`;
@@ -139,10 +139,17 @@
       if (products[id]) subtotal += products[id].price * qty;
     });
     const sub = $('[data-subtotal]', content);
+    const shp = $('[data-shipping]', content);
     const tot = $('[data-total]', content);
     if (sub) sub.textContent = fmtTL(subtotal);
-    if (tot) tot.textContent = fmtTL(subtotal);
+    if (shp) shp.textContent = shipLabel(subtotal);
+    if (tot) tot.textContent = fmtTL(subtotal + shipFee(subtotal));
   }
+
+  // Kargo: ara toplam < 2000 TL ise 199 TL, değilse ücretsiz (create_order ile aynı kural)
+  const FREE_SHIP_MIN = 2000, SHIP_FEE = 199;
+  function shipFee(sub) { return (sub > 0 && sub < FREE_SHIP_MIN) ? SHIP_FEE : 0; }
+  function shipLabel(sub) { return shipFee(sub) > 0 ? fmtTL(SHIP_FEE) : 'Ücretsiz'; }
 
   function cssEsc(s) {
     return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&');

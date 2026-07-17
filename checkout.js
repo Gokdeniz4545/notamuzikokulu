@@ -33,6 +33,11 @@
   let cartRows = [];     // [[id, qty], ...] (mevcut ürünler)
   let subtotal = 0;
 
+  // Kargo: ara toplam < 2000 TL ise 199 TL, değilse ücretsiz (create_order ile aynı kural)
+  const FREE_SHIP_MIN = 2000, SHIP_FEE = 199;
+  function shipFee(sub) { return (sub > 0 && sub < FREE_SHIP_MIN) ? SHIP_FEE : 0; }
+  function shipLabel(sub) { return shipFee(sub) > 0 ? fmtTL(SHIP_FEE) : 'Ücretsiz'; }
+
   async function boot() {
     session = window.NMAuth ? await window.NMAuth.getSession() : null;
 
@@ -94,8 +99,8 @@
         <h2 class="cart-summary-title">Sipariş özeti</h2>
         <div class="co-sum-items">${items}</div>
         <div class="cart-summary-row"><span>Ara toplam</span><span>${esc(fmtTL(subtotal))}</span></div>
-        <div class="cart-summary-row"><span>Kargo</span><span>Ücretsiz</span></div>
-        <div class="cart-summary-row cart-summary-total"><span>Toplam</span><span>${esc(fmtTL(subtotal))}</span></div>
+        <div class="cart-summary-row"><span>Kargo</span><span>${esc(shipLabel(subtotal))}</span></div>
+        <div class="cart-summary-row cart-summary-total"><span>Toplam</span><span>${esc(fmtTL(subtotal + shipFee(subtotal)))}</span></div>
         <p class="co-pay-note">Ödeme PayTR güvenli altyapısı ile alınır. Kart bilgilerin sitede saklanmaz.</p>
       </aside>`;
   }
