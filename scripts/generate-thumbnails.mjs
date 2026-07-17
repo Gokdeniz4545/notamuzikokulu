@@ -24,6 +24,9 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DRY = process.argv.includes('--dry');
 const FORCE = process.argv.includes('--force');
+// --fix-cache: mevcut varyantları YENİDEN ÜRETMEDEN, sadece doğru cache-control ile yeniden yükler
+// (eski yüklemeler 'public, 31536000' = geçersiz veriyordu; multipart cacheControl → 'max-age=31536000').
+const FIX_CACHE = process.argv.includes('--fix-cache');
 const LIMIT = (() => { const i = process.argv.indexOf('--limit'); return i > -1 ? parseInt(process.argv[i + 1], 10) : 0; })();
 
 // ---- config (migrate-images.mjs ile birebir aynı yükleme) ----
@@ -45,6 +48,15 @@ const H = (extra = {}) => ({ apikey: SB.serviceRoleKey, Authorization: 'Bearer '
 
 const publicUrl = (p) => `${SB.url}/storage/v1/object/public/${BUCKET}/${p}`;
 const variantPath = (storagePath, w) => storagePath.replace(/\.[a-z0-9]+$/i, '') + `_${w}.webp`;
+
+// ÖNEMLİ: cache-control raw header ile GEÇERSİZ kaydoluyor ('public, 31536000').
+// Supabase yalnız multipart 'cacheControl' alanını doğru sarıyor → 'public, max-age=31536000' (1 yıl).
+async function uploadWebp(vp, buf) {
+  const fd = new FormData();
+  fd.append('cacheControl', '31536000');
+  fd.append('file', new Blob([buf], { type: 'image/webp' }), 'x.webp');
+  return fetch(`${SB.url}/storage/v1/object/${BUCKET}/${vp}`, { method: 'POST', headers: H({ 'x-upsert': 'true' }), body: fd });
+}
 
 async function listImages() {
   // Sayfalama (Supabase REST varsayılan 1000 satır sınırı) — Range ile hepsini çek
@@ -87,6 +99,20 @@ async function processOne(img) {
   if (!sp) return { id: img.id, ok: false, reason: 'storage_path boş' };
   if (/^https?:\/\//i.test(sp)) return { id: img.id, ok: false, reason: 'harici URL (migrate edilmemiş)' };
 
+  // --fix-cache: yeniden üretme YOK — mevcut varyant baytını indir, doğru cache-control ile yeniden yükle
+  if (FIX_CACHE) {
+    let fixed = 0;
+    for (const [w] of VARIANTS) {
+      const vp = variantPath(sp, w);
+      const r = await fetch(publicUrl(vp));
+      if (!r.ok) continue; // varyant yoksa atla
+      const buf = Buffer.from(await r.arrayBuffer());
+      if (!DRY) { const up = await uploadWebp(vp, buf); if (!up.ok) return { id: img.id, ok: false, reason: 'fix ' + up.status }; }
+      fixed++;
+    }
+    return { id: img.id, ok: true, fixed };
+  }
+
   // idempotent: --force yoksa ve 3 varyant da varsa atla
   if (!FORCE) {
     const have = await Promise.all(VARIANTS.map(([w]) => exists(variantPath(sp, w))));
@@ -106,11 +132,7 @@ async function processOne(img) {
     const webp = await sharp(orig).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: q }).toBuffer();
     outBytes += webp.length;
     if (DRY) continue;
-    const up = await fetch(`${SB.url}/storage/v1/object/${BUCKET}/${vp}`, {
-      method: 'POST',
-      headers: H({ 'Content-Type': 'image/webp', 'x-upsert': 'true', 'cache-control': '31536000' }),
-      body: webp,
-    });
+    const up = await uploadWebp(vp, webp);
     if (!up.ok) return { id: img.id, ok: false, reason: 'upload ' + up.status + ' ' + (await up.text()).slice(0, 120) };
   }
   return { id: img.id, ok: true, origBytes: orig.length, outBytes };
