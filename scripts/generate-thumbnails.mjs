@@ -125,11 +125,17 @@ async function processOne(img) {
   const orig = Buffer.from(await resp.arrayBuffer());
   if (orig.length < 500) return { id: img.id, ok: false, reason: 'boş/çok küçük' };
 
+  // Ürün görselleri kareye pad'lenir (beyaz zemin) → tüm ürünler birebir aynı izle görünür,
+  // asla kırpılmaz. Kategori görselleri (cat-*) banner/logo olduğundan sadece genişlikle boyutlanır.
+  const isCat = String(img.id).startsWith('cat-');
   let outBytes = 0;
   for (const [w, q] of VARIANTS) {
     const vp = variantPath(sp, w);
     if (!FORCE && await exists(vp)) continue;
-    const webp = await sharp(orig).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: q }).toBuffer();
+    const pipe = isCat
+      ? sharp(orig).rotate().resize({ width: w, withoutEnlargement: true })
+      : sharp(orig).rotate().resize({ width: w, height: w, fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } });
+    const webp = await pipe.webp({ quality: q }).toBuffer();
     outBytes += webp.length;
     if (DRY) continue;
     const up = await uploadWebp(vp, webp);

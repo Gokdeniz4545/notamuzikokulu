@@ -466,7 +466,7 @@
   // --------- 3D silindir engine ----------
   // Kartlar bir silindir etrafında dizilir, scroll ile silindir döner.
   // TURNS: scroll boyunca silindir kaç tam tur döner (sonsuz hissi için yüksek).
-  const TURNS = 1;   // 1 tam tur — tüm kategoriler bir kez geçer (4 tur gereksiz uzun scroll yaratıyordu, footer/yasal linkler ulaşılamıyordu)
+  const TURNS = 2;   // 2 tam tur (720°) — scroll runway'i buna göre ~2x uzar; footer/yasal linkler hâlâ ulaşılabilir
   let rafId = 0;
   let needsUpdate = true;
   // Mobilde silindir scroll'dan bağımsız döner: cylRotOverride state'i swipe ile güncellenir

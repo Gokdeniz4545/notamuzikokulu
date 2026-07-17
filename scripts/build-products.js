@@ -46,9 +46,9 @@ function imageUrls(images) {
 
 // Responsive varyantlar (api.js ile aynı konvansiyon; generate-thumbnails.mjs üretir)
 const RESP_WIDTHS = [360, 720, 1200];
-// Kaynak görsel mi? jpg/jpeg/png/webp — ama zaten _<N>.webp varyantı DEĞİL.
-const canVariant = (u) => !!u && /\/object\/public\/product-images\/.+\.(jpe?g|png|webp)$/i.test(u) && !/_\d+\.webp$/i.test(u);
-const thumb = (u, w) => canVariant(u) ? u.replace(/\.(jpe?g|png|webp)$/i, `_${w}.webp`) : u;
+// Kaynak görsel mi? jpg/jpeg/png/webp/avif — ama zaten _<N>.webp varyantı DEĞİL.
+const canVariant = (u) => !!u && /\/object\/public\/product-images\/.+\.(jpe?g|png|webp|avif)$/i.test(u) && !/_\d+\.webp$/i.test(u);
+const thumb = (u, w) => canVariant(u) ? u.replace(/\.(jpe?g|png|webp|avif)$/i, `_${w}.webp`) : u;
 const srcset = (u) => canVariant(u) ? RESP_WIDTHS.map((w) => `${thumb(u, w)} ${w}w`).join(', ') : '';
 
 // ---- ortak chrome (product.html ile aynı) ----
@@ -170,7 +170,7 @@ function productHtml(p, noindex) {
   };
 
   const gallery = imgs.length
-    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(thumb(imgs[0], 720))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
+    ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(thumb(imgs[0], 720))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" title="Büyütmek için tıkla" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
       (imgs.length > 1
         ? `<div class="product-thumbs">${imgs.map((u, i) =>
             `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(thumb(u, 360))}" data-full="${esc(u)}" alt="" loading="lazy" decoding="async" width="72" height="72" /></button>`).join('')}</div>`

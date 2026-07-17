@@ -313,7 +313,12 @@
       <div class="admin-danger-row">
         <button type="button" class="admin-danger-btn" id="ordCancel">Siparişi iptal et</button>
       </div>` : (['paid', 'preparing', 'shipped', 'delivered'].includes(order.status) ? `
-      <p class="account-hint">Ödenmiş sipariş iptal edilemez — kapatmak için yukarıdan <b>İade Et</b> kullan.</p>` : '')}`;
+      <p class="account-hint">Ödenmiş sipariş iptal edilemez — kapatmak için yukarıdan <b>İade Et</b> kullan.</p>` : '')}
+
+      <div class="admin-danger-row">
+        <button type="button" class="admin-danger-btn" id="ordDelete">Siparişi sil</button>
+      </div>
+      <p class="account-hint">Silme kalıcıdır ve geri alınamaz — sipariş kalemleri ve geçmişi de birlikte silinir.</p>`;
 
     $('#orderBack').addEventListener('click', () => selectTab('orders', true));
     const refundBtn = $('#refundBtn');
@@ -377,6 +382,15 @@
       if (reason === null) return;
       const { error: e } = await window.NMAdmin.cancelOrder(id, reason);
       if (e) return toast('İptal edilemedi: ' + (e.message || '')); toast('Sipariş iptal edildi'); renderOrderDetail(id);
+    });
+    const delBtn = $('#ordDelete');
+    if (delBtn) delBtn.addEventListener('click', async () => {
+      if (!confirm('Bu sipariş kalıcı olarak silinsin mi? Bu işlem geri alınamaz.')) return;
+      delBtn.disabled = true;
+      const { error: e } = await window.NMAdmin.deleteOrder(id);
+      if (e) { delBtn.disabled = false; return toast('Silinemedi: ' + (e.message || '')); }
+      toast('Sipariş silindi');
+      selectTab('orders', true);
     });
   }
 

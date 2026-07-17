@@ -32,14 +32,14 @@
   // generate-thumbnails.mjs Storage'a _360/_720/_1200.webp varyantları koyuyor.
   // Burada tam public URL'den varyant URL'i türetiyoruz (DB'de ek alan yok).
   const RESP_WIDTHS = [360, 720, 1200];
-  // Kaynak görsel mi? product-images bucket'ında jpg/jpeg/png/webp — ama zaten _<N>.webp varyantı DEĞİL.
-  const SRC_IMG_RE = /\/object\/public\/product-images\/.+\.(jpe?g|png|webp)(\?.*)?$/i;
+  // Kaynak görsel mi? product-images bucket'ında jpg/jpeg/png/webp/avif — ama zaten _<N>.webp varyantı DEĞİL.
+  const SRC_IMG_RE = /\/object\/public\/product-images\/.+\.(jpe?g|png|webp|avif)(\?.*)?$/i;
   const IS_VARIANT_RE = /_\d+\.webp(\?.*)?$/i;
   const canVariant = (url) => !!url && SRC_IMG_RE.test(url) && !IS_VARIANT_RE.test(url);
   // Tek varyant URL'i (yalnız kendi Storage'ımızdaki kaynak görsel için; harici/legacy/zaten-varyant → değişmez)
   function thumb(url, w) {
     if (!canVariant(url)) return url;
-    return url.replace(/\.(jpe?g|png|webp)(\?.*)?$/i, `_${w}.webp`);
+    return url.replace(/\.(jpe?g|png|webp|avif)(\?.*)?$/i, `_${w}.webp`);
   }
   // srcset: "url_360.webp 360w, url_720.webp 720w, url_1200.webp 1200w"
   function srcset(url, widths = RESP_WIDTHS) {

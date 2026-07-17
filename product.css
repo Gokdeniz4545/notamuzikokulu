@@ -34,7 +34,22 @@
   display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center;
   padding: 12px;
 }
-.product-gallery-main img { width: 100%; height: 100%; object-fit: contain; }
+.product-gallery-main img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+
+/* Görsel tam ekran (lightbox) */
+.img-lightbox {
+  position: fixed; inset: 0; z-index: 1000; display: none;
+  background: rgba(0, 0, 0, 0.9);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.img-lightbox.is-open { display: flex; }
+.img-lightbox img { max-width: 96vw; max-height: 92vh; object-fit: contain; border-radius: 8px; }
+.img-lightbox-close {
+  position: absolute; top: 16px; right: 20px;
+  width: 44px; height: 44px; font-size: 28px; line-height: 1;
+  color: #fff; background: rgba(0, 0, 0, 0.4);
+  border: 0; border-radius: 50%; cursor: pointer;
+}
 .product-gallery-glyph { font-size: clamp(80px, 16vw, 160px); font-weight: 800; color: var(--ink-3); }
 .product-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
 .product-thumb {

@@ -27,6 +27,32 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2400);
   }
 
+  // ---- görsel tam ekran (lightbox) ----
+  // Ana galeri görseline tıklanınca tam çözünürlük (data-full) tam ekran açılır.
+  // Delegasyon: hem dinamik (product.js render) hem statik (urun-*.html) sayfada çalışır.
+  function openLightbox(src, alt) {
+    let ov = document.getElementById('imgLightbox');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'imgLightbox';
+      ov.className = 'img-lightbox';
+      ov.innerHTML = '<button type="button" class="img-lightbox-close" aria-label="Kapat">×</button><img alt="">';
+      document.body.appendChild(ov);
+      const close = () => ov.classList.remove('is-open');
+      ov.addEventListener('click', (e) => {
+        if (e.target === ov || e.target.classList.contains('img-lightbox-close')) close();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    }
+    const im = ov.querySelector('img');
+    im.src = src; im.alt = alt || '';
+    ov.classList.add('is-open');
+  }
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('#galMain #galImg');
+    if (g) openLightbox(g.getAttribute('data-full') || g.src, g.alt);
+  });
+
   const STAR = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z';
   function starsHTML(rating) {
     let h = '<span class="stars" aria-label="' + rating + ' / 5">';
@@ -157,7 +183,7 @@
       <div class="product-gallery">
         <div class="product-gallery-main" id="galMain">
           ${product.discountPercent > 0 ? `<span class="disc-badge" aria-label="%${esc(product.discountPercent)} indirim">%${esc(product.discountPercent)}</span>` : ''}
-          ${imgs.length ? `<img id="galImg" src="${esc(gThumb(imgs[0], 720))}" srcset="${esc(gSrcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(product.name)}" width="800" height="800" fetchpriority="high" decoding="async" />`
+          ${imgs.length ? `<img id="galImg" src="${esc(gThumb(imgs[0], 720))}" srcset="${esc(gSrcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(product.name)}" title="Büyütmek için tıkla" width="800" height="800" fetchpriority="high" decoding="async" />`
                         : `<span class="product-gallery-glyph">${esc(glyph)}</span>`}
         </div>
         ${imgs.length > 1 ? `<div class="product-thumbs">${imgs.map((u, i) =>

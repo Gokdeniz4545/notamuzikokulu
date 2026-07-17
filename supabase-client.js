@@ -381,6 +381,12 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
       .eq('id', id);
     return { error };
   }
+  async function deleteOrder(id) {
+    // Hard delete — order_items / order_status_history ON DELETE CASCADE ile temizlenir.
+    // RLS: orders_admin_all (FOR ALL) admin silmeye izin verir. Ödenmiş sipariş kaydı KALICI silinir.
+    const { error } = await window.sb.from('orders').delete().eq('id', id);
+    return { error };
+  }
 
   // ---- ürünler ----
   async function listProducts() {
@@ -551,7 +557,7 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   window.NMAdmin = {
     applyDiscountPercent, applyDiscountAmount, clearDiscount,
     getStats, getSalesStats,
-    listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder,
+    listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder, deleteOrder,
     listProducts, createProduct, updateProduct, setStock, toggleActive, deleteProduct,
     listProductImages, uploadProductImage, deleteProductImage, setPrimaryImage, setImagesOrder, publicUrl,
     listCategories, createCategory, updateCategory, deleteCategory, categoryProductCount, categoryChildCount,
