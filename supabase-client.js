@@ -553,9 +553,24 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   async function clearDiscount(ids) {
     return window.sb.rpc('clear_discount', { p_ids: (ids && ids.length) ? ids : null });
   }
+  // Görünmez fiyat değişimi (zam/indirim): price'ı doğrudan değiştirir, indirim rozeti çıkmaz.
+  // signed değer: +zam / -indirim. İndirimli üründe discount_price aynı oranda ölçeklenir.
+  async function adjustPricePercent(percent, ids) {
+    return window.sb.rpc('adjust_price_percent', {
+      p_percent: Number(percent),
+      p_ids: (ids && ids.length) ? ids : null,
+    });
+  }
+  async function adjustPriceAmount(amount, ids) {
+    return window.sb.rpc('adjust_price_amount', {
+      p_amount: Number(amount),
+      p_ids: (ids && ids.length) ? ids : null,
+    });
+  }
 
   window.NMAdmin = {
     applyDiscountPercent, applyDiscountAmount, clearDiscount,
+    adjustPricePercent, adjustPriceAmount,
     getStats, getSalesStats,
     listOrders, getOrder, updateOrderStatus, setTracking, cancelOrder, deleteOrder,
     listProducts, createProduct, updateProduct, setStock, toggleActive, deleteProduct,

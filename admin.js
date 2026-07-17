@@ -419,7 +419,7 @@
 
       <div class="disc-bar">
         <div class="disc-bar-head">
-          <strong>İndirim Uygula</strong>
+          <strong>Görünen İndirim (rozetli)</strong>
           <span class="account-hint" id="discScope">Hiç ürün seçili değil → <b>tüm aktif ürünlere</b> uygulanır</span>
         </div>
         <div class="disc-bar-row">
@@ -431,7 +431,24 @@
           <button type="button" class="auth-btn-primary" id="discApply">Uygula</button>
           <button type="button" class="admin-danger-btn" id="discClear">İndirimi Kaldır</button>
         </div>
-        <p class="account-hint">Şu an <b>${esc(indirimli)}</b> üründe indirim var. Ürün seçersen sadece onlara, seçmezsen tüm aktif ürünlere uygulanır.</p>
+        <p class="account-hint">Müşteride <b>%indirim rozeti + üstü çizili fiyat</b> gösterir. Şu an <b>${esc(indirimli)}</b> üründe indirim var. Ürünleri aşağıdaki tablodan <b>tik atarak</b> seç; seçmezsen tüm aktif ürünlere uygulanır.</p>
+      </div>
+
+      <div class="disc-bar">
+        <div class="disc-bar-head">
+          <strong>Görünmez Fiyat Değişimi (Zam / İndirim)</strong>
+          <span class="account-hint">Fiyatı <b>doğrudan</b> değiştirir — müşteride indirim olarak <b>GÖZÜKMEZ</b></span>
+        </div>
+        <div class="disc-bar-row">
+          <select id="priceMode" class="admin-input">
+            <option value="percent">Yüzde (%)</option>
+            <option value="amount">Tutar (TL)</option>
+          </select>
+          <input id="priceValue" class="admin-input" type="number" min="0" step="0.01" placeholder="örn. 10" />
+          <button type="button" class="auth-btn-primary" id="priceUp">Zam uygula (+)</button>
+          <button type="button" class="auth-btn-primary" id="priceDown">Fiyat düşür (−)</button>
+        </div>
+        <p class="account-hint">Aynı checkbox seçimini kullanır (tik = seçili ürünler, boş = tüm aktifler). İndirimli üründe indirimli fiyat da aynı oranda değişir → görünen indirim yüzdesi sabit kalır.</p>
       </div>
 
       <div class="prod-search-row">
@@ -456,6 +473,7 @@
     }
     renderProductRows();
     wireDiscountBar();
+    wirePriceBar();
   }
 
   // Arama sonucuna göre tablo satırlarını çiz (yeniden sorgu atmadan, anında)
@@ -564,6 +582,31 @@
       toast(`${res.data} üründen indirim kaldırıldı`);
       renderProducts();
     });
+  }
+  // ---- görünmez fiyat değişimi (zam/indirim) — indirim çubuğuyla aynı checkbox seçimini kullanır
+  function wirePriceBar() {
+    const up = $('#priceUp'), down = $('#priceDown');
+    const run = async (dir, btn) => {              // dir: +1 zam, -1 indirim
+      const mode = $('#priceMode').value;
+      const val = parseFloat($('#priceValue').value);
+      const ids = selectedProductIds();
+      if (!(val > 0)) { toast('Geçerli bir değer gir'); return; }
+      if (mode === 'percent' && dir < 0 && val >= 100) { toast('Yüzde indirim 1-99 arasında olmalı'); return; }
+      const kapsam = ids.length ? `${ids.length} seçili ürüne` : 'TÜM aktif ürünlere';
+      const ne = (mode === 'percent' ? `%${val}` : `${val} TL`) + (dir > 0 ? ' zam' : ' indirim');
+      if (!confirm(`${kapsam} ${ne} uygulansın mı? Fiyat doğrudan değişir, müşteride indirim olarak gözükmez.`)) return;
+      btn.disabled = true;
+      const signed = dir * val;
+      const res = mode === 'percent'
+        ? await window.NMAdmin.adjustPricePercent(signed, ids)
+        : await window.NMAdmin.adjustPriceAmount(signed, ids);
+      btn.disabled = false;
+      if (res.error) { toast('Uygulanamadı: ' + (res.error.message || '')); return; }
+      toast(`${res.data} ürünün fiyatı güncellendi`);
+      renderProducts();
+    };
+    if (up) up.addEventListener('click', () => run(1, up));
+    if (down) down.addEventListener('click', () => run(-1, down));
   }
   function openProductForm(p) {
     const host = $('#prodFormHost');

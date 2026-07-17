@@ -683,6 +683,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   z-index: 2;
   height: 46px;
   width: 46px;
+  /* global 'img, svg { max-width:100% }' bu ikonu dar footer'da 24px'e çöktürüyordu (iç sayfalar bozuktu) */
+  max-width: none;
   padding: 12px;
   border-radius: 50%;
   color: #b88b3a;
