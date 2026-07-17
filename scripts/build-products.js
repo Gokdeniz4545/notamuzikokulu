@@ -312,6 +312,20 @@ async function main() {
   // products.html'e statik katalog grid'i enjekte et (crawler/JS'siz için gerçek <a> linkleri)
   injectBetween('products.html', 'GRID', indexable.map(catCard).join(''));
 
+  // index.html LCP preload: anasayfada ilk (en önde) kategori kartının görseli.
+  // Kartlar JS→Supabase sonrası çiziliyor; bu preload ile LCP görseli parse anında inmeye başlar.
+  try {
+    const cs = `${SUPABASE_URL}/rest/v1/categories?select=image_path,parent_id,display_order&order=display_order`;
+    const cres = await fetch(cs, { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
+    const cats = cres.ok ? await cres.json() : [];
+    const firstCat = cats.find((c) => !c.parent_id && c.image_path) || cats.find((c) => c.image_path);
+    const preload = firstCat
+      ? `<link rel="preload" as="image" href="${esc(thumb(firstCat.image_path, 720))}" imagesrcset="${esc(srcset(firstCat.image_path))}" imagesizes="(max-width: 768px) 80vw, 460px" fetchpriority="high" />`
+      : '';
+    injectBetween('index.html', 'HOMEPRELOAD', preload);
+    if (preload) console.log('  ✓ index.html LCP preload (ilk kategori görseli)');
+  } catch (e) { console.warn('  ⚠ index.html LCP preload atlandı:', e.message); }
+
   console.log(`  ✓ ${raw.length} ürün sayfası üretildi (${indexable.length} indexlenebilir)`);
   console.log(`  ✓ products.html statik grid (${indexable.length} ürün linki)`);
   if (skipped.length) console.log(`  ⤫ noindex + sitemap dışı: ${skipped.map((p) => p.slug).join(', ')}`);
