@@ -119,10 +119,13 @@
     }
     if (!id && !slug) { setRobots('noindex'); mainEl.innerHTML = errBox('Ürün belirtilmedi.'); return; }
 
-    session = window.NMAuth ? await window.NMAuth.getSession() : null;
-    product = window.NMApi
-      ? (id ? await window.NMApi.getProductById(id) : await window.NMApi.getProductBySlug(slug))
-      : null;
+    // Oturum ve ürün birbirinden bağımsız → paralel çek (token yenileme LCP yolunu geciktirmesin).
+    const [sess, prod] = await Promise.all([
+      window.NMAuth ? window.NMAuth.getSession() : Promise.resolve(null),
+      window.NMApi ? (id ? window.NMApi.getProductById(id) : window.NMApi.getProductBySlug(slug)) : Promise.resolve(null),
+    ]);
+    session = sess;
+    product = prod;
     if (!product) {
       if (window.__NM_PID__ || slug) return; // statik sayfa: SSR içerik + head korunur, hydrate edilemedi
       setRobots('noindex'); mainEl.innerHTML = errBox('Ürün bulunamadı veya yayında değil.'); reviewsEl.innerHTML = ''; recEl.innerHTML = ''; return;

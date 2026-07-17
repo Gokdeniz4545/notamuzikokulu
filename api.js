@@ -168,9 +168,10 @@
 
   async function getAllProducts() {
     if (!window.sb) return null;
+    // Katalog kartları description KULLANMIYOR → sorgudan çıkarıldı (97 üründe payload düşer).
     const { data, error } = await window.sb
       .from('products')
-      .select('id, slug, name, price, discount_price, stock, description, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
+      .select('id, slug, name, price, discount_price, stock, is_active, category_id, categories(slug, name), product_images(storage_path, is_primary, display_order)')
       .eq('is_active', true)
       .order('created_at', { ascending: false });
     if (error) { console.error('[api] getAllProducts', error); return null; }
@@ -182,7 +183,6 @@
       categoryName: p.categories?.name || '',
       ...priceFields(p),
       stock: p.stock,
-      description: p.description,
       image: primaryImageUrl(p.product_images),
       images: allImageUrls(p.product_images),
     }));

@@ -1,8 +1,16 @@
 name: Rebuild static pages
 
-# Statik ürün/blog sayfalarını gece yeniden üretir → fiyat/stok bayatlığını ≤24 saatte tutar.
-# build-products.js Supabase'den ANON (public) anahtarla okur; ekstra secret gerekmez.
-# Değişiklik varsa commit+push eder → Hostinger otomatik deploy alır.
+# Gece (03:00 TR) çalışır:
+#  1) Yeni ürün görsellerinin webp varyantlarını üretir (generate-thumbnails.mjs → Supabase Storage)
+#  2) Statik ürün/blog sayfalarını yeniden üretir → fiyat/stok bayatlığını ≤24 saatte tutar
+#  3) Değişiklik varsa commit+push → Hostinger otomatik deploy alır
+#
+# build-*.js Supabase'den ANON (public) anahtarla OKUR; ekstra secret gerekmez.
+# generate-thumbnails.mjs Storage'a YAZAR → service_role gerekir:
+#   GitHub repo → Settings → Secrets and variables → Actions → New secret
+#   Name: SUPABASE_SERVICE_ROLE_KEY   Value: <Supabase service_role anahtarı>
+# Secret yoksa thumbnail adımı sessizce ATLANIR (rebuild yine de çalışır; yeni görseller
+# fallback ile orijinalinden gösterilir — kırılmaz, sadece optimize olmaz).
 
 on:
   schedule:
@@ -15,15 +23,30 @@ permissions:
 jobs:
   rebuild:
     runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: https://kwjtfqhhctqwrfhxghai.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      # sharp yalnız thumbnail üretimi için gerekli.
+      # --no-package-lock: lock'a dokunma → nightly'de gereksiz "lock değişti" commit'i olmaz.
+      - name: Bağımlılıklar (sharp)
+        if: ${{ env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        run: npm install --no-audit --no-fund --no-package-lock
+
+      - name: Yeni görsellerin webp varyantlarını üret
+        if: ${{ env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        run: node scripts/generate-thumbnails.mjs
+
       - name: Statik sayfaları üret
         run: |
           node scripts/build-products.js
           node scripts/build-blog.js
+
       - name: Değişiklik varsa commit + push
         run: |
           git config user.name "github-actions[bot]"
@@ -32,6 +55,6 @@ jobs:
             echo "Değişiklik yok, atlandı."
           else
             git add -A
-            git commit -m "chore: gece statik yeniden üretim (fiyat/stok tazeleme)"
+            git commit -m "chore: gece statik yeniden üretim + görsel varyantları (fiyat/stok tazeleme)"
             git push
           fi
