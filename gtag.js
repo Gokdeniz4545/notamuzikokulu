@@ -20,7 +20,7 @@
   'use strict';
 
   var AW_ID = 'AW-18327645689';
-  var PURCHASE_LABEL = '';  // ör. 'AbC-D_efGhIjKlMnO' — Dönüşümler > Satın alma > etiket kurulumu
+  var PURCHASE_LABEL = '7NEHCNT_4dIcEPnbpqNE';  // Dönüşümler > "Satın alma işlemi (1)" > etkinlik snippet'i
 
   // ID girilmeden hiçbir istek atma — yanlışlıkla yayına çıkarsa sessiz kalsın
   if (!AW_ID) { window.NMTrack = { purchase: function () {}, ready: false }; return; }
