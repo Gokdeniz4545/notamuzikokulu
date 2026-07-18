@@ -11,4 +11,22 @@
   // Misafir takip linkine sipariş no'yu taşı (siparis-sorgula ön-doldursun)
   var gl = document.getElementById('guestTrackLink');
   if (gl && oid) gl.href = 'siparis-sorgula.html?oid=' + encodeURIComponent(oid);
+
+  // ---- Google Ads satın alma dönüşümü ----
+  // Tutar checkout'ta saklandı. Yalnızca URL'deki sipariş no saklananla EŞLEŞİRSE
+  // tetiklenir → sayfaya elle girilse bile sahte dönüşüm sayılmaz.
+  // Tetiklendikten sonra kayıt silinir (yenilemede tekrar sayılmaz).
+  try {
+    var raw = localStorage.getItem('nm:pending-conversion');
+    if (raw && oid) {
+      var pc = JSON.parse(raw);
+      var fresh = pc && pc.ts && (Date.now() - pc.ts) < 6 * 60 * 60 * 1000; // 6 saat
+      if (pc && pc.oid === oid && fresh) {
+        localStorage.removeItem('nm:pending-conversion');
+        if (window.NMTrack && window.NMTrack.purchase) {
+          window.NMTrack.purchase({ oid: oid, value: pc.value });
+        }
+      }
+    }
+  } catch (e) {}
 })();

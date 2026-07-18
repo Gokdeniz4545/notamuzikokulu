@@ -284,6 +284,16 @@
       return;
     }
 
+    // Dönüşüm için sipariş tutarını sakla — order-success.html oradan okuyup Google'a bildirir.
+    // (Tutar PayTR'a giden tutarla aynı: ürünler + kargo. Sunucu total'ı da bu kuralla hesaplar.)
+    try {
+      localStorage.setItem('nm:pending-conversion', JSON.stringify({
+        oid: data.merchant_oid,
+        value: subtotal + shipFee(subtotal),
+        ts: Date.now(),
+      }));
+    } catch (e4) {}
+
     // PayTR ödeme iframe'ini göster (ödeme sonrası order-success.html'e yönlenir)
     renderPaytr(data.token);
   }
