@@ -3,14 +3,28 @@
 # P0.1 güvenlik başlıkları + CSP  ·  P0.3 hassas dosya erişim engeli
 # ============================================================
 
-# ---- 1) HTTPS'e yönlendir (HSTS bunu varsayar) ----
+# ---- 1) Kanonik adres: https://www.notamuzikmarket.com ----
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # 1a) apex → www (ve aynı anda https).
+  # Bu kural HTTPS kuralından ÖNCE gelmeli: hedefte https:// yazdığı için
+  # http://notamuzikmarket.com tek 301'de https://www...'a gider.
+  # İki kural ters sırada olsaydı zincir oluşurdu (http apex → https apex → https www).
+  # Bu olmadan her sayfa iki adreste birden yayındaydı; canonical etiketi
+  # çoğu zaman kurtarıyordu ama tarama bütçesi ikiye bölünüyordu.
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  RewriteRule ^ https://www.%1%{REQUEST_URI} [L,R=301]
+
+  # 1b) www zaten doğruysa sadece HTTPS'e çek (HSTS bunu varsayar).
+  # X-Forwarded-Proto kontrolü: Hostinger proxy arkasında HTTPS "off"
+  # görünebiliyor, o durumda yönlendirme döngüsü olmasın.
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # ---- 1b) Yeni ürünün statik sayfası henüz üretilmediyse 404 verme ----
+  # ---- 1c) Yeni ürünün statik sayfası henüz üretilmediyse 404 verme ----
   # Admin'den ürün eklenince DB'ye düşer ve katalogda görünür, ama statik
   # urun-<slug>.html dosyası ancak gece rebuild'inde üretilir. Dosya yoksa
   # product.html'i sun: product.js slug'ı URL'den okuyup ürünü canlı yükler.
