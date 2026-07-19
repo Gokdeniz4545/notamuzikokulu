@@ -24,7 +24,7 @@
   const esc = (s) => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  const fmtTL = (n) => new Intl.NumberFormat('tr-TR').format(Number(n || 0)) + ' TL';
+  const fmtTL = (n) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2, maximumFractionDigits: 2 }).format(Number(n || 0)) + ' TL';
   const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return iso || ''; } };
   function slugify(s) {
     const map = { 'ç':'c','ğ':'g','ı':'i','İ':'i','ö':'o','ş':'s','ü':'u','â':'a','î':'i','û':'u' };

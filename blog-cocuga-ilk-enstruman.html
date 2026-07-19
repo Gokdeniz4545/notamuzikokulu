@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-cocuga-ilk-enstruman.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Çocuğunuza İlk Enstrüman: Yaşa ve Mizaca Göre Seçim",
       "description": "Yanlış çalgı, çocuğu müzikten soğutur. Yaş, fiziksel uygunluk ve mizaca göre doğru ilk adımı seçin.",
       "articleBody": "Çocuğa enstrüman seçerken iki tuzak var: çok zor bir çalgıyla cesaretini kırmak ya da hiç ilgisini çekmeyen bir şeye zorlamak. Doğru seçim yaş + fiziksel uygunluk + mizaç üçgeninde saklı. Yaşa göre kabaca harita 4–6 yaş: Ritim ve kulak gelişimi dönemi. Basit perküsyon, küçük bir keyboard ile renkli, oyunlaştırılmış başlangıç. 7–9 yaş: El-göz koordinasyonu oturur. Keyboard/piyano veya küçük boy keman (1/2, 3/4) uygundur. 10+ yaş: Fiziksel olarak gitar ve davula hazır. Tercih artık çocuğun kendi merakına bırakılabilir. Mizaca göre yönlendirme Hareketli, enerjik çocuk: Davul enerjisini kanalize eder. Gürültü endişesi için elektronik davul + kulaklık. Sakin, sabırlı çocuk: Piyano veya keman uyum sağlar. Meraklı, çabuk sıkılan çocuk: Yüzlerce ses sunan keyboard ilgisini canlı tutar. Pratik tavsiyeler Boy/beden: Keman ve gitarda çocuğun bedenine uygun ölçü şart; büyük çalgı motivasyonu kırar. Ses kontrolü: Kulaklık takılabilen çalgılar (keyboard, elektronik davul) evde huzuru korur. Bütçe: İlk çalgı en pahalı olan olmasın; çocuğun ilgisi netleşince yükseltirsin. Özetle İdeal ilk enstrüman; çocuğun yaşına uygun ölçüde, mizacını destekleyen ve evde ses sorunu yaratmayan bir çalgıdır. Küçük yaşta keyboard ve perküsyon güvenli başlangıçtır; mizaç netleştikçe gitar, keman ya da davula yönelebilir.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-cocuga-ilk-enstruman.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

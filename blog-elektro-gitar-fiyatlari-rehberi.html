@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-elektro-gitar-fiyatlari-rehberi.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Elektro Gitar Fiyatları: Bütçene Göre Ne Alabilirsin?",
       "description": "Elektro gitar fiyatlarını belirleyen şey marka değil, malzeme ve işçilik. Bütçe aralıklarına göre neyin gerçekçi olduğunu anlattık.",
       "articleBody": "\"Elektro gitar kaç para?\" sorusunun tek bir cevabı yok — ama fiyatı neyin belirlediğini bilirsen, bütçenin karşılığında ne alman gerektiğini de bilirsin. Bu yazıda fiyatı oluşturan kalemleri tek tek açıp, hangi bütçede neyin gerçekçi olduğunu anlatıyoruz. Fiyatı belirleyen 4 şey 1. Ahşap ve gövde yapımı. Tek parça gövde mi, yapıştırılmış katmanlar mı? Sap gövdeye vidalı mı, geçme mi? Bunlar hem sustain'i hem de gitarın uzun vadede formunu korumasını etkiler. 2. Manyetikler. Gitarın sesini üreten asıl parça. Seri üretim seramik manyetiklerle el sarımı alnico manyetikler arasında hem ton hem fiyat farkı büyüktür. 3. Donanım. Burgular, köprü ve tel tutucu. Ucuz burgu akort tutmaz — ve akort tutmayan gitar, ne kadar güzel görünürse görünsün çalınmaz. 4. Kurulum (setup). Perde uçlarının törpülenmesi, tel yüksekliği ayarı, entonasyon. Bu işçilik gözle görülmez ama çalarken ilk hissedilen şeydir. Giriş seviyesi: ilk gitarın Bu aralıkta hedefin \"hayatının gitarı\" değil, çalmayı öğrenmeni engellemeyecek bir enstrüman olmalı. Aranacak özellikler: akort tutan burgular, kabul edilebilir tel yüksekliği ve pürüzsüz perde uçları. ST kasa, HSS manyetik dizilimli bir model tarzdan bağımsız iş görür. Bu seviyede en sık yapılan hata bütçenin tamamını gitara ayırmak. Elektro gitar amfisiz neredeyse duyulmaz — amfi ve kablo için pay ayırmadığın bir bütçe planı eksiktir. Orta seviye: ikinci gitar veya ciddi başlangıç Burada fark manyetiklerde ve donanımda hissedilir. Daha net bir temiz ton, distortion altında dağılmayan bir karakter, akordunu günlerce koruyan burgular. Sahneye çıkmayı ya da kayıt yapmayı düşünüyorsan bu aralık mantıklı bir yatırım noktasıdır. Sahne setleri: neden daha hesaplı? Elinde hiç ekipman yoksa sahne setleri neredeyse her zaman daha avantajlı. Gitar, kılıf, kablo ve amfiyi ayrı ayrı topladığında çıkan tutar, set fiyatının üzerine çıkar. Ayrıca eksik parça kalmaz — ilk gün çalmaya başlayabilirsin. Zaten bir amfin varsa ve sadece gitarı yenilemek istiyorsan tek gitar almak daha doğrudur; ikinci bir amfi için para vermenin anlamı yok. Ucuz gitarda nelere dikkat etmeli? Perde uçları — sap kenarında elini kesecek kadar keskin çıkıntı varsa çalmak eziyet olur. Tel yüksekliği — teller klavyeden çok yüksekse basmak zorlaşır ve yeni başlayan biri \"ben yapamıyorum\" sanır. Burgu kalitesi — birkaç dakikada akortu bozuluyorsa çalışma keyfi kalmaz. Elektronik gürültüsü — potansiyometreyi çevirirken cızırtı geliyorsa lehim veya pot kalitesi zayıftır. Taksit ve kargo Tüm siparişlerde PayTR güvenli ödeme altyapısı kullanılır ve kredi kartına taksit seçenekleri ürün sayfasında görüntülenir. 2.000 TL üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Özetle Fiyatı belirleyen: ahşap, manyetik, donanım ve kurulum — marka değil. Bütçeyi gitar + amfi + kablo olarak böl; sadece gitara harcama. Hiç ekipmanın yoksa sahne seti ayrı ayrı almaktan hesaplıdır. Ucuz gitarda önce perde uçlarına, tel yüksekliğine ve burgulara bak.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-elektro-gitar-fiyatlari-rehberi.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

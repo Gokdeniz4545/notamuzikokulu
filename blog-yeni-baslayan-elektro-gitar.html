@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-yeni-baslayan-elektro-gitar.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Sıfırdan Elektro Gitar: İlk 30 Günde Neler Yapabilirsin?",
       "description": "Hiç çalmadıysan bile ilk ay sonunda tanıdık riffleri çalabilirsin. Gerçekçi bir 30 günlük yol haritası.",
       "articleBody": "\"Yaşım geçti, ellerim tutmaz\" diye düşünme. Elektro gitar, ilk sonuç veren çalgılardan biridir; çünkü tek bir parmakla bastığın \"power chord\" bile kulağa dolu gelir. İşte sıfırdan başlayan birinin ilk ayda gerçekçi olarak ne yapabileceği. 1. Hafta — Tanışma Gitarı doğru tutmayı ve akort etmeyi öğrenirsin (telefon uygulaması yeterli). Tek tel üzerinde temiz ses çıkarmayı çalışırsın. İlk power chord'u (5'li akor) öğrenirsin — bütün rock müziğin temeli. 2. Hafta — İlk riff Tek telli basit rifflerle tanıdık melodileri çalmaya başlarsın. Bu noktada bir mini amfi işini eğlenceye çevirir; gerçek \"elektro\" sesi duymak motivasyonu uçurur. 3. Hafta — Akor geçişleri İki-üç power chord arasında geçiş yapmayı çalışırsın. Yavaş ama temiz çal; hız sonra gelir. Bu hafta sonunda basit bir şarkının nakaratına eşlik edebilirsin. 4. Hafta — İlk şarkı 30. günün sonunda tanıdık bir parçanın ana riffini baştan sona çalabilir hâle gelirsin. Bu, devam etmen için gereken o \"ben yapabiliyorum\" anıdır. Hangi gitarla başlamalı? Başlangıç için çok ağır ve çok pahalı bir model şart değil. Klasik Strat formundaki bir elektro gitar rahat çalınır, her tarza uyar. Yanına bir kaliteli kablo ve küçük bir amfi ekleyince setin tamamlanır. Özetle İlk ayın hedefi virtüöz olmak değil; bir riff çalabilmek . Günde 15–20 dakika düzenli pratik, ayda 1 saatlik düzensiz çalışmadan kat kat etkilidir. Başlangıç seti: gitar + kablo + mini amfi.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-yeni-baslayan-elektro-gitar.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-mini-amfi-rehberi-ev-kulaklik.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Mini Amfi Rehberi: Ev, Prova ve Kulaklıkla Çalışma",
       "description": "Ev için büyük amfiye gerek yok — aksine küçük amfi daha iyi ton verir. Watt, kulaklık çıkışı ve IR desteğini açıkladık.",
       "articleBody": "Yeni başlayanların en yaygın yanılgısı: \"watt ne kadar yüksekse o kadar iyi.\" Gerçekte ev kullanımı için düşük watt daha iyidir — ve bunun sağlam bir teknik sebebi var. Bu yazıda ev için amfi seçerken gerçekten bakman gereken şeyleri sıraladık. Neden büyük amfi ev için kötü bir fikir? Amfiler karakteristik tonlarını belli bir ses seviyesinde vermeye başlar. Büyük bir amfiyi ev seviyesinde kısık çaldığında iki şey olur: aradığın tonu hiç duyamazsın ve gereksiz yere yer, ağırlık ve para harcamış olursun. Küçük amfiler ise düşük seviyede iyi ses verecek şekilde tasarlanmıştır. Ev çalışması, kulaklıkla pratik ve küçük oda kayıtları için kompakt amfiler fazlasıyla yeterlidir. Kulaklık çıkışı: apartmanın kurtarıcısı Bu, apartmanda oturuyorsan listenin en üstüne koyman gereken özellik. Kulaklık takıldığında hoparlör devre dışı kalır ve enstrüman dışarıya hiç ses vermez — gecenin herhangi bir saatinde çalışabilirsin. Ek bir avantajı daha var: kulaklıkla çalarken hoparlörden duyamayacağın detayları duyarsın. Temiz olmayan geçişler, istemsiz tel sesleri ve zamanlama hataları kulaklıkta çok daha belirgindir — bu da daha hızlı düzeltmeni sağlar. Bluetooth ne işe yarar? Basit görünen ama pratikte çok değerli bir özellik: telefonundan şarkı çalıp üzerine gitar çalabilirsin. Parçaya eşlik ederek çalışmak, ritim duygusunu ve akort hassasiyetini metronomla çalışmaktan daha hızlı geliştirir — çünkü gerçek müzikal bağlamda çalıyorsun. Ayrıca amfiyi kullanmadığın zamanlarda küçük bir hoparlör olarak da iş görür. IR desteği nedir, gerekli mi? IR (Impulse Response), gerçek bir hoparlör kabininin ve önüne konmuş mikrofonun akustik parmak izini dijital olarak taklit eden bir teknolojidir. Önemi özellikle kulaklıkla çalışmada ve kayıtta ortaya çıkar. IR olmadan doğrudan alınan gitar sinyali ince, cırtlak ve \"kutu içinden geliyor\" gibi duyulur. IR devrede olduğunda ise sanki önünde gerçek bir kabin varmış ve önüne mikrofon konmuş gibi dolgun, doğal bir ses alırsın. Sadece hoparlörden çalacaksan çok kritik değil; kulaklık ve kayıt kullanacaksan belirgin fark yaratır. Şarj edilebilir olmak ne kazandırır? Dahili bataryalı amfiler seni prizden bağımsız kılar: balkonda, parkta, kamp ateşi başında ya da elektrik olmayan bir ortamda çalabilirsin. Ayrıca kablo karmaşasını azaltır — küçük bir odada bu fark edilir bir konfordur. Multi efekt pedalı mı, tek pedallar mı? Efekt pedalları gitarın tonunu şekillendirir: distortion, delay, reverb, chorus gibi. Yeni başlıyorsan multi efekt çok daha mantıklı. Onlarca efekti tek kutuda dener, hangisinin ne yaptığını ayrı ayrı satın almadan öğrenirsin. Hangi seslerin hoşuna gittiğini keşfetmenin en ucuz yolu budur. Zevkin netleştikten sonra en çok kullandığın iki-üç efekti tek pedal olarak yükseltebilirsin. Sinyal zinciri ve unutulan kablo Temel dizilim: gitar → kablo → pedal → kablo → amfi. Dikkat: pedal aldıysan iki kabloya ihtiyacın var — biri gitardan pedala, diğeri pedaldan amfiye. Bu, sipariş verirken en sık unutulan kalemdir. Kablo seçimi hakkında ayrıntı için ilgili rehberimize bakabilirsin. Birden fazla pedal kullanacaksan sıralama tonu belirgin şekilde etkiler. Genel kabul gören dizilim: akort → distortion/overdrive → modülasyon (chorus, flanger) → delay → reverb. Amfi ve pedal modellerimize göz atabilirsin. Özetle Ev için düşük watt daha iyi — büyük amfi kısıkken güzel ses vermez. Apartmandaysan kulaklık çıkışı en kritik özellik. IR desteği kulaklık ve kayıtta dolgun ses sağlar. Pedal aldıysan iki kablo gerekir — en sık unutulan kalem.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-mini-amfi-rehberi-ev-kulaklik.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

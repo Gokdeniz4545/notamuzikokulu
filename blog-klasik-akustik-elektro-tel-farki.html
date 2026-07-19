@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-klasik-akustik-elektro-tel-farki.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Klasik, Akustik ve Elektro Gitar Teli Arasındaki Fark",
       "description": "Üç tel ailesi birbirinin yerine kullanılamaz — ve yanlış tercih gitarını kalıcı olarak bozabilir. Farkları ve nedenlerini anlattık.",
       "articleBody": "Gitar teli alırken \"hepsi tel işte\" diye düşünmek, müzik mağazalarında en sık görülen ve en pahalıya mal olan yanılgı. Üç tel ailesi birbirinden malzeme, gerilim ve çalışma prensibi olarak ayrılır — ve karıştırıldığında sonuç sadece kötü ton değil, kalıcı hasar olabilir. Klasik gitar teli: naylon Klasik gitar tellerinin ince olanları (mi, si, sol) saf naylondur; kalın olanları (re, la, mi) naylon çekirdek üzerine metal sarımlıdır. Karakteristik özellikleri düşük gerilim ve yumuşak tuşedir. Bu düşük gerilim tesadüf değil: klasik gitarın gövdesi ve sapı naylonun yarattığı yükü taşıyacak şekilde tasarlanmıştır. Ses karakteri sıcak, yuvarlak ve daha az parlaktır — klasik repertuvarın ve fingerstyle çalmanın aradığı tını budur. Akustik gitar teli: bronz çelik Akustik gitar telleri çelik çekirdek üzerine bronz ya da fosfor bronz sarımlıdır. Amaçları gövdeyi akustik olarak \"sürmek\": ahşap kapağı titretecek kadar enerji üretmeleri gerekir. Bu yüzden hem daha kalın hem çok daha yüksek gerilimlidirler. Sonuç parlak, gür ve kesici bir ton. Şarkı eşliğinde ve pena ile ritim çalmada bu enerji tam olarak istenen şeydir. Bronz ve fosfor bronz farkı: bronz daha parlak ama daha çabuk oksitlenir; fosfor bronz biraz daha sıcak tonlu ve daha uzun ömürlüdür. Elektro gitar teli: nikel/çelik Elektro gitarda ses gövdeden değil manyetiklerden gelir. Manyetik, telin titreşimini manyetik alan üzerinden algılar — bu yüzden telin manyetik özellikli olması gerekir. Elektro gitar telleri nikel kaplı çelik ya da saf nikel sarımlıdır. Akustik tellerdeki bronz manyetik değildir; akustik teli elektro gitara takarsan manyetikler telin titreşimini düzgün algılayamaz ve ses cılız, dengesiz çıkar. Ayrıca elektro telleri gövdeyi sürmek zorunda olmadıkları için daha ince ve daha düşük gerilimlidir — bu da bükmeyi (bending) kolaylaştırır. En tehlikeli hata: klasik gitara çelik tel Bunu ayrıca vurgulamak gerekiyor çünkü sonucu geri dönüşsüz olabiliyor. Çelik teller naylon tellerin neredeyse iki katı gerilim uygular. Akustik ve elektro gitarların sapında bu gerilimi dengeleyen bir truss rod (ayarlanabilir metal takviye çubuğu) bulunur. Klasik gitarların çoğunda bu çubuk yoktur — çünkü naylon telin yükü için gerekmez. Klasik gitara çelik tel takıldığında olanlar: sap öne doğru eğilir, köprü gövdeden kalkmaya başlar, kapak şişer ve ilerleyen durumda derzler açılır. Bu tamiri gitarın değerini aşabilen bir hasardır. Peki tersi? Akustik gitara naylon tel Bu hasar vermez ama işe de yaramaz. Akustik gitarın köprüsü çelik telin top ucuna göre tasarlanmıştır; naylon tel bağlanamaz ya da zar zor tutunur. Tutunsa bile gövde o düşük enerjiyle sürülemez, ses son derece cılız kalır. Hızlı kontrol tablosu Gitarın köprüsünde tel bağlanan delikler var, tel düğümleniyor → klasik gitar, naylon tel. Köprüde pimler var, tel ucunda metal top → akustik gitar, bronz çelik tel. Gövdede manyetikler ve jak girişi var → elektro gitar, nikel/çelik tel. Naylon tel bakımı: bir sürpriz Yeni takılan naylon teller birkaç gün boyunca sürekli akorttan düşer. Bu bir arıza değil — naylon, gerilim altında uzamaya devam eder. İlk hafta her çalışma öncesi akort etmen normaldir; sonrasında oturur. Çelik tellerde bu süre çok daha kısadır. Uygun tel setleri için gitar teli sayfamıza göz atabilir, gitar tipine göre seçim yapabilirsin. Özetle Klasik → naylon, düşük gerilim, sıcak ton. Akustik → bronz çelik, yüksek gerilim, gövdeyi sürer. Elektro → nikel/çelik, manyetik algılanabilir, daha ince. Klasik gitarda truss rod yoktur — çelik tel kalıcı hasar verir.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-klasik-akustik-elektro-tel-farki.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

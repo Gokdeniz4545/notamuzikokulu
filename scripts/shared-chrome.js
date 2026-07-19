@@ -62,6 +62,7 @@ const productScripts = () =>
 const NAV = [
   ['products.html', 'Ürünler'],
   ['blog.html', 'Blog'],
+  ['hakkimizda.html', 'Hakkımızda'],
   ['https://www.notamuzikokulu.com/', 'Okullarımız', ' target="_blank" rel="noopener noreferrer"'],
   ['iletisim.html', 'İletişim'],
 ];
@@ -158,6 +159,129 @@ function pinVersions(html) {
   return html.replace(ASSET_V, (m, file) => (map[file] ? `${file}?v=${map[file]}` : m));
 }
 
+// ---- işletme kimliği & varlık grafiği ----
+
+/*
+   TEK VARLIK KURALI
+   Eskiden index.html'de Organization, iletisim.html'de ayrı bir Store vardı ve
+   ikisi @id ile bağlı değildi — AI motorları için iki ayrı işletme gibi
+   görünüyordu. Artık tek düğüm var: MusicStore.
+
+   MusicStore → Store → LocalBusiness → hem Organization hem Place alt sınıfı,
+   yani ayrı Organization düğümüne gerek yok.
+
+   Bu sabit TÜM üretilen sayfalara basılır (gzip sonrası ~400 byte). Sayfalar
+   arası @id çözümlemesi diye bir şey yok: başka sayfada tanımlı düğüme sadece
+   {"@id": ...} ile atıf yapmak boş referanstır.
+*/
+const BUSINESS = {
+  name: 'Nota Müzik Market',
+  legalName: 'Süleyman Kesici – Nota Müzik',
+  telephone: '+905437663537',
+  email: 'info@notamuzikmarket.com',
+  street: 'Şemikler Mah. 6205 Sok. No: 4/A',
+  locality: 'Çiğli',
+  region: 'İzmir',
+  country: 'TR',
+  opens: '10:00',
+  closes: '21:00',
+  priceRange: '₺₺',
+  // Gerçekten sahip olunan, doğrulanabilir profiller. Boş/uydurma profil
+  // eklenmez (Google spam sinyali sayar). Google İşletme Profili açılınca
+  // Maps URL'i buraya ve hasMap'e eklenecek.
+  sameAs: [
+    'https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/',
+    'https://www.instagram.com/notamuzikmarket/',
+  ],
+  // Google Maps'ten alınacak. DOLU DEĞİLSE geo düğümü hiç yazılmaz —
+  // uydurma koordinat Maps eşleşmesini bozar.
+  geo: null, // { lat: 38.xxxxx, lng: 27.xxxxx }
+  mapUrl: null,
+};
+
+const ORG_ID = SITE + '/#organization';
+const WEBSITE_ID = SITE + '/#website';
+const PLACE_ID = SITE + '/#place';
+
+/** Ana işletme düğümü — MusicStore (Organization + Place birleşimi) */
+function organizationLd() {
+  const b = BUSINESS;
+  const address = {
+    '@type': 'PostalAddress',
+    streetAddress: b.street,
+    addressLocality: b.locality,
+    addressRegion: b.region,
+    addressCountry: b.country,
+  };
+
+  const place = {
+    '@type': 'Place',
+    '@id': PLACE_ID,
+    address: address,
+    // Fiziksel satış noktası müzik okulunun binası içinde
+    containedInPlace: { '@type': 'Place', name: 'Nota Müzik Okulu' },
+  };
+  if (b.geo) place.geo = { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng };
+  if (b.mapUrl) place.hasMap = b.mapUrl;
+
+  const node = {
+    '@type': 'MusicStore',
+    '@id': ORG_ID,
+    name: b.name,
+    legalName: b.legalName,
+    url: SITE + '/',
+    logo: SITE + '/images/logo-square.png',
+    image: SITE + '/images/og-image.png',
+    telephone: b.telephone,
+    email: b.email,
+    priceRange: b.priceRange,
+    currenciesAccepted: 'TRY',
+    paymentAccepted: 'Kredi kartı, banka kartı, havale/EFT',
+    address: address,
+    location: place,
+    areaServed: { '@type': 'Country', name: 'Türkiye' },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: b.opens,
+      closes: b.closes,
+    },
+    sameAs: b.sameAs,
+    /* Müzik okulu AYRI bir varlık — sameAs DEĞİL.
+       sameAs "aynı varlığın başka profili" demektir; okulu oraya koymak
+       AI'ın mağaza ile okulu tek işletme sanmasına yol açar. */
+    parentOrganization: {
+      '@type': 'MusicSchool',
+      '@id': 'https://www.notamuzikokulu.com/#organization',
+      name: 'Nota Müzik Okulu',
+      url: 'https://www.notamuzikokulu.com/',
+    },
+  };
+  if (b.geo) node.geo = { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng };
+  if (b.mapUrl) node.hasMap = b.mapUrl;
+  return node;
+}
+
+/** WebSite düğümü + site içi arama eylemi */
+function websiteLd() {
+  return {
+    '@type': 'WebSite',
+    '@id': WEBSITE_ID,
+    name: BUSINESS.name,
+    url: SITE + '/',
+    inLanguage: 'tr-TR',
+    publisher: { '@id': ORG_ID },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE}/products.html?q={search_term_string}` },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+/** Her sayfanın @graph'ının başına gelen ortak düğümler */
+const siteGraphLd = () => [organizationLd(), websiteLd()];
+
 // ---- metin yardımcıları ----
 
 const esc = (s) => String(s == null ? '' : s)
@@ -173,7 +297,7 @@ const excerpt = (s, n = 155) => {
   return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
 };
 
-const fmtTL = (n) => new Intl.NumberFormat('tr-TR').format(Number(n || 0)) + ' TL';
+const fmtTL = (n) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2, maximumFractionDigits: 2 }).format(Number(n || 0)) + ' TL';
 
 // ---- görsel yardımcıları (api.js ile aynı mantık) ----
 
@@ -273,13 +397,49 @@ async function fetchProducts() {
   return (await res.json()).filter((p) => p.slug);
 }
 
+/* Yorumları TEK istekle çeker, product_id → yorum dizisi Map'i döndürür.
+   Neden SSR'a taşındı: aggregateRating şimdiye kadar yalnız product.js ile
+   runtime'da enjekte ediliyordu. AI tarayıcıları JavaScript ÇALIŞTIRMIYOR,
+   yani puanları hiç görmüyorlardı — sıfır GEO değeri.
+
+   Hata durumunda boş Map'e düşer: yorum eksikliği build'i kırmamalı. */
+async function fetchReviews() {
+  const empty = new Map();
+  try {
+    const select = 'product_id,author_name,rating,comment,created_at';
+    const url = `${SUPABASE_URL}/rest/v1/reviews?select=${encodeURIComponent(select)}&order=created_at.desc`;
+    const res = await fetch(url, { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
+    if (!res.ok) { console.warn(`  ⚠ yorumlar çekilemedi (${res.status}) — puansız devam ediliyor`); return empty; }
+    const rows = await res.json();
+    const map = new Map();
+    for (const r of rows) {
+      if (!r.product_id || !(r.rating > 0)) continue;
+      if (!map.has(r.product_id)) map.set(r.product_id, []);
+      map.get(r.product_id).push(r);
+    }
+    return map;
+  } catch (e) {
+    console.warn('  ⚠ yorumlar çekilemedi:', e.message, '— puansız devam ediliyor');
+    return empty;
+  }
+}
+
+/** Yorum dizisinden product-schema.js'in beklediği rating nesnesi */
+function ratingOf(reviews) {
+  if (!reviews || !reviews.length) return null;
+  const avg = reviews.reduce((s, r) => s + Number(r.rating), 0) / reviews.length;
+  return { avg, count: reviews.length, reviews };
+}
+
 /** Test ürünü mü? (sayfa üretilir ama noindex + sitemap dışı) */
 const isTestProduct = (p) => /(^|[-_])test([-_]|$)/i.test(p.slug) || /\btest\b/i.test(p.name);
 
 module.exports = {
   SITE, SUPABASE_URL,
+  BUSINESS, ORG_ID, WEBSITE_ID, organizationLd, websiteLd, siteGraphLd,
   sharedScripts, productScripts, header, footer, pinVersions,
   esc, stripHtml, excerpt, fmtTL,
   toUrl, imageUrls, canVariant, thumb, srcset,
   catCard, injectBetween, fetchProducts, isTestProduct, priceFields,
+  fetchReviews, ratingOf,
 };

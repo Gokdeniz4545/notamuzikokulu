@@ -355,7 +355,7 @@
   };
   const statusLabel = (s) => (ORDER_STATUS[s] || { label: s }).label;
   const statusCls   = (s) => (ORDER_STATUS[s] || { cls: 's-pending' }).cls;
-  const fmtTL = (n) => new Intl.NumberFormat('tr-TR').format(Number(n)) + ' TL';
+  const fmtTL = (n) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2, maximumFractionDigits: 2 }).format(Number(n)) + ' TL';
 
   async function renderOrders() {
     const params = new URLSearchParams(location.search);

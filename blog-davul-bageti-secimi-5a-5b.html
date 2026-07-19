@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-davul-bageti-secimi-5a-5b.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Davul Bageti Seçimi: 5A mı 5B mi, Hangi Ahşap?",
       "description": "Baget numaraları ters çalışır: rakam küçüldükçe baget kalınlaşır. Kalınlık, harf ve ahşap türünün ne anlama geldiğini açıkladık.",
       "articleBody": "Baget, davulcunun enstrümanla tek temas noktası — ve şaşırtıcı biçimde tonu, hızı ve ne kadar çabuk yorulduğunu doğrudan etkiler. Paketin üzerindeki 5A, 7A, 2B gibi kodlar rastgele değil; ne anlama geldiklerini bilirsen doğru bageti ilk seferde alırsın. Rakam ve harf ne anlatıyor? Kod iki bileşenden oluşur: Rakam kabaca çapı belirtir ve ters çalışır — rakam küçüldükçe baget kalınlaşır. 7A ince, 5A orta, 2B kalındır. Bu, ilk duyulduğunda kafa karıştırıcı gelen ama akılda kalıcı bir konvansiyondur. Harf kullanım alanını gösterir: A (orchestra) — daha ince ve hafif B (band) — daha kalın ve ağır S (street) — en kalın grup; bando ve marş davulları için Hangi kalınlığı almalısın? 5A — en yaygın ve en güvenli başlangıç. Ağırlık ile kontrol arasında dengeli; pop, rock, funk, jazz dahil neredeyse her tarzda iş görür. Ne alacağını bilmiyorsan 5A al. 7A — daha ince ve hafif. Jazz, akustik setler ve sessiz çalışma için. Küçük eller ve çocuklar için de rahat. 5B — 5A'dan kalın. Daha yüksek ses ve daha güçlü vuruş; rock ve sert tarzlar için tercih edilir. Uzun çalışmalarda bileği daha çok yorar. Çocuklar ve yeni başlayanlar için 7A veya 5A idealdir. Kalın baget başlangıçta \"daha sağlam\" gibi görünse de, bilek tekniği henüz oturmamışken fazladan ağırlık yorulmayı hızlandırır ve hız gelişimini yavaşlatır. Ahşap türü: hız mı, dayanıklılık mı? Akçaağaç (maple) — en hafif tür. Hızlı pasajlarda ve kontrol gerektiren çalışmalarda avantajlı, bileği en az yoran seçenek. Karşılığında en çabuk aşınandır. Ceviz (hickory) — orta ağırlıkta ve titreşimi iyi emer. Dayanıklılık ile his arasında en dengeli tercih; profesyonellerin en çok kullandığı türdür. Meşe (oak) — en ağır ve en dayanıklı. En uzun ömürlü ama titreşimi daha çok bileğe iletir. Bilek ağrısı yaşıyorsan akçaağaca; sık baget kırıyorsan meşeye; ikisi arasında denge arıyorsan cevize yönel. Uç şekli tonu nasıl değiştirir? Bagetin ucu zile ve deriye temas eden yüzeydir ve tınıyı belirgin biçimde etkiler: Yuvarlak uç — zilden odaklanmış, net bir ton. Damla / fıçı biçimli uç — daha geniş ve dolgun ses. Naylon uç — zilde daha parlak ve keskin tını; ahşap uca göre daha uzun ömürlü. Baget ne zaman değiştirilir? Bagetler tükenen malzemedir ve kırılmadan da değiştirilmeleri gerekebilir. İşaretler: Gövdede çatlak veya kıymık — hemen değiştir, çalarken elini kesebilir. Uçta belirgin aşınma veya yassılaşma — ton bozulur, zile temas alanı değişir. Eğrilme — bageti masada yuvarla; zıplayarak dönüyorsa eğrilmiştir. Ses farkı — iki bagetin sesi birbirinden farklı geliyorsa çift olarak değiştir. Bagetler daima çift olarak değiştirilir; farklı aşınmadaki iki baget dengesiz vuruş yaratır. Işıklı bagetler Hareket duyarlı LED'li bagetler karanlık ortamda görsel etki yaratır. Sahne ve gösteri amaçlıdırlar; ağırlık dengesi standart ahşap bagetlerden farklı olabileceği için ana çalışma bageti olarak değil, ek olarak düşünülmelidir. Düzenli çalışan biri için yedek bir çift bulundurmak neredeyse zorunludur — baget genelde en olmadık anda kırılır. Baget modellerimize göz atabilirsin. Özetle Rakam ters çalışır : küçük rakam = kalın baget. Bilmiyorsan 5A al; çocuk/yeni başlayan için 7A da uygun. Akçaağaç hız, meşe dayanıklılık, ceviz denge. Bagetler çift olarak değiştirilir; yedek bulundur.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-davul-bageti-secimi-5a-5b.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

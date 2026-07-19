@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-bateri-takimi-mi-elektronik-davul-mu.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Bateri Takımı mı, Elektronik Davul mu? Apartman Rehberi",
       "description": "Akustik bateri 100 desibeli aşar, elektronik davul kulaklıkla sessizdir. Ama karar sadece ses meselesi değil.",
       "articleBody": "Davula başlamak isteyen herkesin karşılaştığı ilk çatal bu: akustik bateri takımı mı, elektronik davul mu? Türkiye'de çoğunluk apartmanda yaşadığı için cevap genellikle elektroniktir — ama karar sadece ses meselesi değil. İkisini dürüstçe karşılaştıralım. Ses: aradaki fark ne kadar büyük? Akustik bir bateri takımı rahatlıkla 100 desibeli aşar — bu, bir motorlu testereye yakın bir seviyedir ve hiçbir apartman dairesinde komşu rahatsız etmeden çalınamaz. Ses yalıtımı yaptırmak mümkündür ama maliyeti setin kendisinden yüksektir. Elektronik davulda kulaklık taktığında odaya yayılan tek ses, bagetin pad'e çarpma sesidir; normal konuşma sesinin altında kalır. Bu, \"her akşam 15 dakika çalışabilmek\" ile \"hiç çalışamamak\" arasındaki fark demektir. Ama tamamen sessiz değil: kick pedalının zemine ilettiği titreşim alt kata geçebilir. Setin altına kalın bir halı ya da yalıtım paspası sermek bunu belirgin şekilde azaltır. His ve teknik: akustik hâlâ önde Dürüst olmak gerekirse akustik davulun deri hissi, zillerin doğal tınısı ve setin dinamik tepkisi elektronikte tam karşılanmaz. Özellikle zil çalışmasında (ride, crash nüansları) fark hissedilir. Bu farkı en aza indiren şey mesh (file) pad 'lerdir. Gergin file yüzey gerçek deriye çok daha yakın bir geri tepme verir ve birçok modelde gerginliği ayarlanabilir. Kauçuk pad'ler daha sert teper ve vuruş sesi biraz daha yüksektir. Yer ve taşınabilirlik Akustik bir set kurulduğu yerde kalır ve ciddi bir alan kaplar. Elektronik setler daha kompakttır, birçoğu katlanabilir ve taşınması çok daha kolaydır. Öğrenci evi ya da küçük daire için bu tek başına belirleyici olabilir. Maliyet: görünen ve görünmeyen Akustik setin fiyatına ek olarak şunlar gelir: zil takımı (çoğu sette dahil değildir), akort anahtarı, deri değişimi ve — apartmandaysanız — ses yalıtımı. Elektronik sette ise kulaklık ve baget genellikle setle birlikte gelir; ek masraf çok daha azdır. Elektronik seçerken nelere bakmalı? Hi-hat pedalı — ayrı pedallı modeller gerçek davul tekniğini öğretir. Sadece anahtarla açık/kapalı yapan sistemler bu tekniği çalışmanı sınırlar. Pad sayısı — trampet, üç tom, kick, hi-hat ve iki zil standart bir başlangıç dizilimidir; gerçek setin yerleşimini öğretir. Mesh vs kauçuk — uzun çalışacaksan mesh belirgin konfor farkı yaratır. Kulaklık çıkışı ve aux giriş — şarkıya eşlik ederek çalışmak ritim duygusunu hızlı geliştirir. Üçüncü seçenek: çalışma pedi Henüz set almaya hazır değilsen ya da bütçe kısıtlıysa, davula başlamanın en ucuz yolu bir çalışma pedi dir. Vuruş eşitliği, bilek kontrolü ve rudimentlerin tamamı pad üzerinde çalışılır — profesyoneller bile günlük ısınmalarını pad'de yapar. Ayak koordinasyonu için sonunda bir sete geçmen gerekir ama pad, o geçişi çok kolaylaştırır. Karar tablosu Apartmanda yaşıyorsan → elektronik davul, tartışmasız. Müstakil ev / yalıtılmış oda varsa → akustik his ve zil çalışması için üstün. Yer sorunun varsa → elektronik. Bütçe çok kısıtlıysa → çalışma pedi ile başla. Elektronik davul setlerimize göz atarak hi-hat pedallı ve mesh pad'li seçenekleri karşılaştırabilirsin. Özetle Akustik bateri 100 dB+ — apartmanda gerçekçi değil. Elektronik davul kulaklıkla sessizdir; kick titreşimi için halı ser. Mesh pad gerçek deri hissine en yakın olanıdır. Hi-hat pedalı olan seti seç — gerçek tekniği o öğretir.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-bateri-takimi-mi-elektronik-davul-mu.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

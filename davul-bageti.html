@@ -29,22 +29,106 @@
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="shop.css?v=32" />
 <link rel="stylesheet" href="products.css?v=2" />
-<link rel="stylesheet" href="category.css?v=2" />
+<link rel="stylesheet" href="category.css?v=3" />
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "CollectionPage",
+      "@id": "https://www.notamuzikmarket.com/davul-bageti.html#webpage",
       "name": "Davul Bageti ve Baget Takımları",
       "description": "Akçaağaç ve renkli davul bageti modelleri, 5A ve 5B kalınlıkları, ışıklı bagetler. Doğru baget kalınlığını seçme ve baget ömrünü uzatma rehberi.",
       "url": "https://www.notamuzikmarket.com/davul-bageti.html",
       "inLanguage": "tr-TR",
       "isPartOf": {
-        "@type": "WebSite",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -120,6 +204,17 @@
       ]
     },
     {
+      "@type": "AggregateOffer",
+      "@id": "https://www.notamuzikmarket.com/davul-bageti.html#offers",
+      "priceCurrency": "TRY",
+      "lowPrice": 422.99,
+      "highPrice": 1169.1,
+      "offerCount": 6,
+      "offeredBy": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      }
+    },
+    {
       "@type": "FAQPage",
       "mainEntity": [
         {
@@ -177,6 +272,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html" aria-current="page">Ürünler</a>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>
@@ -211,13 +307,20 @@
 
   <header class="cat-head">
     <h1>Davul Bageti ve Baget Takımları</h1>
-    <p class="cat-intro">Baget, davulcunun elindeki tek temas noktası — ve şaşırtıcı biçimde tonu, hızı ve yorulmayı doğrudan etkiler. Aşağıda modeller, altında hangi kalınlığın kime uygun olduğunu anlatan rehber var.</p>
     <p class="cat-count">7 ürün listeleniyor</p>
     <nav class="cat-jump" aria-label="Sayfa içi kısayollar">
       <a href="#rehber">Satın alma rehberi</a>
       <a href="#sss">Sık sorulan sorular</a>
     </nav>
   </header>
+
+  <section class="cat-answer">
+    <p class="cat-answer-lead">Baget, davulcunun elindeki tek temas noktası — ve şaşırtıcı biçimde tonu, hızı ve yorulmayı doğrudan etkiler. Aşağıda modeller, altında hangi kalınlığın kime uygun olduğunu anlatan rehber var.</p>
+    <p class="cat-answer-price"><strong>Davul Bageti</strong> modellerimiz 422,99 TL ile 1.169,10 TL arasında; stoktaki en uygun model 422,99 TL fiyatla listeleniyor.</p>
+    <p class="cat-answer-local">Ürünler İzmir Çiğli'deki mağazamızda çalınarak denenebilir; tüm Türkiye'ye kargo ile gönderilir. Mağaza adresi: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir — her gün 10:00–21:00. <a href="izmir-muzik-magazasi.html">İzmir mağazamız hakkında →</a></p>
+    <p class="cat-answer-terms">2.000 TL ve üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. Teslimattan itibaren 14 gün cayma hakkınız vardır. Ödemeler PayTR güvenli ödeme altyapısı üzerinden alınır ve kredi kartına taksit seçenekleri ürün sayfasında görüntülenir.</p>
+    <p class="cat-price-asof">Fiyatlar 20.07.2026 tarihinde güncellenmiştir. <a href="fiyat-garantisi.html">Fiyat garantimiz →</a></p>
+  </section>
 
   <section class="cat-products" aria-label="Davul Bageti ve Baget Takımları ürünleri">
     <div class="catalog-grid">
@@ -248,7 +351,7 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">Aksesuar</span>
           <p class="cat-card-name">Cuba Percs 5A Renkli Davul Bageti - Yüksek Dayanıklılık, Kaymaz Özel Kaplama Canlı Neon Yeşil Baget Seti</p>
-          <p class="cat-card-price"><span class="price-old">599 TL</span> 539,1 TL</p>
+          <p class="cat-card-price"><span class="price-old">599 TL</span> 539,10 TL</p>
         </div>
       </a>
       <a class="cat-card" href="urun-cuba-percs-5a-renkli-davul-bageti-3lu-avantaj-paketi-neon-sahne-serisi-3-cift-set-3renklibaget.html">
@@ -263,7 +366,7 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">Aksesuar</span>
           <p class="cat-card-name">Cuba Percs 5A Renkli Davul Bageti 3&#39;lü Avantaj Paketi - Neon Sahne Serisi (3 Çift Set)</p>
-          <p class="cat-card-price"><span class="price-old">1.299 TL</span> 1.169,1 TL</p>
+          <p class="cat-card-price"><span class="price-old">1.299 TL</span> 1.169,10 TL</p>
         </div>
       </a>
       <a class="cat-card" href="urun-cuba-percs-neon-turuncu-profesyonel-bateri-bageti-5a-sahne-ve-gosteri-bageti-1-cift-cubaturuncubaget.html">
@@ -278,7 +381,7 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">Aksesuar</span>
           <p class="cat-card-name">Cuba Percs Neon Turuncu Profesyonel Bateri Bageti - 5A Sahne ve Gösteri Bageti (1 Çift)</p>
-          <p class="cat-card-price"><span class="price-old">599 TL</span> 539,1 TL</p>
+          <p class="cat-card-price"><span class="price-old">599 TL</span> 539,10 TL</p>
         </div>
       </a>
       <a class="cat-card" href="urun-isikli-bateri-bageti-hareket-duyarli-ledli-profesyonel-davul-baget-takimi-1-cift-cubabaget.html">
@@ -293,7 +396,7 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">Aksesuar</span>
           <p class="cat-card-name">Işıklı Bateri Bageti - Hareket Duyarlı LEDli Profesyonel Davul Baget Takımı (1 Çift)</p>
-          <p class="cat-card-price"><span class="price-old">1.799 TL</span> 1.619,1 TL</p>
+          <p class="cat-card-price"><span class="price-old">1.799 TL</span> 1.619,10 TL</p>
         </div>
       </a>
       <a class="cat-card" href="urun-sm5a-akcaagac-bateri-cubugu-5a-baget-5554445000026.html">

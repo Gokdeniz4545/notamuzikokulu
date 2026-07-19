@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-keman-olculeri-4-4-3-4.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Keman Ölçüleri: 4/4, 3/4, 1/2 Hangisi Size Uygun?",
       "description": "Yanlış boy keman sadece rahatsız etmez; entonasyonu ve duruşu baştan sakatlar. Doğru ölçüyü belirlemenin basit yöntemi.",
       "articleBody": "Keman perdesiz bir enstrümandır — parmağını doğru yere basmazsan nota yanlış çıkar. Bu yüzden doğru boy, diğer enstrümanlardakinden çok daha kritiktir. Büyük gelen bir keman sadece rahatsız etmez: kolun açısını bozar, parmak aralıklarını yanlış öğretir ve entonasyonu baştan sakatlar. Ölçü nasıl belirlenir? Yaş tek başına yeterli bir gösterge değil — belirleyici olan kol uzunluğudur. Ölçüm yöntemi basit: Kişi kolunu yana doğru omuz hizasında düz uzatır. Boyundaki çene bölgesinden avuç içinin ortasına kadar olan mesafe ölçülür. Karşılıkları: 4/4 (tam boy) — yaklaşık 58 cm ve üzeri · genellikle 12 yaş ve üstü, yetişkinler 3/4 — yaklaşık 53-58 cm · genellikle 9-12 yaş 1/2 — yaklaşık 48-53 cm · genellikle 7-9 yaş 1/4 — yaklaşık 43-48 cm · genellikle 5-7 yaş Sınırdaysan küçüğü seç Bu, öğretmenlerin en çok tekrarladığı kuraldır. İki ölçü arasında kaldıysan daima küçük olanı al. Sebebi şu: küçük keman zorlanmadan çalınır ve teknik doğru oturur. Büyük keman ise çocuğu omzunu kaldırmaya, vücudunu yana eğmeye ve sol kolunu fazla uzatmaya zorlar. Bu yanlış duruş alışkanlığa dönüşür ve sonradan düzeltmek, baştan doğru öğrenmekten çok daha zordur. Basit kontrol: çocuk kemanı normal çalma pozisyonunda tutarken sol kolunu rahatça uzatıp burguların olduğu bölgeye ulaşabiliyorsa boy doğrudur. Omuz yukarı kalkıyor ya da dirsek tam açılıyorsa keman büyüktür. Çocuk büyüdükçe ne olacak? Keman ölçüleri çocuğun büyümesine göre değiştirilir; bu normal bir süreçtir ve genellikle 2-3 yılda bir gerçekleşir. \"Büyür de kullanır\" diye büyük keman almak yanlıştır — o arada geçen yıllarda yanlış teknik yerleşir. Tam set: neler olmalı? Keman tek başına çalınamaz. Bir başlangıç setinde şunlar bulunmalıdır: Yay — sesi üreten asıl parça. Reçine — yay kıllarına sürtünme kazandırır. Reçinesiz yay tel üzerinde kayar ve keman neredeyse hiç ses çıkarmaz. Omuz yastığı — kemanı omuz ile çene arasında kavratır. Onsuz enstrümanı tutmak için sol el devreye girer ve parmaklar serbest kalamaz. Kılıf — keman ince ahşaptır, darbeye karşı hassastır. \"Kemanım ses vermiyor\" — en yaygın sebep Yeni bir yayın kılları fabrika çıkışında hiç reçine görmemiştir. İlk kullanımdan önce reçineyi yay kıllarına baştan uca, orta baskıyla ve birkaç dakika boyunca sürtmen gerekir — ilk uygulamada beklediğinden çok daha uzun sürer. Sonrasında her birkaç çalışmada bir kısa tazeleme yeterlidir. Aşırı reçine ise cırtlak ve tozlu bir ton yapar; dengeyi kulağınla bulacaksın. İlk haftalarda cırtlak ses normaldir Sebep genellikle üçünden biridir: yay tele fazla ya da az baskı yapıyor, yay telle dik açıyı kaybetmiş, ya da yay köprüye çok yaklaşmış. Yayı köprü ile klavye arasındaki orta bölgede, tele dik tutarak çalışmak bu sorunların çoğunu çözer. Her çalışma sonrası iki şey 1. Teller ve gövde üzerindeki reçine tozunu kuru yumuşak bezle sil. 2. Yayın kıllarını gevşet — gergin bırakılan yay zamanla kavisini kaybeder ve çubuk kalıcı olarak düzleşebilir. Keman modellerimize göz atarak 4/4 ve 3/4 tam set seçeneklerini inceleyebilirsin. Özetle Ölçüyü kol uzunluğu belirler, yaş değil. İki ölçü arasında kaldıysan küçüğünü al. Reçinesiz yay ses vermez — ilk kullanımda uzun uzun sür. Her çalışma sonrası yayı gevşet ve reçine tozunu sil.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-keman-olculeri-4-4-3-4.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

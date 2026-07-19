@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-baslangic-elektro-gitar-secimi.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Yeni Başlayanlar İçin Elektro Gitar: Nereden Başlamalı?",
       "description": "HSS mi SSS mi, hangi tel, hangi amfi? İlk elektro gitarını alırken gerçekten önemli olan kararları sıraladık.",
       "articleBody": "İlk elektro gitarını seçerken karşına çıkan terimlerin çoğu — HSS, alnico, tremolo, 22 perde — bu aşamada kararını değiştirmez. Gerçekten fark yaratan üç karar var: manyetik dizilimi, ekipman bütünlüğü ve gitarın kurulumu. Diğerlerini sonra öğrenirsin. 1. Manyetik dizilimi: HSS ile başla Gitar ilanlarındaki SSS, HSS, HSH harfleri manyetiklerin dizilimini anlatır. S single coil (ince, parlak), H humbucker (kalın, güçlü) demektir. Yeni başlayan biri için HSS en güvenli seçim: köprüdeki humbucker rock ve distortion tonlarını, diğer iki single coil ise temiz ve funk tonlarını karşılar. Ne çalacağına henüz karar vermemişsen tek gitarla en geniş alanı bu dizilim açar. 2. Amfiyi unutma En sık yapılan hata bu. Elektro gitar akustik gitardan farklı olarak tek başına neredeyse duyulmaz. Amfi olmadan aldığın gitar, çalışmaya başlayamadığın bir gitardır. Ev için büyük amfiye gerek yok — aksine, küçük amfiler ev seviyesinde daha iyi ton verir. Apartmanda oturuyorsan kulaklık çıkışı olan bir mini amfi aramanı öneririz; gecenin herhangi bir saatinde çalışabilirsin. 3. İlk gün gerekenler listesi Gitar — HSS, ST kasa, akort tutan burgularla. Amfi — kulaklık çıkışlı, kompakt. Enstrüman kablosu — ekranlı, mono jak. Ev için 3 metre yeterli. Kılıf — gitarlar çalınırken değil taşınırken kırılır. Pena — 0.60-0.73 mm arası orta sertlik en affedicisi. Akort aleti — klipsli akortçu telefon uygulamasından güvenilirdir. Bu listeyi ayrı ayrı toplamak yerine sahne seti almak çoğu zaman hem daha ucuz hem daha pratiktir. Hangi telle başlamalı? Fabrikadan çıkan çoğu elektro gitar 09-42 kalınlıkta telle gelir ve bu, yeni başlayanlar için doğru olandır. İnce tel daha kolay basılır, bükmesi rahattır ve henüz nasır tutmamış parmak uçlarını daha az yorar. Parmakların alıştıkça 10-46'ya geçip daha dolgun bir ton alabilirsin. Tel setleri hakkında ayrıntı için tel rehberimize bakabilirsin. İlk ay ne bekleyebilirsin? Gerçekçi bir tablo çizelim: 1. hafta — parmak uçları acır, bu normaldir. Akort etmeyi ve tek tek notaları basmayı öğrenirsin. 2. hafta — ilk akorlar (Em, Am, E, A) oturmaya başlar. Geçişler yavaştır, sorun değil. 3-4. hafta — akor geçişleri hızlanır, basit bir şarkıya eşlik edebilirsin. Buradaki tek kural: her gün 15 dakika, haftada bir 2 saatten iyidir. Kas hafızası tekrar sıklığıyla oluşur, toplam süreyle değil. Yeni başlayanların en sık üç hatası Bütçenin tamamını gitara harcamak. Amfisiz gitar sessiz bir tahtadır. Kurulumu ihmal etmek. Tel yüksekliği yanlış bir gitarda çalmak gereksiz yere zordur; çoğu yeni başlayan bunu kendi beceriksizliği sanıp bırakır. Çok hızlı başlamak. Metronomla yavaş çalışmak sıkıcı gelir ama hız, ancak temiz çalmanın üzerine kurulur. Özetle Dizilim seçemiyorsan HSS al — tek gitarla en geniş alanı açar. Amfi bütçenin parçası ; apartmandaysan kulaklık çıkışlı model seç. 09-42 tel ile başla, parmakların alışınca kalınlaştır. Günde 15 dakika düzenli çalışma, haftada bir uzun seanstan hızlı sonuç verir.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-baslangic-elektro-gitar-secimi.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-disa-donukler-davul.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Dışa Dönük ve Enerjik Kişiler Neden Davula Âşık Olur?",
       "description": "Yerinde duramayan, ayağıyla tempo tutan, enerjisini boşaltmak isteyenler için davulun cazibesini açıklıyoruz.",
       "articleBody": "Bir grupta gözünü hep davulcudan alamıyor, parmaklarınla masaya ritim tutuyorsan tesadüf değil. Davul, fiziksel enerjisi yüksek ve dışa dönük kişilerin en doğal çalgısıdır. İşte nedeni. Çünkü bedeniyle çalmak ister Davul, parmak ucu inceliğiyle değil; kollar, bacaklar ve tüm gövdeyle çalınır. Hareket etmeyi seven biri için bu bir kısıt değil, tam aksine en büyük keyif kaynağıdır. Çünkü anında tatmin verir İlk gün bile basit bir \"boom-tak\" ritmi tutabilir, bir şarkıya eşlik edebilirsin. Hızlı sonuç isteyen enerjik bir kişilik için bu motivasyonu canlı tutar. Çünkü stresi boşaltır Yoğun bir günün sonunda davula oturmak, en iyi rahatlama yöntemlerinden biridir. Gürültü sorun olur diye düşünme: AeroBand elektronik davul seti ya da Nitro elektronik davul gibi setlerle kulaklık takıp tüm enerjini sessizce boşaltabilirsin. Başlarken neye dikkat etmeli? Mekân: Apartmandaysan akustik değil, elektronik set seç. Baget: Dengeli bir 5B baget el yormaz, hızlı geçişlerde kontrolü artırır. Kulaklık: Kapalı kulaklıkla hem komşunu hem kendini korursun. Özetle Davul; hareketli, sabırsız ama tutkulu kişilikler için ideal. Apartman hayatıyla çelişmesi gerekmez — elektronik bir set + kulaklık ikilisi, enerjini kimseyi rahatsız etmeden açığa çıkarır.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-disa-donukler-davul.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

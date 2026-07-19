@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-kisiligine-gore-enstruman.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Kişiliğine Göre Hangi Enstrüman Sana Uygun?",
       "description": "Doğru enstrüman, en pahalı olan değil; mizacına en çok benzeyendir. Beş kişilik tipini beş çalgıyla eşleştirdik.",
       "articleBody": "Enstrüman seçerken çoğu kişi yanlış soruyu sorar: \"Hangisi daha havalı?\" Doğru soru şu: \"Hangisi bana benziyor?\" Çünkü çalmaya devam etmeni sağlayan şey ilk haftanın heyecanı değil, çalgının senin tabiatınla kurduğu uyumdur. Aşağıda beş kişilik eğilimini, onlara en çok yakışan çalgılarla eşleştirdik. Sahne ışığını seven, dışa dönük: Elektro gitar İlgi odağı olmaktan keyif alıyor, hızlı sonuç istiyorsan elektro gitar seni mutlu eder. Birkaç akorla tanıdık şarkıları çalmaya başlarsın; gürültü ve karakter onun doğasında var. Siyah Strat formundaki elektro gitarımız blues'tan rock'a geniş bir alan açar. Sakin, içe dönük, derinlik arayan: Klasik gitar veya piyano Tek başına, kulaklık takmadan, kendi temponda ilerlemeyi seviyorsan yumuşak naylon telli klasik gitar ya da bir dijital piyano ideal. İkisi de \"kendinle baş başa\" çalmaya en uygun çalgılar. Enerjik, hareketli, ritim tutan: Davul Ayağın sürekli tempo tutuyorsa cevabın davul. Fiziksel, boşaltıcı ve son derece tatmin edici. Apartmanda yaşıyorsan kulaklıkla çalışabileceğin bir elektronik davul bu enerjiyi komşunla sorun yaşamadan açığa çıkarır. Detaycı, sabırlı, mükemmeliyetçi: Keman Küçük ilerlemelerden tatmin oluyor, \"doğru ses\" için çalışmaya razıysan keman tam sana göre. Perdesiz oluşu disiplin ister ama karşılığında derin bir tatmin verir. Meraklı, çok yönlü, denemeyi seven: Keyboard Tek bir tını sana yetmiyorsa, yüzlerce ses ve hazır ritim sunan bir keyboard oyun alanın olur. Bir gün piyano, ertesi gün org veya yaylı taklidi — keşfetmeyi seven kişilikler için biçilmiş kaftan. Özetle Dışa dönük → elektro gitar İçe dönük / sakin → klasik gitar veya piyano Enerjik → davul Detaycı → keman Meraklı → keyboard Kararsızsan: çoğu kişi için klavye en az hayal kırıklığı yaratan başlangıçtır — el-göz koordinasyonu nettir ve ilk melodiyi dakikalar içinde çalarsın.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-kisiligine-gore-enstruman.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

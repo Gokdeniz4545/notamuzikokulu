@@ -17,6 +17,7 @@ const {
   productScripts, header, footer, pinVersions,
   esc, excerpt, fmtTL, imageUrls, thumb, srcset,
   catCard, injectBetween, fetchProducts, isTestProduct, priceFields,
+  siteGraphLd, ORG_ID, WEBSITE_ID, fetchReviews, ratingOf,
 } = require('./shared-chrome');
 const { buildProductSchema } = require('../product-schema');
 const { categoryIndex } = require('./build-categories');
@@ -31,7 +32,7 @@ const SCRIPTS = productScripts();
 const FOOTER = footer([['products.html', 'Tüm Ürünler'], ['blog.html', 'Blog'], ['siparis-sorgula.html', 'Sipariş Sorgula']]);
 
 // ---- tek ürün sayfası ----
-function productHtml(p, noindex, catPage) {
+function productHtml(p, noindex, catPage, rating) {
   const url = `${SITE}/urun-${p.slug}.html`;
   const imgs = imageUrls(p.product_images);
   const img = imgs[0] || `${SITE}/images/og-image.png`;
@@ -57,7 +58,7 @@ function productHtml(p, noindex, catPage) {
     images: imgs,
     categoryName: catName,
     url: url,
-  });
+  }, rating);
   // BreadcrumbList ayrı script'te (JS dokunmaz, JS render eden bot için de kalır).
   const crumbs = [
     { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: SITE + '/' },
@@ -67,11 +68,51 @@ function productHtml(p, noindex, catPage) {
     crumbs.push({ '@type': 'ListItem', position: 3, name: catPage.label, item: `${SITE}/${catPage.slug}.html` });
   }
   crumbs.push({ '@type': 'ListItem', position: crumbs.length + 1, name: p.name, item: url });
-  const breadcrumbLd = {
+  /* İşletme + site + breadcrumb tek @graph'ta, #ldProduct'tan AYRI script'te.
+     DİKKAT: bunlar #ldProduct'a KONMAZ — product.js hydration'da o script'i
+     komple eziyor, oraya konan her şey canlıda silinir. */
+  const pageLd = {
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: crumbs,
+    '@graph': [
+      ...siteGraphLd(),
+      { '@type': 'BreadcrumbList', itemListElement: crumbs },
+      {
+        '@type': 'ItemPage',
+        '@id': url + '#webpage',
+        url: url,
+        name: p.name,
+        inLanguage: 'tr-TR',
+        isPartOf: { '@id': WEBSITE_ID },
+        publisher: { '@id': ORG_ID },
+      },
+    ],
   };
+
+  /* SSR yıldız + yorum listesi.
+     product.js sayfa açılınca bunları zaten yeniden basıyor; SSR kopyası
+     AI tarayıcıları içindir (JS çalıştırmıyorlar). Markup product.js:284-296
+     ile BİREBİR aynı sınıfları kullanır, yoksa hydration'da sıçrama olur.
+     Yorum yoksa hiçbir şey basılmaz — sahte/placeholder puan ASLA. */
+  const STAR_D = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z';
+  const starsSsr = (v) => `<span class="stars" aria-label="${v} / 5">` +
+    [1, 2, 3, 4, 5].map((i) => `<svg viewBox="0 0 24 24" class="${i <= Math.round(v) ? 'star-on' : 'star-off'}"><path d="${STAR_D}"/></svg>`).join('') + '</span>';
+  const trDate = (iso) => { try { return new Date(iso).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' }); } catch (e) { return ''; } };
+
+  const ratingLineSsr = rating
+    ? `${starsSsr(rating.avg)} <span>${rating.avg.toFixed(1)} (${rating.count} değerlendirme)</span>`
+    : '';
+  const reviewsSsr = !rating ? '' : `
+  <h2>Değerlendirmeler</h2>
+  <div class="review-summary"><span class="review-avg">${rating.avg.toFixed(1)}</span><div>${starsSsr(rating.avg)}<div class="review-count">${rating.count} değerlendirme</div></div></div>
+  <div class="review-list">${rating.reviews.slice(0, 5).map((r) => `
+      <div class="review-item">
+        <div class="review-head">
+          <span class="review-author">${esc(r.author_name || 'Müşteri')}</span>
+          <span class="review-date">${esc(trDate(r.created_at))}</span>
+        </div>
+        ${starsSsr(r.rating)}
+        ${r.comment ? `<p class="review-comment">${esc(r.comment)}</p>` : ''}
+      </div>`).join('')}</div>`;
 
   const gallery = imgs.length
     ? `<div class="product-gallery-main" id="galMain"><img id="galImg" src="${esc(thumb(imgs[0], 720))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 92vw, 460px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" title="Büyütmek için tıkla" decoding="async" width="800" height="800" fetchpriority="high" /></div>` +
@@ -112,7 +153,7 @@ function productHtml(p, noindex, catPage) {
 ${JSON.stringify(productLd, null, 2)}
 </script>
 <script type="application/ld+json">
-${JSON.stringify(breadcrumbLd, null, 2)}
+${JSON.stringify(pageLd, null, 2)}
 </script>
 
 <link rel="icon" type="image/png" href="images/logo-icon.png" />
@@ -141,7 +182,7 @@ ${catPage ? `    <a href="${esc(catPage.slug)}.html">${esc(catPage.label)}</a> <
     <div class="product-info">
       <p class="product-cat">${catPage ? `<a href="${esc(catPage.slug)}.html">${esc(catName)}</a>` : esc(catName)}</p>
       <h1 class="product-title">${esc(p.name)}</h1>
-      <div class="product-rating-line" id="ratingLine"></div>
+      <div class="product-rating-line" id="ratingLine">${ratingLineSsr}</div>
       <p class="product-price">${pf.discountPercent > 0
         ? `<span class="price-old">${esc(fmtTL(pf.oldPrice))}</span> ${esc(fmtTL(pf.price))} <span class="disc-tag">-%${esc(pf.discountPercent)}</span>`
         : esc(fmtTL(pf.price))}</p>
@@ -165,7 +206,7 @@ ${catPage ? `    <a href="${esc(catPage.slug)}.html">${esc(catPage.label)}</a> <
     <h2>Taksit Seçenekleri</h2>
     <div id="paytr_taksit_tablosu"></div>
   </section>
-  <section id="productReviews" class="product-section"></section>
+  <section id="productReviews" class="product-section">${reviewsSsr}</section>
   <section id="productRecommended" class="product-section"></section>
 </main>
 
@@ -197,6 +238,7 @@ ${body}
 // ---- ana akış ----
 async function main() {
   const raw = await fetchProducts();
+  const reviewsByProduct = await fetchReviews();
   // Ürün → kategori landing sayfası eşlemesi (breadcrumb + kategori linki için)
   const catIdx = categoryIndex(raw.filter((p) => !isTestProduct(p)));
   // Test ürünleri (ör. paytr-test): sayfa üretilir ama noindex + sitemap dışı.
@@ -209,7 +251,7 @@ async function main() {
   fs.readdirSync(ROOT).filter((f) => /^urun-.+\.html$/.test(f)).forEach((f) => fs.unlinkSync(path.join(ROOT, f)));
 
   raw.forEach((p) => {
-    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), pinVersions(productHtml(p, isTest(p), catIdx[p.slug])), 'utf8');
+    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), pinVersions(productHtml(p, isTest(p), catIdx[p.slug], ratingOf(reviewsByProduct.get(p.id)))), 'utf8');
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap-products.xml'), buildSitemap(indexable), 'utf8');
 

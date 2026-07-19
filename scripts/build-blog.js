@@ -11,7 +11,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SITE, sharedScripts, header, footer, pinVersions, esc, stripHtml } = require('./shared-chrome');
+const {
+  SITE, sharedScripts, header, footer, pinVersions, esc, stripHtml,
+  siteGraphLd, ORG_ID, WEBSITE_ID,
+} = require('./shared-chrome');
 
 const ROOT = path.resolve(__dirname, '..');
 
@@ -47,8 +50,11 @@ function articleHtml(p, i) {
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
+      ...siteGraphLd(),
       {
         '@type': 'BlogPosting',
+        '@id': url + '#post',
+        'isPartOf': { '@id': WEBSITE_ID },
         'headline': p.title,
         'description': p.dek,
         'articleBody': stripHtml(p.body),
@@ -61,12 +67,10 @@ function articleHtml(p, i) {
         'mainEntityOfPage': { '@type': 'WebPage', '@id': url },
         'url': url,
         'image': img,
-        'author': { '@type': 'Organization', 'name': 'Nota Müzik Market', 'url': SITE + '/' },
-        'publisher': {
-          '@type': 'Organization',
-          'name': 'Nota Müzik Market',
-          'logo': { '@type': 'ImageObject', 'url': SITE + '/images/logo-square.png' }
-        }
+        // Yazar/yayıncı ortak MusicStore düğümüne bağlanır (graph'ın başında).
+        // Kişi bazlı Person yazarı eğitmen bilgisi geldiğinde eklenecek.
+        'author': { '@id': ORG_ID },
+        'publisher': { '@id': ORG_ID }
       },
       {
         '@type': 'BreadcrumbList',
@@ -167,10 +171,16 @@ ${SCRIPTS}
 function buildSitemap() {
   const today = new Date().toISOString().slice(0, 10);
   // statik indexlenebilir sayfalar (utility/noindex hariç)
+  // lastmod: today — ana sayfa ve katalog her gece rebuild'de gerçekten
+  // değişiyor (fiyat/stok/kategori bloğu). Sabit tarih bırakılırsa sayfalar
+  // bayat görünür; 3 aydan eski içerik AI alıntılanma hakkını kaybediyor.
   const staticPages = [
-    { loc: SITE + '/',              lastmod: '2026-06-26' },
-    { loc: SITE + '/products.html', lastmod: '2026-06-26' },
-    { loc: SITE + '/blog.html',     lastmod: today },
+    { loc: SITE + '/',                          lastmod: today },
+    { loc: SITE + '/products.html',             lastmod: today },
+    { loc: SITE + '/blog.html',                 lastmod: today },
+    { loc: SITE + '/hakkimizda.html',           lastmod: today },
+    { loc: SITE + '/izmir-muzik-magazasi.html', lastmod: today },
+    { loc: SITE + '/fiyat-garantisi.html',      lastmod: today },
   ];
   // Yasal sayfalar CANLIYA alınınca (commit + deploy) aşağıdaki satırı
   // staticPages'e ekle; sitemap'te henüz yayında olmayan URL = 404 riski.
@@ -189,10 +199,19 @@ function buildSitemap() {
   if (LEGAL_LIVE) staticPages.push(...legalPages);
   const articlePages = POSTS.map((p) => ({ loc: `${SITE}/blog-${p.slug}.html`, lastmod: p.date }));
 
-  // tekilleştir
+  // tekilleştir + DİSKTE OLMAYANI AT
+  // Sitemap'e henüz üretilmemiş sayfayı koymak Google'a 404 listesi göndermektir.
+  // Sayfa yazıldığı anda kendiliğinden sitemap'e girer, elle takip gerekmez.
   const seen = new Set();
   const all = [...staticPages, ...articlePages].filter((u) => {
-    if (seen.has(u.loc)) return false; seen.add(u.loc); return true;
+    if (seen.has(u.loc)) return false;
+    seen.add(u.loc);
+    const rel = u.loc.replace(SITE + '/', '') || 'index.html';
+    if (!fs.existsSync(path.join(ROOT, rel))) {
+      console.warn(`  ⚠ sitemap dışı (dosya yok): ${rel}`);
+      return false;
+    }
+    return true;
   });
 
   const body = all.map((u) =>

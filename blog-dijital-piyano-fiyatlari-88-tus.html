@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-dijital-piyano-fiyatlari-88-tus.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Dijital Piyano Fiyatları: 88 Tuş ve Çekiç Aksiyonu Ne Demek?",
       "description": "Dijital piyano fiyatını en çok tuş mekanizması belirler. 88 tuş, çekiç aksiyonu ve polifoni terimlerini sade dille açıkladık.",
       "articleBody": "Dijital piyano ilanlarında en çok geçen üç terim şunlar: 88 tuş, çekiç aksiyonu ve polifoni. Fiyat farkının büyük kısmı da tam olarak bu üçünden çıkıyor. Ne anlama geldiklerini bilirsen, ödediğin paranın karşılığında ne aldığını da bilirsin. 88 tuş: neden standart? Akustik konser piyanosunda 88 tuş vardır ve klasik repertuvarın tamamı bu aralığa göre yazılmıştır. 61 tuşlu bir enstrüman başlangıçta yeterli gelir; sınır, repertuvar ilerledikçe ortaya çıkar — parçanın en pes ya da en tiz notasına ulaşamazsın. Piyano eğitimi almayı planlıyorsan 88 tuşla başlamak ileride enstrüman değiştirmemek anlamına gelir ve uzun vadede daha ekonomiktir. Çekiç aksiyonu: fiyatın en büyük kalemi Akustik piyanoda tuşa bastığında bir çekiç teli tokatlar. Pes tuşlardaki çekiçler ağır, tiz tuşlardakiler hafiftir — bu yüzden akustik piyanonun sol tarafı sağından daha ağır hissettirir. Çekiç aksiyonlu dijital piyanolar bu mekanik ağırlığı fiziksel olarak taklit eder ve mekanizma karmaşık olduğu için fiyatın en büyük kalemidir. Peki gerekli mi? Piyano çalmayı ciddi öğrenecekseniz evet: hafif tuşlu bir enstrümanda çalışan biri akustik piyanoya oturduğunda tuşları beklediğinden çok ağır bulur ve tekniğini baştan kurmak zorunda kalır. \"Kademeli çekiç\" ifadesi bu ağırlık farkının klavye boyunca aşamalandırıldığını gösterir; akustik hissine en yakın sistemdir. Tuş hassasiyeti Hassasiyet, tuşa ne kadar hızlı bastığının sesin gürlüğünü etkilemesidir. Bu olmadan enstrüman her vuruşta aynı seviyede ses çıkarır ve müzikten ifade tamamen kaybolur — kreşendo yapamaz, bir melodiyi eşlikten öne çıkaramazsın. Çok kademeli hassasiyet ayarı sunan modellerde tepkiyi kendi dokunuşuna göre ayarlayabilirsin. Polifoni: 64 mü 128 mi? Polifoni, aynı anda çalınabilen maksimum nota sayısıdır. \"On parmağım var, 10 yeter\" demek yanıltıcı: sustain pedalına bastığında sönmekte olan notalar çalmaya devam eder ve sayaca eklenir. Katmanlı ses (piyano + yaylı gibi) kullanırsan rakam iki katına çıkar. Başlangıç için 64 polifoni yeterlidir. Pedal yoğun klasik parçalar çalışacaksan 128 ve üzeri, nota kesilmesi yaşamamanı garanti eder. Mobilyalı mı, standlı mı? Mobilyalı (konsol) — ahşap gövde, sabit ayak, genellikle üç pedal. Evde sabit bir yere kurulacaksa hem görsel hem sağlamlık açısından üstün. Metal standlı — daha hafif, sökülüp taşınabilir. Öğrenci evi, küçük daire ya da ders/sahne için taşınacak enstrümanlarda pratik. Dijital piyanonun gizli tasarrufu Akustik piyano yılda bir-iki kez akort gerektirir ve bu düzenli bir masraftır. Dijital piyano akort gerektirmez, nem ve sıcaklık değişimlerinden etkilenmez. İlk alım fiyatını karşılaştırırken bu tekrar eden gideri de hesaba katmak gerekir. Dijital piyano modellerimize göz atarak 88 tuş ve çekiç aksiyonlu seçenekleri karşılaştırabilirsin. Özetle 88 tuş — piyano eğitimi düşünüyorsan baştan al, sonra değiştirme. Çekiç aksiyonu fiyatın en büyük kalemi ama doğru tekniğin şartı. Polifoni 64 başlangıç için yeter, 128+ pedal yoğun parçalar için. Dijital piyano akort masrafı yoktur — uzun vadede fark eder.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-dijital-piyano-fiyatlari-88-tus.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

@@ -29,33 +29,100 @@
 <link rel="stylesheet" href="styles.css?v=49" />
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="legal.css?v=1" />
-<link rel="stylesheet" href="category.css?v=2" />
+<link rel="stylesheet" href="category.css?v=3" />
 
+<!--BUILD:SITELD:START-->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Nota Müzik Market",
-  "url": "https://www.notamuzikmarket.com/",
-  "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
-  "description": "Gitar, dijital piyano, elektronik davul, keman ve müzik aksesuarları satan online müzik market.",
-  "areaServed": "TR"
+  "@graph": [
+    {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Nota Müzik Market",
-  "url": "https://www.notamuzikmarket.com/",
-  "inLanguage": "tr-TR",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": { "@type": "EntryPoint", "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}" },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+
+      <!--BUILD:SITELD:END-->
 </head>
 <body class="has-announce">
 
@@ -85,6 +152,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>
@@ -154,51 +222,51 @@
       <div class="home-cat-grid">
         <a class="home-cat-link" href="elektro-gitar.html">
           <span class="home-cat-name">Elektro Gitar</span>
-          <span class="home-cat-count">19 ürün</span>
+          <span class="home-cat-count">19 ürün · 8.999,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="elektronik-davul.html">
           <span class="home-cat-name">Elektronik Davul</span>
-          <span class="home-cat-count">10 ürün</span>
+          <span class="home-cat-count">10 ürün · 10.799,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="dijital-piyano.html">
           <span class="home-cat-name">Dijital Piyano</span>
-          <span class="home-cat-count">9 ürün</span>
+          <span class="home-cat-count">9 ürün · 16.199,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="klasik-gitar.html">
           <span class="home-cat-name">Klasik Gitar</span>
-          <span class="home-cat-count">6 ürün</span>
+          <span class="home-cat-count">6 ürün · 5.039,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="cajon-darbuka.html">
           <span class="home-cat-name">Cajon &amp; Darbuka</span>
-          <span class="home-cat-count">6 ürün</span>
+          <span class="home-cat-count">6 ürün · 3.599,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="keman.html">
           <span class="home-cat-name">Keman</span>
-          <span class="home-cat-count">5 ürün</span>
+          <span class="home-cat-count">5 ürün · 3.005,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="davul-bageti.html">
           <span class="home-cat-name">Davul Bageti</span>
-          <span class="home-cat-count">7 ürün</span>
+          <span class="home-cat-count">7 ürün · 422,99 TL'den</span>
         </a>
         <a class="home-cat-link" href="davul-calisma-pedi.html">
           <span class="home-cat-name">Davul Çalışma Pedi</span>
-          <span class="home-cat-count">7 ürün</span>
+          <span class="home-cat-count">7 ürün · 1.079,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="gitar-teli.html">
           <span class="home-cat-name">Gitar Teli</span>
-          <span class="home-cat-count">3 ürün</span>
+          <span class="home-cat-count">3 ürün · 449,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="gitar-kablosu.html">
           <span class="home-cat-name">Gitar Kablosu</span>
-          <span class="home-cat-count">5 ürün</span>
+          <span class="home-cat-count">5 ürün · 539,10 TL'den</span>
         </a>
         <a class="home-cat-link" href="gitar-kilifi.html">
           <span class="home-cat-name">Gitar Kılıfı</span>
-          <span class="home-cat-count">3 ürün</span>
+          <span class="home-cat-count">3 ürün · 315 TL'den</span>
         </a>
         <a class="home-cat-link" href="amfi-pedal.html">
           <span class="home-cat-name">Amfi &amp; Pedal</span>
-          <span class="home-cat-count">3 ürün</span>
+          <span class="home-cat-count">3 ürün · 3.599,10 TL'den</span>
         </a>
       </div>
       <!--BUILD:CATEGORIES:END-->
@@ -308,6 +376,7 @@
       <div class="mm-sub" id="mmCats"><!-- kategoriler JS ile doldurulur --></div>
     </div>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
 
@@ -484,7 +553,7 @@
 <script src="api.js?v=47" defer></script>
 <script src="cart-store.js?v=34" defer></script>
 <script src="auth-modal.js?v=31" defer></script>
-<script src="script.js?v=45" defer></script>
+<script src="script.js?v=46" defer></script>
 
 <script src="cookie-consent.js?v=1" defer></script>
 <script src="gtag.js?v=4" defer></script>

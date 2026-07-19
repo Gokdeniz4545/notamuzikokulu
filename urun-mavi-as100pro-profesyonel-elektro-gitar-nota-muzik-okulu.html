@@ -140,31 +140,130 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Ana Sayfa",
-      "item": "https://www.notamuzikmarket.com/"
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Ürünler",
-      "item": "https://www.notamuzikmarket.com/products.html"
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
     },
     {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Elektro Gitar",
-      "item": "https://www.notamuzikmarket.com/elektro-gitar.html"
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana Sayfa",
+          "item": "https://www.notamuzikmarket.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ürünler",
+          "item": "https://www.notamuzikmarket.com/products.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Elektro Gitar",
+          "item": "https://www.notamuzikmarket.com/elektro-gitar.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Mavi — AS100PRO Profesyonel Elektro Gitar - (Nota Müzik Okulu)",
+          "item": "https://www.notamuzikmarket.com/urun-mavi-as100pro-profesyonel-elektro-gitar-nota-muzik-okulu.html"
+        }
+      ]
     },
     {
-      "@type": "ListItem",
-      "position": 4,
+      "@type": "ItemPage",
+      "@id": "https://www.notamuzikmarket.com/urun-mavi-as100pro-profesyonel-elektro-gitar-nota-muzik-okulu.html#webpage",
+      "url": "https://www.notamuzikmarket.com/urun-mavi-as100pro-profesyonel-elektro-gitar-nota-muzik-okulu.html",
       "name": "Mavi — AS100PRO Profesyonel Elektro Gitar - (Nota Müzik Okulu)",
-      "item": "https://www.notamuzikmarket.com/urun-mavi-as100pro-profesyonel-elektro-gitar-nota-muzik-okulu.html"
+      "inLanguage": "tr-TR",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      }
     }
   ]
 }
@@ -188,6 +287,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>
@@ -229,7 +329,7 @@
       <p class="product-cat"><a href="elektro-gitar.html">Elektro</a></p>
       <h1 class="product-title">Mavi — AS100PRO Profesyonel Elektro Gitar - (Nota Müzik Okulu)</h1>
       <div class="product-rating-line" id="ratingLine"></div>
-      <p class="product-price"><span class="price-old">11.999 TL</span> 10.799,1 TL <span class="disc-tag">-%10</span></p>
+      <p class="product-price"><span class="price-old">11.999 TL</span> 10.799,10 TL <span class="disc-tag">-%10</span></p>
       <p class="product-stock ">Stokta — 5 adet</p>
       <p class="product-desc">Auster AS100PRO Elektro Gitar – Nota Müzik Okulu Güvencesiyle Müziğin Ritmini Yakalayın! Hem müziğe yeni başlayanlar hem de sahne ve stüdyo performanslarında güvenilir bir enstrüman arayan gitaristler için tasarlanan Auster AS100PRO Elektro Gitar, yüksek malzeme kalitesi ve ergonomik yapısıyla öne çıkıyor. Nota Müzik Okulu kalitesi ve uzmanlığıyla sizlere sunulan bu model, bütçe dostu fiyatı ve yüksek performansıyla kategorisinin en çok tercih edilen elektro gitarlarından biridir. ✨ Öne Çıkan Özellikler: • Evrensel ve Şık Tasarım: Her tarza hitap eden zamansız hatları ve ergonomik gövde yapısı ile uzun süreli çalma seanslarında bile maksimum konfor sağlar. • Zengin Ton Çeşitliliği: Güçlü ve çok yönlü manyetik kombinasyonu sayesinde rock, blues, pop, metal ve caz gibi birçok farklı müzik türünde net, dinamik ve karakteristik tonlar elde edebilirsiniz. • Yüksek Malzeme Kalitesi: Dayanıklı gövde ağacı seçimi ve sağlam metal aksamları sayesinde akort kararlılığı yüksektir, uzun ömürlü bir kullanım sunar. • Konforlu Klavye Yapısı: Parmakları yormayan, hızlı ve akıcı geçişlere imkan tanıyan sap ve klavye tasarımı ile gitar öğrenme sürecinizi keyifli hale getirir. 🎸 Neden Auster AS100PRO? Auster AS100PRO, fiyat- odaklı yapısıyla müzik okullarının ve eğitmenlerin öğrencilerine en çok tavsiye ettiği modellerin başında gelir. Hem amfi performanslarında hem de kulaklıkla yapılan ev egzersizlerinde temiz ve güçlü bir ses çıkışı sunar. Şık ve modern dış görünüşüyle her tarz sahneye uyum sağlar. 🛡️ Nota Müzik Okulu ile Güvenli Alışveriş Satın aldığınız tüm ürünler, Nota Müzik Okulu uzman kadrosu tarafından kargolanmadan önce titizlikle kontrol edilir. Orijinal kutusunda, darbelere karşı ekstra korunaklı ve güvenli paketleme standartlarıyla Türkiye&#39;nin her yerine hasarsız bir şekilde ulaştırılır. Müziğe doğru ve kaliteli bir enstrümanla başlamak ya da mevcut ekipmanınızı bir üst seviyeye taşımak için Auster AS100PRO mükemmel bir seçim! (Not: Ürün genel hatlarıyla standart Auster AS100PRO özelliklerine sahip olup, görseldeki renk varyasyonu gönderilecektir.)</p>
       <div class="product-buy">
@@ -307,7 +407,7 @@
 <script src="header-auth.js?v=30" defer></script>
 <script src="paytr-taksit.js?v=1" defer></script>
 <script src="product-schema.js?v=1" defer></script>
-<script src="product.js?v=12" defer></script>
+<script src="product.js?v=13" defer></script>
 <script src="cookie-consent.js?v=1" defer></script>
 <script src="gtag.js?v=4" defer></script>
 

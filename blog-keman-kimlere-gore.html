@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-keman-kimlere-gore.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Keman Kimin Enstrümanı? Sabırlı ve Detaycı Ruhlar İçin",
       "description": "Perdesi yok, kolay değil — ama hiçbir çalgı keman kadar derin bir tatmin vermez. Keman kime göre?",
       "articleBody": "Keman, müziğin en romantik ama en sabır isteyen çalgılarından biri. Perdesi olmadığı için doğru sesi kulağınla bulmak zorundasın. Bu yüzden keman, belirli bir mizaca özel olarak hitap eder. Keman şu kişiliklere göre Sabırlı olanlar: İlk haftalar gıcırtılı geçer; bunu sorun değil, süreç olarak görenler kazanır. Detaycılar: Bir milimetrelik parmak farkı sesi değiştirir. Bu hassasiyeti zevkli bulanlar için ideal. İçe dönükler: Tek başına, sessiz odada çalışmayı sevenlerin çalgısı. Duygusal anlatımı sevenler: Keman, insan sesine en yakın çalgı kabul edilir. Başlarken doğru set Yeni başlayan için en pratik seçenek, her şeyiyle gelen bir set. Sert kutusu, yayı ve reçinesiyle gelen 4/4 keman setimiz ilk gün çalmaya başlamana yetecek her şeyi içerir. Daha sıcak, doğal bir tını istersen doğal vernikli ahşap gövdeli keman da güzel bir seçenek. İhmal edilen ama kritik parça: tel Kemanın sesinin yarısı telinden gelir. Eğitim sürecinde yıpranan teller sesi köreltir; berrak ve sıcak ton veren bir keman tel seti ile değiştirmek, yeni bir keman almak kadar fark yaratır. Özetle Keman; sabırlı, detaycı ve içsel kişiler için bir ödül gibidir. İlk ay zor geçebilir ama doğru bir set (kutu + yay + reçine) ve sağlam bir tel ile başlarsan, o \"ilk temiz ton\" anı tüm çabaya değer.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-keman-kimlere-gore.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

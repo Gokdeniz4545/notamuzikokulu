@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-cajon-nedir-darbuka-farki.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Cajon Nedir? Darbuka ile Farkı ve Hangisini Seçmeli",
       "description": "Üzerine oturup çalınan cajon mu, kucakta çalınan darbuka mı? İkisinin ses karakteri ve kullanım alanı tamamen farklı.",
       "articleBody": "Koca bir davul seti kurmadan ritim çalmak istiyorsan iki güçlü seçeneğin var: cajon ve darbuka. İkisi de tek parça, taşınabilir ve elle çalınır — ama ses karakterleri ve ait oldukları müzik dünyaları tamamen farklı. Cajon nedir? Cajon, üzerine oturup ön yüzüne elle vurarak çalınan kutu biçiminde bir perküsyon enstrümanıdır. İspanyolca'da \"sandık\" anlamına gelir ve Peru kökenlidir — köle işçilerin davul çalmalarının yasaklandığı dönemde meyve sandıklarını çalmalarıyla doğduğu anlatılır. Bu kadar popüler olmasının sebebi şu: tek bir kutudan bütün bir davul setinin temel seslerini çıkarabilir. Ön yüzün ortasına vurduğunda kick davul gibi derin bir bas, üst kenarına vurduğunda trampet benzeri çıtırtılı bir ses alırsın. Çoğu cajonun içinde gergin teller ya da bir bahar bulunur; trampetin karakteristik \"hışırtılı\" tınısını veren şey budur. Darbuka nedir? Darbuka, kadeh biçimli gövdesi ve tek deri yüzeyiyle Orta Doğu ve Anadolu müziğinin temel ritim enstrümanıdır. Kucakta ya da bacak üstünde yatay tutularak çalınır. Ses karakteri cajondan belirgin şekilde farklıdır: çok daha keskin, tiz ve parmak vuruşlarına duyarlıdır. Tekniği \"dum\" (merkeze vurulan derin ses) ve \"tek\" (kenara vurulan keskin ses) olmak üzere iki ana vuruş üzerine kuruludur ve bunların üzerine son derece zengin bir ritim geleneği inşa edilmiştir. Hangisini seçmeli? Karar çalacağın müziğe göre verilir: Cajon → pop, akustik gitar eşliği, latin, folk, batı müziği. Davul setine en yakın sesi verir. Darbuka → Türk halk müziği, arabesk, fasıl, oryantal, Orta Doğu ritimleri. Bir arkadaş grubunda akustik gitar eşliğinde çalacaksan cajon; düğün, halk müziği ya da oryantal ritim çalacaksan darbuka doğru tercihtir. Cajon çalmaya nasıl başlanır? Oturuş — cajonun üstüne otur, hafifçe öne eğil, ayaklar yere tam bassın. Bas (kick) sesi — ön yüzün orta bölgesine avuç içinin dolgun kısmıyla vur ve eli hemen çek. Elini yüzeyde bırakırsan ses boğulur. Trampet sesi — üst kenara parmak uçlarıyla vur; içerideki teller devreye girer. İlk ritim — bas–trampet–bas–trampet dizisi neredeyse tüm pop şarkılarının temel kalıbıdır. Nota bilgisi gerekmez. Bu iki vuruşu öğrendiğinde çoğu şarkıya eşlik edebilirsin. Metronomla yavaş çalışmak, teknik bilgiden çok daha belirleyicidir. Cajon apartmanda çalınır mı? Davul setine göre çok daha sessizdir ama tamamen sessiz değildir; özellikle bas vuruşları alt kata iletilebilir. Altına kalın bir halı sermek titreşimi belirgin şekilde azaltır. Gece geç saatler dışında çoğu apartmanda sorun yaratmaz. Çocuk için cajon Çocuklar için üretilen küçük gövdeli cajonlar hem oturma yüksekliği hem vuruş yüzeyi açısından ölçeklendirilmiştir. Bu önemli: standart bir cajona oturan çocuk ayaklarını yere basamadığı için doğru pozisyon alamaz ve rahat çalamaz. Ayrıca cajon, çocuklar için düşük giriş bariyeri olan nadir enstrümanlardan — ilk gün ses çıkarabilmek motivasyonu ciddi şekilde besler. Bakım Cajon ahşap bir gövdedir; nemden ve doğrudan güneşten uzak tutulmalıdır. Radyatör yanında ya da rutubetli bir bodrumda bırakılan gövde zamanla çatlayabilir. Ön yüzeyi temizlemek için kuru veya çok hafif nemli yumuşak bez yeterlidir; kimyasal temizleyici kullanma. Darbukada alüminyum gövdeli modellerde genelde sentetik deri kullanılır ve bu nem değişimlerine dayanıklıdır; yine de aşırı sıcak ya da soğukta bırakmamak derinin gerginliğini korur. Cajon ve darbuka modellerimize göz atabilirsin. Özetle Cajon → pop, akustik, latin · davul setine yakın ses. Darbuka → Türk müziği, fasıl, oryantal · keskin ve parmak duyarlı. Cajonda iki vuruş (bas + trampet) çoğu şarkıya eşlik etmeye yeter. Çocuk için ölçeklendirilmiş küçük gövde şart.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-cajon-nedir-darbuka-farki.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

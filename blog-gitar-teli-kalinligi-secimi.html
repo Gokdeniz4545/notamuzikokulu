@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-gitar-teli-kalinligi-secimi.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Gitar Teli Kalınlığı Nasıl Seçilir? 09-42 mi, 10-46 mı?",
       "description": "Tel kalınlığı hem çalma kolaylığını hem tonu değiştirir — ve yanlış set gitarın ayarını bozabilir. Rakamların ne anlama geldiğini açıkladık.",
       "articleBody": "Tel paketinin üzerindeki 09-42 ya da 10-46 gibi rakamlar, setin en ince telinin ve en kalın telinin inç cinsinden kalınlığını gösterir. 09-42 demek, en ince telin 0.009 inç olduğu anlamına gelir. Bu küçük rakamlar hem çalma kolaylığını hem tonu, hatta gitarın ayarını etkiler. İnce tel mi, kalın tel mi? İnce teller (09-42): Basması kolay, bükmesi (bending) rahat. Parmak ucu henüz nasır tutmamış yeni başlayanlar için en affedici seçenek. Karşılığında ton biraz daha ince ve sustain daha kısa olur. Kalın teller (10-46 ve üzeri): Daha dolgun bir ton, daha uzun sustain ve düşük akortlarda tel gevşemesine karşı direnç. Buna karşılık parmak ucuna belirgin şekilde daha çok baskı yapar ve bükmek daha çok güç ister. Hangisiyle başlamalı? Yeni başlıyorsan 09-42 . Bu aşamada en büyük risk, çalmayı zor bulup bırakmak — ince tel bu eşiği düşürür. Parmakların alıştıktan sonra (genellikle birkaç ay) 10-46'ya geçip daha dolu bir ton alabilirsin. Akustik gitarda ise teller doğası gereği daha kalındır çünkü gövdeyi sürecek enerjiyi üretmeleri gerekir; başlangıç için 10-47 aralığı en rahatıdır. Kalınlık değiştirirken dikkat: sapa binen gerilim Bu, çoğu kişinin bilmediği ama önemli bir nokta. Tel kalınlığı değiştiğinde sapa binen toplam gerilim de değişir. Bir kademelik geçişlerde (09'dan 10'a) çoğu gitar sorunsuz uyum sağlar. Ama büyük sıçramalarda (09'dan 11'e) gitarın ayarı bozulabilir: tel yüksekliği değişir, perdeler vızıldamaya başlar, entonasyon kayar. Bu durumda gitarın kurulumunu (setup) yaptırmak gerekir. Sap eğrilmesinden korkma — bu geçici bir ayar meselesidir, kalıcı hasar değildir. En kritik kural: gitar tipine uygun tel al Bu, yeni başlayanların en pahalıya mal olan hatasıdır. Üç tel ailesi birbirinin yerine kullanılamaz: Klasik gitar → naylon tel Akustik gitar → bronz/fosfor bronz çelik tel Elektro gitar → nikel/çelik tel Klasik gitara çelik tel takmak en tehlikeli olanıdır: klasik gitarın sapında çelik telin yarattığı gerilime dayanacak takviye çubuğu (truss rod) çoğunlukla bulunmaz. Sap eğilir, köprü yerinden kalkabilir ve gitar kalıcı hasar görür. Klasik gitar yalnızca naylon tel kullanır — istisnası yoktur. Tel ne zaman değişir? Kopmasını beklemek yaygın ama yanlış bir alışkanlık. Değişim işaretleri: Ton matlaştı, ses cansız duyuluyor Çaldıkça sürekli akorttan düşüyor Sarımlı bas tellerde pas veya kararma var Parmağını tel üzerinde kaydırdığında pürüz hissediyorsun Kaba zamanlama: her gün çalan için 1-2 ay, haftada birkaç kez çalan için 3-4 ay, ara sıra çalan için 6 aya kadar. Terli el ve nemli ortam bu süreleri kısaltır. Tel ömrünü uzatmanın iki yolu İkisi de bedava: çalmadan önce ellerini yıka ve çaldıktan sonra telleri kuru bezle sil. Tellerin ana düşmanı elden geçen ter ve yağdır; bunlar sarımın altına girip içeriden korozyona yol açar. Sadece bu iki alışkanlık tel ömrünü belirgin biçimde uzatır. Tel setlerimize göz atarak elektro, akustik ve klasik gitar için uygun kalınlıkları karşılaştırabilirsin. Özetle Rakamlar en ince ve en kalın telin inç kalınlığı. Yeni başlayan: elektroda 09-42 , akustikte 10-47 . Büyük kalınlık sıçramaları gitarın ayarını bozar — bir kademe geç. Klasik gitara asla çelik tel takma — kalıcı hasar verir.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-gitar-teli-kalinligi-secimi.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

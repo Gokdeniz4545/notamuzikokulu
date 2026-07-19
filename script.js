@@ -16,7 +16,7 @@
     const x = clamp(t, 0, 1);
     return x * x * (3 - 2 * x);
   };
-  const fmtPrice = (n) => new Intl.NumberFormat('tr-TR').format(n) + ' TL';
+  const fmtPrice = (n) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2, maximumFractionDigits: 2 }).format(n) + ' TL';
 
   // --------- scroll lock (iOS Safari body bounce'u tamamen engeller) ----------
   // documentElement overflow:hidden iOS Safari'de bazen yetersiz; body fixed pattern garanti

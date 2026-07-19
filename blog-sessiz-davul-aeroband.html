@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-sessiz-davul-aeroband.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Komşuyu Rahatsız Etmeden Davul: AeroBand Elektronik Set",
       "description": "Apartmanda davul çalmak hayal değil. Kablosuz, taşınabilir AeroBand setiyle neler yapabileceğine bakıyoruz.",
       "articleBody": "\"Davul çalmak isterdim ama apartmanda imkânsız\" cümlesini çok duyuyoruz. Oysa elektronik davul setleri tam da bu sorun için var. AeroBand elektronik davul seti , kablosuz ve taşınabilir yapısıyla bu işi bir adım öteye taşıyor. Neden sessiz? Akustik bir davul havayı titreştirerek ses üretir — bu yüzden gürültülüdür. Elektronik set ise pedlere vurduğunda sesi kulaklığına gönderir. Dışarıya yalnızca bagetin pede hafif teması duyulur. Yani sen tüm gücünle çalarken yan oda sessizdir. Bu setle neler yapabilirsin? Gece pratiği: Kulaklık tak, saat farketmeksizin çalış. Taşıma: Kompakt yapısı sayesinde toplayıp bir köşeye kaldırabilirsin. Eşlik: Telefonundan şarkı açıp ritim tutarak gerçek grup hissi yakalarsın. Gerçekçi his: Pedler gerçek davul tepkisi verdiği için akustiğe geçişin kolay olur. Kimler için ideal? Apartmanda yaşayan, ritim duygusunu geliştirmek isteyen, küçük bir alanı olan herkes için. Çocuğunu davula yönlendirmek isteyen ama gürültüden çekinen aileler için de güvenli bir başlangıç. Yanına ne almalı? Kapalı bir kulaklık ve dengeli bir akçaağaç 5B baget seti deneyimini tamamlar. Baget, davulun \"lastiği\" gibidir — doğru olanı eli yormaz. Özetle AeroBand seti, \"davul = gürültü\" denklemini bozuyor. Kulaklık + kompakt yapı sayesinde apartmanda bile tam güçle çalabilir, istediğin saatte pratik yapabilirsin.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-sessiz-davul-aeroband.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

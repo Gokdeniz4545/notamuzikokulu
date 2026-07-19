@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-enstrumanda-taksit-guvenli-odeme.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Enstrümanda Taksit ve Güvenli Ödeme Nasıl İşler?",
       "description": "Taksit seçenekleri, kart bilgilerinin nasıl korunduğu, kargo ücreti ve 14 günlük cayma hakkı — alışverişten önce bilmen gerekenler.",
       "articleBody": "Enstrüman, çoğu kişi için tek seferde ödenmesi zor bir kalem. Bu yazıda taksitin nasıl işlediğini, kart bilgilerinin nasıl korunduğunu ve satın aldıktan sonraki haklarını sade bir şekilde anlattık. Ödeme altyapısı: kart bilgin bize gelmiyor Ödemeler PayTR altyapısı üzerinden alınır. Buradaki en önemli nokta şu: kart bilgilerini girdiğin ekran PayTR'nin güvenli ödeme sayfasıdır ve bu bilgiler bizim sunucularımıza hiç uğramaz. Yani kart numaran, son kullanma tarihin ve CVV kodun bizde saklanmaz — saklanamaz da. Bu, sadece bir tercih değil sektör standardıdır; kart verisi işleyen tarafın ayrı bir güvenlik sertifikasyonuna tabi olması gerekir ve bu işi ödeme kuruluşları üstlenir. Taksit seçenekleri Taksit imkânı kartını veren bankaya ve kart tipine göre değişir. Bu yüzden sabit bir taksit tablosu vermek yanıltıcı olur. Ürün sayfalarında taksit tablosu görüntülenir ve orada kendi kartına uygun seçenekleri görebilirsin. Ödeme adımında kartını girdiğinde de bankanın sunduğu güncel taksit seçenekleri listelenir. Banka kartlarında (debit) taksit yapılamaz — bu bankaların genel kuralıdır. Kargo ücreti nasıl hesaplanır? 2.000 TL ve üzeri siparişlerde kargo ücretsizdir. 2.000 TL altındaki siparişlerde 199 TL kargo bedeli uygulanır (KDV dahil). Hesaplama sepetteki ara toplam üzerinden yapılır ve sepet ekranında ödeme öncesinde net olarak gösterilir. Ödeme adımında sürpriz bir tutar çıkmaz. Teslimat süresi Siparişler genellikle 1-2 iş günü içinde hazırlanır, kargo süresi bölgeye göre 1-3 iş günüdür. Gitar, dijital piyano ve davul setleri gibi hacimli ürünler darbeye karşı özel ambalajla gönderilir. 14 günlük cayma hakkı Mesafeli satış mevzuatı gereği, ürünü teslim aldığın tarihten itibaren 14 gün içinde hiçbir gerekçe göstermeden cayma hakkını kullanabilirsin. Dikkat edilmesi gerekenler: Ürün kullanılmamış ve yeniden satılabilir durumda olmalıdır. Orijinal ambalajı, aksesuarları ve varsa hediye ürünleri eksiksiz gönderilmelidir. Kamış, tel gibi hijyen veya kullanım gereği açıldığında iade edilemeyen ürünlerde istisnalar olabilir. Ayrıntılı koşullar için İade, Teslimat ve Cayma sayfamıza bakabilirsin. Siparişimi nasıl takip ederim? Sipariş oluştuğunda e-posta ile onay gönderilir; kargoya verildiğinde takip numarası paylaşılır. Üye olmadan alışveriş yaptıysan Sipariş Sorgula sayfasından sipariş numaran ile durumu görebilirsin. Alışverişten önce kontrol listesi Doğru ölçü mü? Keman ve klasik gitarda boy (4/4, 3/4) kritiktir. Eksik parça var mı? Elektro gitarda amfi ve kablo, kemanda reçine ve omuz yastığı unutulmasın. Kargo eşiği — 2.000 TL'ye yakınsan eksik aksesuarı aynı siparişe eklemek kargo ücretinden tasarruf ettirir. Stok durumu — ürün sayfasında güncel stok bilgisi görüntülenir. Özetle Kart bilgilerin PayTR'de işlenir, bizim sistemimizde saklanmaz. Taksit bankana ve kartına bağlıdır; ürün sayfasında görüntülenir. 2.000 TL üzeri kargo ücretsiz , altında 199 TL. Teslimattan itibaren 14 gün cayma hakkı — ürün kullanılmamış olmalı.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-enstrumanda-taksit-guvenli-odeme.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

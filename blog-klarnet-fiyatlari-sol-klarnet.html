@@ -40,7 +40,93 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "BlogPosting",
+      "@id": "https://www.notamuzikmarket.com/blog-klarnet-fiyatlari-sol-klarnet.html#post",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
       "headline": "Klarnet Fiyatları ve Sol Klarnet Seçimi",
       "description": "Türkiye'de \"klarnet\" denince akla gelen ses sol klarnettir. Si bemolden farkı, kamış seçimi ve başlangıç rehberi.",
       "articleBody": "Klarnet almaya karar verdiğinde vereceğin en önemli karar marka ya da fiyat değil: sol klarnet mi, si bemol klarnet mi? Bu seçim yanlış yapılırsa, çalmak istediğin müziği çalamazsın. Önce onu netleştirelim. Sol klarnet ile si bemol klarnet farkı Sol klarnet Türk müziğinin klarnetidir. Si bemol klarnetten daha uzundur, daha pes ve yumuşak, \"yanık\" olarak tanımlanan bir tona sahiptir. Türk halk müziği, roman havası, fasıl ve arabeskte duyduğun o karakteristik ses budur. Türkiye'de \"klarnet\" denince akla gelen tını sol klarnettir. Si bemol (Bb) klarnet dünya standardıdır. Klasik müzik, orkestra, bando ve caz repertuvarının tamamı bunun için yazılmıştır. Konservatuvar eğitimi bu enstrüman üzerinden yürür. İyi haber: parmak sistemi ikisinde de aynıdır. Birinde öğrendiğin teknik diğerine büyük ölçüde aktarılır. Ama repertuvar, ton ve birlikte çalacağın müzisyenler tamamen farklıdır. Hangisini almalısın? Türk halk müziği, fasıl, arabesk, roman havası çalacaksan → sol klarnet. Konservatuvar, orkestra, bando ya da caz hedefliyorsan → si bemol klarnet. Bir toplulukla çalacaksan → o topluluğun kullandığını al; farklı perdedeki iki klarnet birlikte çalmaz. Fiyatı belirleyen nedir? Gövde malzemesi. Başlangıç klarnetleri genellikle ABS reçine (ebonit benzeri sentetik) gövdelidir. Bu bir eksiklik değil, avantajdır: sentetik gövde nem ve sıcaklık değişimlerinden etkilenmez, çatlamaz. Ahşap (grenadilla) gövdeler daha zengin bir ton verir ama bakım hassasiyeti ve fiyatı çok yüksektir. Perde mekanizması. Perdelerin kaplaması, yayların kalitesi ve pedlerin sızdırmazlığı doğrudan çalınabilirliği etkiler. Sızdıran bir ped, o notanın hiç çıkmaması demektir. Ağızlık. Sesin karakterini en çok etkileyen ve en ucuza değiştirilebilen parçadır. Setle gelen ağızlık başlangıç için yeterlidir; ilerledikçe ağızlık değişimi en yüksek getirili yükseltmedir. Kamış: en çok gözden kaçan detay Klarnetin sesini üreten şey gövde değil, ağızlığa takılan ince kamıştır. Sertlik numarasına göre seçilir: 1,5 - 2 — yumuşak; yeni başlayanlar için. Az nefes basıncıyla ses verir. 2,5 - 3 — orta; ağız kasları geliştikçe geçilir, daha dolgun ve kontrollü ton. 3,5 ve üzeri — sert; deneyimliler için, güçlü nefes desteği ister. Kamış tükenen malzemedir: ıslanıp kuruma döngüsüyle yıpranır, çatlar ve tonu bozulur. Her zaman birkaç yedek bulundurmak gerekir. Yeni başlayan birinin \"klarnetim bozuk\" dediği durumların çoğu aslında kamış sorunudur. İlk ses neden çıkmıyor? Klarnette ilk zorluk parmaklar değil ağızdır. Doğru embouchure: alt dudak dişlerin üzerine hafifçe kıvrılır, üst dişler ağızlığın üstüne dayanır, ağız kenarları sızdırmayacak şekilde kapanır, çene aşağı düz tutulur. İlk günlerde cırtlak ses ya da hiç ses gelmemesi tamamen normaldir. En yaygın sebepler: kamış çok sert, kamış ağızlığa yanlış hizalanmış, ağız kenarlarından hava kaçıyor ya da nefes karından değil göğüsten geliyor. Nefes desteğinin diyaframdan gelmesi klarnette tonun temelidir. Bakımda tek kritik alışkanlık Her çalışmadan sonra gövdenin içini temizlik beziyle kurula. Nefesle giren nem gövdede birikir; ahşap gövdelerde çatlamaya, tüm modellerde ped çürümesine yol açar. Ped değişimi masraflı bir tamirdir. Ayrıca kamışı her kullanımdan sonra çıkarıp kurut, ağızlığı düzenli olarak ılık (sıcak değil) suyla yıka. Klarnet modellerimize göz atarak sol klarnet seçeneklerini inceleyebilirsin. Özetle Türk müziği → sol klarnet · klasik/orkestra → si bemol. Parmak sistemi aynı; repertuvar ve ton farklı. Başlangıçta sentetik gövde avantajdır — çatlamaz. \"Klarnetim bozuk\" şikayetlerinin çoğu aslında kamış sorunudur.",
@@ -57,17 +143,10 @@
       "url": "https://www.notamuzikmarket.com/blog-klarnet-fiyatlari-sol-klarnet.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "author": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Nota Müzik Market",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.notamuzikmarket.com/images/logo-square.png"
-        }
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -106,6 +185,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html" aria-current="page">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>

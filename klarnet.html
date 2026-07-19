@@ -29,22 +29,106 @@
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="shop.css?v=32" />
 <link rel="stylesheet" href="products.css?v=2" />
-<link rel="stylesheet" href="category.css?v=2" />
+<link rel="stylesheet" href="category.css?v=3" />
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
       "@type": "CollectionPage",
+      "@id": "https://www.notamuzikmarket.com/klarnet.html#webpage",
       "name": "Klarnet Modelleri ve Fiyatları",
       "description": "Sol klarnet ve si bemol klarnet modelleri ile fiyatları. Türk müziğinde sol klarnet, kamış seçimi ve başlangıç için klarnet rehberi.",
       "url": "https://www.notamuzikmarket.com/klarnet.html",
       "inLanguage": "tr-TR",
       "isPartOf": {
-        "@type": "WebSite",
-        "name": "Nota Müzik Market",
-        "url": "https://www.notamuzikmarket.com/"
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {
@@ -82,6 +166,17 @@
           "item": "https://www.notamuzikmarket.com/klarnet.html"
         }
       ]
+    },
+    {
+      "@type": "AggregateOffer",
+      "@id": "https://www.notamuzikmarket.com/klarnet.html#offers",
+      "priceCurrency": "TRY",
+      "lowPrice": 11249.1,
+      "highPrice": 11249.1,
+      "offerCount": 1,
+      "offeredBy": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      }
     },
     {
       "@type": "FAQPage",
@@ -133,6 +228,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html" aria-current="page">Ürünler</a>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>
@@ -167,13 +263,20 @@
 
   <header class="cat-head">
     <h1>Klarnet Modelleri ve Fiyatları</h1>
-    <p class="cat-intro">Klarnet, Türk müziğinin en tanıdık nefesli sesi — ve klasik müzikten caza kadar her yerde. Aşağıda modeller, altında sol klarnet ile si bemol arasındaki farkı ve başlangıç rehberini bulacaksın.</p>
     <p class="cat-count">1 ürün listeleniyor</p>
     <nav class="cat-jump" aria-label="Sayfa içi kısayollar">
       <a href="#rehber">Satın alma rehberi</a>
       <a href="#sss">Sık sorulan sorular</a>
     </nav>
   </header>
+
+  <section class="cat-answer">
+    <p class="cat-answer-lead">Klarnet, Türk müziğinin en tanıdık nefesli sesi — ve klasik müzikten caza kadar her yerde. Aşağıda modeller, altında sol klarnet ile si bemol arasındaki farkı ve başlangıç rehberini bulacaksın.</p>
+    <p class="cat-answer-price">Stoktaki <strong>Klarnet</strong> ürünü 11.249,10 TL fiyatla listeleniyor.</p>
+    <p class="cat-answer-local">Ürünler İzmir Çiğli'deki mağazamızda çalınarak denenebilir; tüm Türkiye'ye kargo ile gönderilir. Mağaza adresi: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir — her gün 10:00–21:00. <a href="izmir-muzik-magazasi.html">İzmir mağazamız hakkında →</a></p>
+    <p class="cat-answer-terms">2.000 TL ve üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. Teslimattan itibaren 14 gün cayma hakkınız vardır. Ödemeler PayTR güvenli ödeme altyapısı üzerinden alınır ve kredi kartına taksit seçenekleri ürün sayfasında görüntülenir.</p>
+    <p class="cat-price-asof">Fiyatlar 20.07.2026 tarihinde güncellenmiştir. <a href="fiyat-garantisi.html">Fiyat garantimiz →</a></p>
+  </section>
 
   <section class="cat-products" aria-label="Klarnet Modelleri ve Fiyatları ürünleri">
     <div class="catalog-grid">
@@ -189,7 +292,7 @@
         <div class="cat-card-body">
           <span class="cat-card-cat">Klarnet</span>
           <p class="cat-card-name">Auster AGCL100 Sol Klarnet</p>
-          <p class="cat-card-price"><span class="price-old">12.499 TL</span> 11.249,1 TL</p>
+          <p class="cat-card-price"><span class="price-old">12.499 TL</span> 11.249,10 TL</p>
         </div>
       </a>
       </div>

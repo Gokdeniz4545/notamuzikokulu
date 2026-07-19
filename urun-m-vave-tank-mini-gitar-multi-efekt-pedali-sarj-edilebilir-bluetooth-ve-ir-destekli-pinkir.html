@@ -140,31 +140,130 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Ana Sayfa",
-      "item": "https://www.notamuzikmarket.com/"
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#organization",
+      "name": "Nota Müzik Market",
+      "legalName": "Süleyman Kesici – Nota Müzik",
+      "url": "https://www.notamuzikmarket.com/",
+      "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905437663537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Çiğli",
+        "addressRegion": "İzmir",
+        "addressCountry": "TR"
+      },
+      "location": {
+        "@type": "Place",
+        "@id": "https://www.notamuzikmarket.com/#place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+          "addressLocality": "Çiğli",
+          "addressRegion": "İzmir",
+          "addressCountry": "TR"
+        },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Nota Müzik Okulu"
+        }
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Ürünler",
-      "item": "https://www.notamuzikmarket.com/products.html"
+      "@type": "WebSite",
+      "@id": "https://www.notamuzikmarket.com/#website",
+      "name": "Nota Müzik Market",
+      "url": "https://www.notamuzikmarket.com/",
+      "inLanguage": "tr-TR",
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.notamuzikmarket.com/products.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
     },
     {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Amfi & Pedal",
-      "item": "https://www.notamuzikmarket.com/amfi-pedal.html"
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana Sayfa",
+          "item": "https://www.notamuzikmarket.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ürünler",
+          "item": "https://www.notamuzikmarket.com/products.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Amfi & Pedal",
+          "item": "https://www.notamuzikmarket.com/amfi-pedal.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "M-VAVE Tank-Mini Gitar Multi Efekt Pedalı - Şarj Edilebilir, Bluetooth ve IR Destekli",
+          "item": "https://www.notamuzikmarket.com/urun-m-vave-tank-mini-gitar-multi-efekt-pedali-sarj-edilebilir-bluetooth-ve-ir-destekli-pinkir.html"
+        }
+      ]
     },
     {
-      "@type": "ListItem",
-      "position": 4,
+      "@type": "ItemPage",
+      "@id": "https://www.notamuzikmarket.com/urun-m-vave-tank-mini-gitar-multi-efekt-pedali-sarj-edilebilir-bluetooth-ve-ir-destekli-pinkir.html#webpage",
+      "url": "https://www.notamuzikmarket.com/urun-m-vave-tank-mini-gitar-multi-efekt-pedali-sarj-edilebilir-bluetooth-ve-ir-destekli-pinkir.html",
       "name": "M-VAVE Tank-Mini Gitar Multi Efekt Pedalı - Şarj Edilebilir, Bluetooth ve IR Destekli",
-      "item": "https://www.notamuzikmarket.com/urun-m-vave-tank-mini-gitar-multi-efekt-pedali-sarj-edilebilir-bluetooth-ve-ir-destekli-pinkir.html"
+      "inLanguage": "tr-TR",
+      "isPartOf": {
+        "@id": "https://www.notamuzikmarket.com/#website"
+      },
+      "publisher": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      }
     }
   ]
 }
@@ -188,6 +287,7 @@
   <nav class="site-nav" aria-label="Birincil">
     <a href="products.html">Ürünler</a>
     <a href="blog.html">Blog</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
     <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
     <a href="iletisim.html">İletişim</a>
   </nav>
@@ -229,7 +329,7 @@
       <p class="product-cat"><a href="amfi-pedal.html">Aksesuar</a></p>
       <h1 class="product-title">M-VAVE Tank-Mini Gitar Multi Efekt Pedalı - Şarj Edilebilir, Bluetooth ve IR Destekli</h1>
       <div class="product-rating-line" id="ratingLine"></div>
-      <p class="product-price"><span class="price-old">3.999 TL</span> 3.599,1 TL <span class="disc-tag">-%10</span></p>
+      <p class="product-price"><span class="price-old">3.999 TL</span> 3.599,10 TL <span class="disc-tag">-%10</span></p>
       <p class="product-stock ">Stokta — 20 adet</p>
       <p class="product-desc">M-VAVE Tank-Mini – Cebinizdeki Profesyonel Gitar Tonları!
 
@@ -368,7 +468,7 @@ Satıcı Notu: Hem yeni başlayanlar için harika bir öğrenme aracı hem de pr
 <script src="header-auth.js?v=30" defer></script>
 <script src="paytr-taksit.js?v=1" defer></script>
 <script src="product-schema.js?v=1" defer></script>
-<script src="product.js?v=12" defer></script>
+<script src="product.js?v=13" defer></script>
 <script src="cookie-consent.js?v=1" defer></script>
 <script src="gtag.js?v=4" defer></script>
 

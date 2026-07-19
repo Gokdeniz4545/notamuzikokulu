@@ -1,9 +1,11 @@
 # Nota Müzik Market
 
-> Türkiye merkezli online müzik enstrümanı mağazası. Gitar, klavye & piyano, davul & perküsyon, yaylı çalgılar ve müzik aksesuarları satışı. Güvenli ödeme PayTR altyapısıyla; tüm Türkiye'ye kargo.
+> İzmir Çiğli'de fiziksel mağazası bulunan müzik enstrümanı satıcısı. Gitar, klavye & piyano, davul & perküsyon, yaylı çalgılar ve müzik aksesuarları. Mağazada deneyerek satın alınabilir; tüm Türkiye'ye kargo. Güvenli ödeme PayTR altyapısıyla.
 
 ## Hakkında
-Nota Müzik Market (Süleyman Kesici – Nota Müzik), Çiğli / İzmir merkezli bir müzik enstrümanı e-ticaret sitesidir. Ürünler taranabilir statik sayfalar olarak yayımlanır; fiyat ve stok bilgisi canlı veritabanından güncellenir.
+Nota Müzik Market (Süleyman Kesici – Nota Müzik), İzmir'in Çiğli ilçesinde faaliyet gösteren bir müzik enstrümanı mağazasıdır. Fiziksel satış noktası, Nota Müzik Okulu binası içinde yer alır: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir. Enstrümanlar satın alınmadan önce mağazada çalınarak denenebilir ve ders veren eğitmenler seçim konusunda yönlendirme yapar. Mağaza her gün 10:00–21:00 arasında açıktır.
+
+Aynı ürünler notamuzikmarket.com üzerinden tüm Türkiye'ye kargoyla da satılır. Ürünler taranabilir statik sayfalar olarak yayımlanır; fiyat ve stok bilgisi canlı veritabanından güncellenir.
 
 ## Kategori Sayfaları
 Her sayfa ürün listesi, satın alma rehberi ve sık sorulan sorular içerir.
@@ -26,6 +28,9 @@ Her sayfa ürün listesi, satın alma rehberi ve sık sorulan sorular içerir.
 - Amfi & efekt pedalı: https://www.notamuzikmarket.com/amfi-pedal.html
 
 ## Önemli Sayfalar
+- Hakkımızda: https://www.notamuzikmarket.com/hakkimizda.html
+- İzmir mağazası (adres, ulaşım, showroom): https://www.notamuzikmarket.com/izmir-muzik-magazasi.html
+- Fiyat garantisi: https://www.notamuzikmarket.com/fiyat-garantisi.html
 - Ürün kataloğu (tüm ürünler): https://www.notamuzikmarket.com/products.html
 - Blog & enstrüman rehberleri: https://www.notamuzikmarket.com/blog.html
 - İletişim & künye: https://www.notamuzikmarket.com/iletisim.html
@@ -44,4 +49,8 @@ Her sayfa ürün listesi, satın alma rehberi ve sık sorulan sorular içerir.
 - https://www.notamuzikmarket.com/sitemap-products.xml
 
 ## İletişim
-E-posta: info@notamuzikokulu.com · Telefon: 0543 766 35 37 · Çalışma saatleri: her gün 10:00–21:00
+- Adres: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir (Nota Müzik Okulu binası içinde)
+- Telefon: 0543 766 35 37
+- E-posta: info@notamuzikmarket.com
+- Çalışma saatleri: her gün 10:00–21:00
+- Ünvan: Süleyman Kesici – Nota Müzik · Vergi Dairesi: Çiğli
