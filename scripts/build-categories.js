@@ -109,13 +109,13 @@ function answerBlock(cat, stats) {
       : `<strong>${ad}</strong> modellerimiz ${esc(fmtTL(stats.min))} ile ${esc(fmtTL(stats.max))} arasında; stoktaki en uygun model ${esc(fmtTL(stats.min))} fiyatla listeleniyor.`;
   const yerel = cat.localNote
     ? esc(cat.localNote)
-    : `Ürünler İzmir Çiğli'deki mağazamızda çalınarak denenebilir; tüm Türkiye'ye kargo ile gönderilir.`;
+    : `Ürünler İzmir'deki mağazalarımızda çalınarak denenebilir; tüm Türkiye'ye kargo ile gönderilir.`;
 
   return `
   <section class="cat-answer">
     <p class="cat-answer-lead">${esc(cat.intro)}</p>
     ${fiyat ? `<p class="cat-answer-price">${fiyat}</p>` : ''}
-    <p class="cat-answer-local">${yerel} Mağaza adresi: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir — her gün 10:00–21:00. <a href="izmir-muzik-magazasi.html">İzmir mağazamız hakkında →</a></p>
+    <p class="cat-answer-local">${yerel} İzmir'de iki mağazamız var: <strong>Karşıyaka</strong> (Şemikler Mah. 6205 Sok. No: 4/A) ve <strong>Menemen Ulukent</strong> (9 Eylül Mah. 268. Sok. No: 27/A) — her gün 10:00–21:00. <a href="izmir-muzik-magazasi.html">Mağazalarımız hakkında →</a></p>
     <p class="cat-answer-terms">2.000 TL ve üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. Teslimattan itibaren 14 gün cayma hakkınız vardır. Ödemeler PayTR güvenli ödeme altyapısı üzerinden alınır ve kredi kartına taksit seçenekleri ürün sayfasında görüntülenir.</p>
     ${stats.count ? `<p class="cat-price-asof">Fiyatlar ${trToday()} tarihinde güncellenmiştir. <a href="fiyat-garantisi.html">Fiyat garantimiz →</a></p>` : ''}
   </section>`;

@@ -177,76 +177,123 @@ function pinVersions(html) {
 const BUSINESS = {
   name: 'Nota Müzik Market',
   legalName: 'Süleyman Kesici – Nota Müzik',
-  telephone: '+905437663537',
   email: 'info@notamuzikmarket.com',
-  street: 'Şemikler Mah. 6205 Sok. No: 4/A',
-  locality: 'Çiğli',
-  region: 'İzmir',
-  country: 'TR',
-  opens: '10:00',
-  closes: '21:00',
   priceRange: '₺₺',
   // Gerçekten sahip olunan, doğrulanabilir profiller. Boş/uydurma profil
   // eklenmez (Google spam sinyali sayar). Google İşletme Profili açılınca
-  // Maps URL'i buraya ve hasMap'e eklenecek.
+  // Maps URL'i ilgili şubenin mapUrl alanına eklenecek.
   sameAs: [
     'https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/',
     'https://www.instagram.com/notamuzikmarket/',
   ],
-  // Google Maps'ten alınacak. DOLU DEĞİLSE geo düğümü hiç yazılmaz —
-  // uydurma koordinat Maps eşleşmesini bozar.
-  geo: null, // { lat: 38.xxxxx, lng: 27.xxxxx }
-  mapUrl: null,
 };
+
+/* İKİ SATIŞ NOKTASI.
+   Not: vergi dairesi Çiğli ama fiziksel adres Karşıyaka (Şemikler Mah.
+   Karşıyaka ilçesine bağlı). Künyede uzun süre "Çiğli" yazıyordu, koordinat
+   doğrulamasıyla düzeltildi.
+
+   İlk şube Nota Müzik Okulu binası içinde; okul AYRI bir varlık
+   (parentOrganization), aynı varlığın profili değil. */
+const BRANCHES = [
+  {
+    id: 'karsiyaka',
+    name: 'Nota Müzik Market — Karşıyaka',
+    street: 'Şemikler Mah. 6205 Sok. No: 4/A',
+    locality: 'Karşıyaka',
+    postalCode: '35560',
+    telephone: '+905437663537',
+    geo: { lat: 38.47049984131832, lng: 27.097006540794332 },
+    containedIn: 'Nota Müzik Okulu',
+    mapUrl: null, // İşletme Profili açılınca Maps URL'i
+  },
+  {
+    id: 'menemen',
+    name: 'Nota Müzik Market — Ulukent',
+    street: '9 Eylül Mah. 268. Sok. No: 27/A',
+    locality: 'Menemen',
+    postalCode: '35663',
+    telephone: '+905325193537',
+    geo: { lat: 38.53964968308616, lng: 27.037846812440176 },
+    containedIn: null,
+    mapUrl: null,
+  },
+];
+const PRIMARY = BRANCHES[0];
 
 const ORG_ID = SITE + '/#organization';
 const WEBSITE_ID = SITE + '/#website';
-const PLACE_ID = SITE + '/#place';
+const branchId = (b) => `${SITE}/#store-${b.id}`;
 
-/** Ana işletme düğümü — MusicStore (Organization + Place birleşimi) */
-function organizationLd() {
-  const b = BUSINESS;
-  const address = {
-    '@type': 'PostalAddress',
-    streetAddress: b.street,
-    addressLocality: b.locality,
-    addressRegion: b.region,
-    addressCountry: b.country,
-  };
+const OPENING_HOURS = {
+  '@type': 'OpeningHoursSpecification',
+  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+  opens: '10:00',
+  closes: '21:00',
+};
 
-  const place = {
-    '@type': 'Place',
-    '@id': PLACE_ID,
-    address: address,
-    // Fiziksel satış noktası müzik okulunun binası içinde
-    containedInPlace: { '@type': 'Place', name: 'Nota Müzik Okulu' },
-  };
-  if (b.geo) place.geo = { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng };
-  if (b.mapUrl) place.hasMap = b.mapUrl;
-
+/* Tek şubeliyken Organization + Store tek düğümde birleştirilmişti.
+   İki satış noktası olunca doğru model DEĞİŞİYOR:
+     #organization        → Organization (marka/tüzel kişi)
+     #store-karsiyaka     → MusicStore (fiziksel şube)
+     #store-menemen       → MusicStore (fiziksel şube)
+   Şubeler parentOrganization ile markaya, marka da subOrganization ile
+   şubelere bağlı. Bu, ilk düzeltilen "iki kopuk varlık" sorununu tekrar
+   yaratmaz çünkü bağ AÇIKÇA kurulu. */
+function branchLd(b) {
   const node = {
     '@type': 'MusicStore',
-    '@id': ORG_ID,
+    '@id': branchId(b),
     name: b.name,
-    legalName: b.legalName,
+    url: SITE + '/izmir-muzik-magazasi.html',
+    image: SITE + '/images/og-image.png',
+    telephone: b.telephone,
+    email: BUSINESS.email,
+    priceRange: BUSINESS.priceRange,
+    currenciesAccepted: 'TRY',
+    paymentAccepted: 'Kredi kartı, banka kartı, havale/EFT',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: b.street,
+      addressLocality: b.locality,
+      addressRegion: 'İzmir',
+      postalCode: b.postalCode,
+      addressCountry: 'TR',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng },
+    openingHoursSpecification: OPENING_HOURS,
+    parentOrganization: { '@id': ORG_ID },
+  };
+  if (b.containedIn) {
+    node.containedInPlace = { '@type': 'Place', name: b.containedIn };
+  }
+  if (b.mapUrl) node.hasMap = b.mapUrl;
+  return node;
+}
+
+/** Marka / tüzel kişi düğümü */
+function organizationLd() {
+  return {
+    '@type': 'Organization',
+    '@id': ORG_ID,
+    name: BUSINESS.name,
+    legalName: BUSINESS.legalName,
     url: SITE + '/',
     logo: SITE + '/images/logo-square.png',
     image: SITE + '/images/og-image.png',
-    telephone: b.telephone,
-    email: b.email,
-    priceRange: b.priceRange,
-    currenciesAccepted: 'TRY',
-    paymentAccepted: 'Kredi kartı, banka kartı, havale/EFT',
-    address: address,
-    location: place,
-    areaServed: { '@type': 'Country', name: 'Türkiye' },
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: b.opens,
-      closes: b.closes,
+    email: BUSINESS.email,
+    telephone: PRIMARY.telephone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: PRIMARY.street,
+      addressLocality: PRIMARY.locality,
+      addressRegion: 'İzmir',
+      postalCode: PRIMARY.postalCode,
+      addressCountry: 'TR',
     },
-    sameAs: b.sameAs,
+    areaServed: { '@type': 'Country', name: 'Türkiye' },
+    sameAs: BUSINESS.sameAs,
+    subOrganization: BRANCHES.map((b) => ({ '@id': branchId(b) })),
     /* Müzik okulu AYRI bir varlık — sameAs DEĞİL.
        sameAs "aynı varlığın başka profili" demektir; okulu oraya koymak
        AI'ın mağaza ile okulu tek işletme sanmasına yol açar. */
@@ -257,9 +304,6 @@ function organizationLd() {
       url: 'https://www.notamuzikokulu.com/',
     },
   };
-  if (b.geo) node.geo = { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng };
-  if (b.mapUrl) node.hasMap = b.mapUrl;
-  return node;
 }
 
 /** WebSite düğümü + site içi arama eylemi */
@@ -280,7 +324,8 @@ function websiteLd() {
 }
 
 /** Her sayfanın @graph'ının başına gelen ortak düğümler */
-const siteGraphLd = () => [organizationLd(), websiteLd()];
+// Marka + iki şube + WebSite: her sayfanın @graph başına gelir
+const siteGraphLd = () => [organizationLd(), ...BRANCHES.map(branchLd), websiteLd()];
 
 // ---- metin yardımcıları ----
 
@@ -436,7 +481,7 @@ const isTestProduct = (p) => /(^|[-_])test([-_]|$)/i.test(p.slug) || /\btest\b/i
 
 module.exports = {
   SITE, SUPABASE_URL,
-  BUSINESS, ORG_ID, WEBSITE_ID, organizationLd, websiteLd, siteGraphLd,
+  BUSINESS, BRANCHES, PRIMARY, ORG_ID, WEBSITE_ID, organizationLd, branchLd, websiteLd, siteGraphLd,
   sharedScripts, productScripts, header, footer, pinVersions,
   esc, stripHtml, excerpt, fmtTL,
   toUrl, imageUrls, canVariant, thumb, srcset,

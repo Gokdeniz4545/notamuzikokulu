@@ -147,12 +147,51 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "MusicStore",
+      "@type": "Organization",
       "@id": "https://www.notamuzikmarket.com/#organization",
       "name": "Nota Müzik Market",
       "legalName": "Süleyman Kesici – Nota Müzik",
       "url": "https://www.notamuzikmarket.com/",
       "logo": "https://www.notamuzikmarket.com/images/logo-square.png",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "email": "info@notamuzikmarket.com",
+      "telephone": "+905437663537",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
+        "addressLocality": "Karşıyaka",
+        "addressRegion": "İzmir",
+        "postalCode": "35560",
+        "addressCountry": "TR"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
+        "https://www.instagram.com/notamuzikmarket/"
+      ],
+      "subOrganization": [
+        {
+          "@id": "https://www.notamuzikmarket.com/#store-karsiyaka"
+        },
+        {
+          "@id": "https://www.notamuzikmarket.com/#store-menemen"
+        }
+      ],
+      "parentOrganization": {
+        "@type": "MusicSchool",
+        "@id": "https://www.notamuzikokulu.com/#organization",
+        "name": "Nota Müzik Okulu",
+        "url": "https://www.notamuzikokulu.com/"
+      }
+    },
+    {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#store-karsiyaka",
+      "name": "Nota Müzik Market — Karşıyaka",
+      "url": "https://www.notamuzikmarket.com/izmir-muzik-magazasi.html",
       "image": "https://www.notamuzikmarket.com/images/og-image.png",
       "telephone": "+905437663537",
       "email": "info@notamuzikmarket.com",
@@ -162,28 +201,15 @@
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
-        "addressLocality": "Çiğli",
+        "addressLocality": "Karşıyaka",
         "addressRegion": "İzmir",
+        "postalCode": "35560",
         "addressCountry": "TR"
       },
-      "location": {
-        "@type": "Place",
-        "@id": "https://www.notamuzikmarket.com/#place",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Şemikler Mah. 6205 Sok. No: 4/A",
-          "addressLocality": "Çiğli",
-          "addressRegion": "İzmir",
-          "addressCountry": "TR"
-        },
-        "containedInPlace": {
-          "@type": "Place",
-          "name": "Nota Müzik Okulu"
-        }
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": "Türkiye"
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.47049984131832,
+        "longitude": 27.097006540794332
       },
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
@@ -199,15 +225,54 @@
         "opens": "10:00",
         "closes": "21:00"
       },
-      "sameAs": [
-        "https://www.facebook.com/people/Nota-M%C3%BCzik-Market/61589354045903/",
-        "https://www.instagram.com/notamuzikmarket/"
-      ],
       "parentOrganization": {
-        "@type": "MusicSchool",
-        "@id": "https://www.notamuzikokulu.com/#organization",
-        "name": "Nota Müzik Okulu",
-        "url": "https://www.notamuzikokulu.com/"
+        "@id": "https://www.notamuzikmarket.com/#organization"
+      },
+      "containedInPlace": {
+        "@type": "Place",
+        "name": "Nota Müzik Okulu"
+      }
+    },
+    {
+      "@type": "MusicStore",
+      "@id": "https://www.notamuzikmarket.com/#store-menemen",
+      "name": "Nota Müzik Market — Ulukent",
+      "url": "https://www.notamuzikmarket.com/izmir-muzik-magazasi.html",
+      "image": "https://www.notamuzikmarket.com/images/og-image.png",
+      "telephone": "+905325193537",
+      "email": "info@notamuzikmarket.com",
+      "priceRange": "₺₺",
+      "currenciesAccepted": "TRY",
+      "paymentAccepted": "Kredi kartı, banka kartı, havale/EFT",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "9 Eylül Mah. 268. Sok. No: 27/A",
+        "addressLocality": "Menemen",
+        "addressRegion": "İzmir",
+        "postalCode": "35663",
+        "addressCountry": "TR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.53964968308616,
+        "longitude": 27.037846812440176
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:00"
+      },
+      "parentOrganization": {
+        "@id": "https://www.notamuzikmarket.com/#organization"
       }
     },
     {

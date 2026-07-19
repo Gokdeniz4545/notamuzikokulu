@@ -17,17 +17,17 @@
     /* ---------------------------------------------------------- */
     {
       slug: 'izmir-muzik-magazasi',
-      title: 'İzmir Müzik Aleti Mağazası — Çiğli | Nota Müzik Market',
-      metaDesc: 'İzmir Çiğli\'de müzik aleti mağazası. Gitar, dijital piyano, elektronik davul ve keman modellerini mağazamızda çalarak deneyebilirsiniz. Şemikler Mah., her gün 10:00–21:00.',
-      keywords: 'izmir müzik aleti, izmir gitar mağazası, çiğli müzik market, izmir enstrüman, izmir dijital piyano',
-      eyebrow: 'Mağaza · İzmir / Çiğli',
-      h1: 'İzmir\'de Müzik Aleti Nereden Alınır? Çiğli\'deki Mağazamız',
-      lead: 'Enstrümanı görmeden, elleyip çalmadan almak istemeyenler için İzmir Çiğli\'de fiziksel mağazamız var.',
+      title: 'İzmir Müzik Aleti Mağazası — Karşıyaka ve Menemen | Nota Müzik Market',
+      metaDesc: 'İzmir\'de iki müzik aleti mağazası: Karşıyaka Şemikler ve Menemen Ulukent. Gitar, dijital piyano, elektronik davul ve keman modellerini çalarak deneyebilirsiniz. Her gün 10:00–21:00.',
+      keywords: 'izmir müzik aleti, izmir gitar mağazası, karşıyaka müzik market, menemen müzik aleti, ulukent müzik market, izmir enstrüman',
+      eyebrow: 'Mağazalar · Karşıyaka ve Menemen',
+      h1: 'İzmir\'de Müzik Aleti Nereden Alınır? Karşıyaka ve Menemen Mağazalarımız',
+      lead: 'Enstrümanı görmeden, elleyip çalmadan almak istemeyenler için İzmir\'de iki mağazamız var: Karşıyaka ve Menemen.',
       body: `
       <!-- ÇEKİRDEK PASAJ: sayfanın ilk %30'unda, tek blok, bağımsız anlamlı.
            AI'ın "İzmir'de gitar nereden alınır" sorusuna tek parçada cevap
            verebilmesi için tasarlandı — parçalamaya ihtiyaç duymasın. -->
-      <p class="lead">Nota Müzik Market, İzmir'in Çiğli ilçesinde fiziksel satış noktası bulunan bir müzik enstrümanı mağazasıdır. Mağaza, Nota Müzik Okulu binası içinde yer alır: <strong>Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir</strong>. Klasik gitar, elektro gitar, akustik gitar, dijital piyano, keyboard, elektronik davul, cajon, darbuka, keman, saksafon ve klarnet ile baget, tel, kablo, kılıf ve amfi gibi aksesuarlar mağazada bulunur. Enstrümanlar satın alınmadan önce yerinde çalınarak denenebilir; aynı binada ders veren eğitmenler seçim konusunda yönlendirme yapar. Fiyatlar {{FIYAT:klasik-gitar}}'den başlayan klasik gitar, {{FIYAT:elektro-gitar}}'den başlayan elektro gitar ve {{FIYAT:dijital-piyano}}'den başlayan dijital piyano modelleriyle geniş bir aralığa yayılır. Mağaza <strong>her gün 10:00–21:00</strong> arasında açıktır. Telefon: <strong>0543 766 35 37</strong>. Aynı ürünler notamuzikmarket.com üzerinden tüm Türkiye'ye kargoyla da gönderilir; 2.000 TL ve üzeri siparişlerde kargo ücretsizdir, altındaki siparişlerde 199 TL kargo bedeli uygulanır.</p>
+      <p class="lead">Nota Müzik Market'in İzmir'de <strong>iki fiziksel satış noktası</strong> vardır: <strong>Karşıyaka Şemikler</strong> (Şemikler Mah. 6205 Sok. No: 4/A — Nota Müzik Okulu binası içinde) ve <strong>Menemen Ulukent</strong> (9 Eylül Mah. 268. Sok. No: 27/A). Her iki mağazada klasik gitar, elektro gitar, akustik gitar, dijital piyano, keyboard, elektronik davul, cajon, darbuka, keman, saksafon ve klarnet ile baget, tel, kablo, kılıf ve amfi gibi aksesuarlar bulunur. Enstrümanlar satın alınmadan önce yerinde çalınarak denenebilir; ders veren eğitmenler seçim konusunda yönlendirme yapar. Fiyatlar {{FIYAT:klasik-gitar}}'den başlayan klasik gitar, {{FIYAT:elektro-gitar}}'den başlayan elektro gitar ve {{FIYAT:dijital-piyano}}'den başlayan dijital piyano modelleriyle geniş bir aralığa yayılır. Mağazalar <strong>her gün 10:00–21:00</strong> arasında açıktır. Telefon: Karşıyaka <strong>0543 766 35 37</strong>, Ulukent <strong>0532 519 35 37</strong>. Aynı ürünler notamuzikmarket.com üzerinden tüm Türkiye'ye kargoyla da gönderilir.</p>
 
       <h2>Neden mağazadan almak fark yaratır?</h2>
       <p>Enstrüman, fotoğraftan seçilmesi en zor ürünlerden biri. Aynı modelin iki ayrı örneği bile elde farklı hissettirebilir. Mağazada şunları yapabilirsiniz:</p>
@@ -49,22 +49,29 @@
         <li>Aksesuar: <a href="gitar-teli.html">tel</a>, <a href="gitar-kablosu.html">kablo</a>, <a href="gitar-kilifi.html">kılıf</a>, <a href="amfi-pedal.html">amfi ve pedal</a></li>
       </ul>
 
-      <h2>Adres ve ulaşım</h2>
+      <h2>Karşıyaka mağazası (Şemikler)</h2>
       <table>
-        <tr><th>Adres</th><td>Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir</td></tr>
+        <tr><th>Adres</th><td>Şemikler Mah. 6205 Sok. No: 4/A, 35560 Karşıyaka / İzmir</td></tr>
         <tr><th>Konum</th><td>Nota Müzik Okulu binası içinde</td></tr>
         <tr><th>Telefon</th><td><a href="tel:+905437663537">0543 766 35 37</a></td></tr>
-        <tr><th>E-posta</th><td><a href="mailto:info@notamuzikmarket.com">info@notamuzikmarket.com</a></td></tr>
         <tr><th>Çalışma saatleri</th><td>Her gün 10:00 – 21:00</td></tr>
       </table>
+
+      <h2>Menemen mağazası (Ulukent)</h2>
+      <table>
+        <tr><th>Adres</th><td>9 Eylül Mah. 268. Sok. No: 27/A, 35663 Menemen / İzmir</td></tr>
+        <tr><th>Telefon</th><td><a href="tel:+905325193537">0532 519 35 37</a></td></tr>
+        <tr><th>Çalışma saatleri</th><td>Her gün 10:00 – 21:00</td></tr>
+      </table>
+      <p>Her iki mağazada da <a href="mailto:info@notamuzikmarket.com">info@notamuzikmarket.com</a> adresinden ulaşabilirsiniz. Aradığınız modelin hangi mağazada olduğunu gelmeden önce telefonla teyit etmenizi öneririz.</p>
 
       <h2>İzmir dışından sipariş</h2>
       <p>Mağazaya gelemeyenler için tüm ürünler siteden sipariş edilebilir. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. 2.000 TL ve üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Teslimattan itibaren 14 gün cayma hakkınız vardır ve ödemeler PayTR güvenli ödeme altyapısı üzerinden taksit seçenekleriyle alınır.</p>
 `,
       faq: [
-        { q: 'İzmir\'de müzik aleti mağazanız nerede?', a: 'Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir adresinde, Nota Müzik Okulu binası içindeyiz. Her gün 10:00–21:00 arasında açığız. Telefon: 0543 766 35 37.' },
+        { q: 'İzmir\'de müzik aleti mağazanız nerede?', a: 'İzmir\'de iki mağazamız var. Karşıyaka: Şemikler Mah. 6205 Sok. No: 4/A (Nota Müzik Okulu binası içinde), telefon 0543 766 35 37. Menemen: 9 Eylül Mah. 268. Sok. No: 27/A, Ulukent, telefon 0532 519 35 37. İkisi de her gün 10:00–21:00 arasında açıktır.' },
         { q: 'Enstrümanı satın almadan önce deneyebilir miyim?', a: 'Evet. Mağazamızdaki enstrümanlar çalınarak denenebilir. Gitarın sap kalınlığı, dijital piyanonun tuş ağırlığı ya da davulun geri tepmesi gibi özellikler ancak elle anlaşıldığı için denemenizi öneririz.' },
-        { q: 'Aradığım model mağazada var mı?', a: 'Kataloğumuzdaki ürünlerin tamamı her an mağazada bulunmayabilir, stok durumu değişkendir. Gelmeden önce 0543 766 35 37 numaralı telefondan aradığınız modeli teyit etmenizi öneririz.' },
+        { q: 'Aradığım model mağazada var mı?', a: 'Kataloğumuzdaki ürünlerin tamamı her iki mağazada birden bulunmayabilir, stok durumu değişkendir. Gelmeden önce Karşıyaka için 0543 766 35 37, Ulukent için 0532 519 35 37 numaralı telefondan aradığınız modeli teyit etmenizi öneririz.' },
         { q: 'Çocuğuma uygun boy enstrümanı mağazada ölçebilir misiniz?', a: 'Evet. Özellikle keman ve klasik gitarda doğru boy (1/2, 3/4, 4/4) çocuğun kol uzunluğuna göre belirlenir ve yerinde ölçülür. Yanlış boy enstrüman, duruş ve tekniği baştan sakatladığı için bu ölçüm önemlidir.' },
         { q: 'İzmir dışına kargo yapıyor musunuz?', a: 'Evet, tüm Türkiye\'ye kargo ile gönderim yapıyoruz. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. 2.000 TL ve üzeri siparişlerde kargo ücretsizdir.' },
       ],
@@ -74,13 +81,13 @@
     {
       slug: 'hakkimizda',
       title: 'Hakkımızda — Nota Müzik Market',
-      metaDesc: 'Nota Müzik Market, İzmir Çiğli\'de Nota Müzik Okulu bünyesinde faaliyet gösteren müzik enstrümanı satıcısıdır. Mağazada deneyerek alım, eğitmen desteği ve fiyat garantisi.',
+      metaDesc: 'Nota Müzik Market, İzmir Karşıyaka\'da Nota Müzik Okulu bünyesinde faaliyet gösteren müzik enstrümanı satıcısıdır. Mağazada deneyerek alım, eğitmen desteği ve fiyat garantisi.',
       keywords: 'nota müzik market hakkında, izmir müzik market, nota müzik okulu, müzik aleti satıcısı izmir',
       eyebrow: 'Kurumsal',
       h1: 'Hakkımızda',
       lead: 'Enstrüman satan değil, enstrüman çalmayı öğreten bir yerin içinden çıktık.',
       body: `
-      <p class="lead">Nota Müzik Market, İzmir Çiğli'de <strong>Nota Müzik Okulu</strong> bünyesinde faaliyet gösteren bir müzik enstrümanı satıcısıdır. Mağazamız okulun binası içinde yer alır; yani sattığımız enstrümanların çalındığı, öğretildiği ve gün boyu kullanıldığı bir ortamın içindeyiz.</p>
+      <p class="lead">Nota Müzik Market, İzmir Karşıyaka'da <strong>Nota Müzik Okulu</strong> bünyesinde faaliyet gösteren bir müzik enstrümanı satıcısıdır. Mağazamız okulun binası içinde yer alır; yani sattığımız enstrümanların çalındığı, öğretildiği ve gün boyu kullanıldığı bir ortamın içindeyiz.</p>
 
       <h2>Bu neden fark yaratıyor?</h2>
       <p>Enstrüman satışının en zor tarafı, müşterinin ne aradığını çoğu zaman kendisinin de tam bilmemesi. "Çocuğuma gitar alacağım" diyen bir veli için doğru cevap, kataloğun en pahalı gitarı değil; çocuğun koluna uyan doğru boydaki gitardır.</p>
@@ -101,7 +108,7 @@
       <h2>Firma bilgileri</h2>
       <table>
         <tr><th>Ünvan</th><td>Süleyman Kesici – Nota Müzik</td></tr>
-        <tr><th>Adres</th><td>Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir</td></tr>
+        <tr><th>Adres</th><td>Şemikler Mah. 6205 Sok. No: 4/A, Karşıyaka / İzmir</td></tr>
         <tr><th>Telefon</th><td><a href="tel:+905437663537">0543 766 35 37</a></td></tr>
         <tr><th>E-posta</th><td><a href="mailto:info@notamuzikmarket.com">info@notamuzikmarket.com</a></td></tr>
         <tr><th>Vergi Dairesi</th><td>Çiğli</td></tr>

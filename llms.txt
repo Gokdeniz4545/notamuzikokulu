@@ -1,9 +1,13 @@
 # Nota Müzik Market
 
-> İzmir Çiğli'de fiziksel mağazası bulunan müzik enstrümanı satıcısı. Gitar, klavye & piyano, davul & perküsyon, yaylı çalgılar ve müzik aksesuarları. Mağazada deneyerek satın alınabilir; tüm Türkiye'ye kargo. Güvenli ödeme PayTR altyapısıyla.
+> İzmir'de iki fiziksel mağazası (Karşıyaka ve Menemen Ulukent) bulunan müzik enstrümanı satıcısı. Gitar, klavye & piyano, davul & perküsyon, yaylı çalgılar ve müzik aksesuarları. Mağazada deneyerek satın alınabilir; tüm Türkiye'ye kargo. Güvenli ödeme PayTR altyapısıyla.
 
 ## Hakkında
-Nota Müzik Market (Süleyman Kesici – Nota Müzik), İzmir'in Çiğli ilçesinde faaliyet gösteren bir müzik enstrümanı mağazasıdır. Fiziksel satış noktası, Nota Müzik Okulu binası içinde yer alır: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir. Enstrümanlar satın alınmadan önce mağazada çalınarak denenebilir ve ders veren eğitmenler seçim konusunda yönlendirme yapar. Mağaza her gün 10:00–21:00 arasında açıktır.
+Nota Müzik Market (Süleyman Kesici – Nota Müzik), İzmir'in Karşıyaka ilçesinde faaliyet gösteren bir müzik enstrümanı mağazasıdır. İzmir'de iki fiziksel satış noktası vardır:
+- Karşıyaka (Şemikler Mah. 6205 Sok. No: 4/A, 35560) — Nota Müzik Okulu binası içinde. Tel: 0543 766 35 37
+- Menemen Ulukent (9 Eylül Mah. 268. Sok. No: 27/A, 35663). Tel: 0532 519 35 37
+
+Enstrümanlar satın alınmadan önce mağazada çalınarak denenebilir ve ders veren eğitmenler seçim konusunda yönlendirme yapar. Her iki mağaza da her gün 10:00–21:00 arasında açıktır.
 
 Aynı ürünler notamuzikmarket.com üzerinden tüm Türkiye'ye kargoyla da satılır. Ürünler taranabilir statik sayfalar olarak yayımlanır; fiyat ve stok bilgisi canlı veritabanından güncellenir.
 
@@ -49,8 +53,8 @@ Her sayfa ürün listesi, satın alma rehberi ve sık sorulan sorular içerir.
 - https://www.notamuzikmarket.com/sitemap-products.xml
 
 ## İletişim
-- Adres: Şemikler Mah. 6205 Sok. No: 4/A, Çiğli / İzmir (Nota Müzik Okulu binası içinde)
-- Telefon: 0543 766 35 37
+- Karşıyaka mağazası: Şemikler Mah. 6205 Sok. No: 4/A, 35560 Karşıyaka / İzmir (Nota Müzik Okulu binası içinde) · Tel: 0543 766 35 37
+- Menemen mağazası: 9 Eylül Mah. 268. Sok. No: 27/A, 35663 Menemen / İzmir · Tel: 0532 519 35 37
 - E-posta: info@notamuzikmarket.com
-- Çalışma saatleri: her gün 10:00–21:00
+- Çalışma saatleri: her iki mağaza her gün 10:00–21:00
 - Ünvan: Süleyman Kesici – Nota Müzik · Vergi Dairesi: Çiğli
