@@ -1,0 +1,292 @@
+/* ============================================================
+   category.css — kategori landing sayfaları (build-categories.js)
+   styles.css token'larını kullanır; ürün ızgarası products.css'ten gelir.
+   Mobile-first: 360px taban, 768px ve 1024px kırılımları.
+   ============================================================ */
+
+.cat-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 24px) 20px 72px;
+}
+
+/* ---- başlık ---- */
+.cat-head {
+  max-width: 760px;
+  margin: 0 0 28px;
+}
+.cat-head h1 {
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+.cat-intro {
+  font-size: clamp(15px, 2.4vw, 17px);
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.cat-count {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin: 0 0 16px;
+}
+
+/* ---- sayfa içi kısayollar ----
+   Rehber ve SSS, ürün ızgarasının altında kaldığı için uzun kategorilerde
+   (19 ürünlü elektro-gitar'da ~4400px aşağıda) gözden kaçıyordu. */
+.cat-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cat-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;           /* mobil dokunma hedefi */
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.cat-jump a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.cat-jump a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Sabit header hedef başlığı örtmesin */
+#rehber,
+#sss {
+  scroll-margin-top: calc(var(--header-h) + 20px);
+}
+
+/* ---- ürün ızgarası bölümü ---- */
+.cat-products {
+  margin: 0 0 56px;
+}
+.cat-empty {
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--ink-2);
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+}
+.cat-empty a { color: var(--accent); font-weight: 600; }
+
+/* ---- rehber metni ---- */
+.cat-body {
+  max-width: 760px;
+  margin: 0 0 48px;
+}
+.cat-body h2 {
+  font-size: clamp(20px, 3.4vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 40px 0 14px;
+}
+.cat-body h2:first-child { margin-top: 0; }
+.cat-body p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  margin: 0 0 16px;
+}
+.cat-body ul {
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+.cat-body li {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin-bottom: 10px;
+}
+.cat-body strong { color: var(--ink); font-weight: 600; }
+.cat-body em { font-style: italic; }
+
+/* ---- SSS (saf <details>, JS yok — CSP inline script'i engelliyor) ---- */
+.cat-faq {
+  max-width: 760px;
+  margin: 0 0 48px;
+}
+.cat-faq h2 {
+  font-size: clamp(20px, 3.4vw, 26px);
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+.cat-faq-item {
+  border-bottom: 1px solid var(--line);
+}
+.cat-faq-item summary {
+  /* min 44px dokunma hedefi (mobil erişilebilirlik) */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.cat-faq-item summary::-webkit-details-marker { display: none; }
+.cat-faq-item summary::after {
+  content: '+';
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink-3);
+  transition: transform var(--t-fast) var(--ease);
+}
+.cat-faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+.cat-faq-item summary:hover { color: var(--accent); }
+.cat-faq-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.cat-faq-answer {
+  padding: 0 0 18px;
+}
+.cat-faq-answer p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+/* ---- ilgili yazılar ---- */
+.cat-related {
+  max-width: 760px;
+  margin: 0 0 40px;
+  padding: 24px;
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+}
+.cat-related h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+.cat-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cat-related-list li { margin-bottom: 8px; }
+.cat-related-list li:last-child { margin-bottom: 0; }
+.cat-related-list a {
+  display: inline-block;
+  min-height: 44px;
+  line-height: 44px;
+  font-size: 15px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.cat-related-list a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---- alt CTA ---- */
+.cat-allcta {
+  max-width: 760px;
+  margin: 0;
+}
+.cat-allcta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+.cat-allcta a:hover { text-decoration: underline; }
+
+/* ---- ana sayfa kategori bloğu (index.html'e enjekte edilir) ---- */
+.home-cats {
+  padding: 64px 0 72px;
+  background: var(--bg);
+}
+.home-cats-title {
+  max-width: 1180px;
+  margin: 0 auto 20px;
+  padding: 0 20px;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.home-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.home-cat-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 72px;
+  justify-content: center;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.home-cat-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-1);
+}
+.home-cat-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.home-cat-count {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* ---- kırılımlar ---- */
+@media (min-width: 768px) {
+  .cat-shell { padding-left: 32px; padding-right: 32px; }
+  .home-cat-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+}
+@media (min-width: 1024px) {
+  .home-cat-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---- hareket azaltma tercihi ---- */
+@media (prefers-reduced-motion: reduce) {
+  .home-cat-link,
+  .cat-faq-item summary,
+  .cat-faq-item summary::after,
+  .cat-related-list a {
+    transition: none;
+  }
+  .home-cat-link:hover { transform: none; }
+}

@@ -43,8 +43,11 @@ jobs:
         run: node scripts/generate-thumbnails.mjs
 
       - name: Statik sayfaları üret
+        # SIRA ÖNEMLİ: kategori sayfaları ürün verisine, blog linkleri
+        # kategori sayfalarının varlığına bağlı. Araya script eklerken koru.
         run: |
           node scripts/build-products.js
+          node scripts/build-categories.js
           node scripts/build-blog.js
 
       - name: Değişiklik varsa commit + push

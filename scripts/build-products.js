@@ -12,161 +12,65 @@
 
 const fs = require('fs');
 const path = require('path');
-const { productScripts, footer, pinVersions } = require('./shared-chrome');
+const {
+  SITE, SUPABASE_URL,
+  productScripts, header, footer, pinVersions,
+  esc, excerpt, fmtTL, imageUrls, thumb, srcset,
+  catCard, injectBetween, fetchProducts, isTestProduct, priceFields,
+} = require('./shared-chrome');
+const { buildProductSchema } = require('../product-schema');
+const { categoryIndex } = require('./build-categories');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE = 'https://www.notamuzikmarket.com';
-const SUPABASE_URL = 'https://kwjtfqhhctqwrfhxghai.supabase.co';
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3anRmcWhoY3Rxd3JmaHhnaGFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDcxOTEsImV4cCI6MjA5NDcyMzE5MX0.B4gLXDpFgUTmyJxvF8PipPyKWPr8tFYsxxYMjM2O7K8';
-const IMG_BUCKET = 'product-images';
 
-// ---- yardımcılar ----
-const esc = (s) => String(s == null ? '' : s)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const excerpt = (s, n = 155) => {
-  const t = String(s || '').replace(/\s+/g, ' ').trim();
-  return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
-};
-const fmtTL = (n) => new Intl.NumberFormat('tr-TR').format(Number(n || 0)) + ' TL';
-
-// api.js ile aynı görsel mantığı
-const toUrl = (p) => {
-  if (!p) return null;
-  if (/^https?:\/\//i.test(p)) return p;
-  return `${SUPABASE_URL}/storage/v1/object/public/${IMG_BUCKET}/${p}`;
-};
-function imageUrls(images) {
-  if (!images || !images.length) return [];
-  return images.slice().sort((a, b) => {
-    if ((!!b.is_primary) - (!!a.is_primary)) return (!!b.is_primary) - (!!a.is_primary);
-    return (a.display_order || 0) - (b.display_order || 0);
-  }).map((i) => toUrl(i.storage_path)).filter(Boolean);
-}
-
-// Responsive varyantlar (api.js ile aynı konvansiyon; generate-thumbnails.mjs üretir)
-const RESP_WIDTHS = [360, 720, 1200];
-// Kaynak görsel mi? jpg/jpeg/png/webp/avif — ama zaten _<N>.webp varyantı DEĞİL.
-const canVariant = (u) => !!u && /\/object\/public\/product-images\/.+\.(jpe?g|png|webp|avif)$/i.test(u) && !/_\d+\.webp$/i.test(u);
-const thumb = (u, w) => canVariant(u) ? u.replace(/\.(jpe?g|png|webp|avif)$/i, `_${w}.webp`) : u;
-const srcset = (u) => canVariant(u) ? RESP_WIDTHS.map((w) => `${thumb(u, w)} ${w}w`).join(', ') : '';
-
-// ---- ortak chrome (product.html ile aynı) ----
-const HEADER = `<header class="site-header" id="siteHeader">
-  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
-    <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
-  </a>
-  <nav class="site-nav" aria-label="Birincil">
-    <a href="products.html">Ürünler</a>
-    <a href="blog.html">Blog</a>
-  </nav>
-  <div class="header-right">
-    <div class="auth-slot" id="authSlot" data-state="loading">
-      <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
-      <button class="auth-link auth-link-primary" data-when="out" data-tab="register" type="button">Kayıt Ol</button>
-      <a href="account.html" class="account-link" data-when="in" hidden>Hesabım</a>
-      <button type="button" id="logoutBtn" class="logout-link" data-when="in" hidden>Çıkış</button>
-    </div>
-    <a href="account.html?tab=wishlist" class="fav-link" aria-label="Favorilerim" title="Favorilerim">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-      </svg>
-    </a>
-    <a href="cart.html" class="cart-btn" aria-label="Sepet">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
-        <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
-      </svg>
-      <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
-    </a>
-  </div>
-</header>`;
-
-// product.html'den türetilir — elle sürüm listesi tutmak bayatlamaya yol açıyordu
+// ---- ortak chrome (shared-chrome.js tek kaynak) ----
+const HEADER = header();
 const SCRIPTS = productScripts();
 
-// ---- ortak footer (ürün sayfalarını yetimlikten çıkarır: yasal + kategori iç linkleri) ----
-// cerez-politikasi.html'den türetilir; ilk 3 link ürün sayfalarını iç linkle besler
+// Ürün sayfalarını yetimlikten çıkarır: yasal linklerin başına 3 iç link
 const FOOTER = footer([['products.html', 'Tüm Ürünler'], ['blog.html', 'Blog'], ['siparis-sorgula.html', 'Sipariş Sorgula']]);
 
-// ---- katalog kartı (products.js card() ile birebir markup; JS hydrate edince sıçrama olmaz) ----
-function catCard(p) {
-  const imgs = imageUrls(p.product_images);
-  const out = p.stock <= 0;
-  const catName = p.categories ? p.categories.name : '';
-  const media = imgs.length
-    ? `<img src="${esc(thumb(imgs[0], 360))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 45vw, 240px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" width="600" height="800" loading="lazy" decoding="async" />`
-    : `<span class="cat-card-glyph">${esc((catName || p.name || '?').charAt(0).toUpperCase())}</span>`;
-  return `
-      <a class="cat-card" href="urun-${esc(p.slug)}.html">
-        <div class="cat-card-media">
-          ${media}
-          ${out ? '<span class="cat-card-oos">Tükendi</span>' : ''}
-          <button type="button" class="cat-fav" data-id="${esc(p.id)}" aria-pressed="false" aria-label="Favorilere ekle" title="Favorilere ekle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-          </button>
-        </div>
-        <div class="cat-card-body">
-          <span class="cat-card-cat">${esc(catName)}</span>
-          <p class="cat-card-name">${esc(p.name)}</p>
-          <p class="cat-card-price">${esc(fmtTL(p.price))}</p>
-        </div>
-      </a>`;
-}
-
-// İşaretçiler arasına HTML enjekte et (crawler için statik içerik). Yoksa uyar, atla.
-function injectBetween(file, tag, html) {
-  const fp = path.join(ROOT, file);
-  if (!fs.existsSync(fp)) { console.warn(`  ⚠ ${file} yok, atlandı`); return; }
-  let s = fs.readFileSync(fp, 'utf8');
-  const re = new RegExp(`(<!--BUILD:${tag}:START-->)[\\s\\S]*?(<!--BUILD:${tag}:END-->)`);
-  if (!re.test(s)) { console.warn(`  ⚠ ${file}: BUILD:${tag} işaretçisi yok, atlandı`); return; }
-  s = s.replace(re, `$1${html}\n      $2`);
-  fs.writeFileSync(fp, s, 'utf8');
-}
-
 // ---- tek ürün sayfası ----
-function productHtml(p, noindex) {
+function productHtml(p, noindex, catPage) {
   const url = `${SITE}/urun-${p.slug}.html`;
   const imgs = imageUrls(p.product_images);
   const img = imgs[0] || `${SITE}/images/og-image.png`;
   const catName = p.categories ? p.categories.name : '';
   const rawDesc = excerpt(p.description, 155);
+  // Efektif fiyat: indirim varsa indirimli olan (api.js/create_order ile aynı).
+  // SSR normal fiyatı gösterirse Google ile kullanıcı farklı fiyat görür.
+  const pf = priceFields(p);
+  const priceNum = pf.price;
   const desc = (rawDesc && rawDesc.length >= 70) ? rawDesc
-    : `${p.name} — ${catName || 'müzik enstrümanı'}. ${fmtTL(p.price)}, PayTR güvenli ödeme, hızlı kargo. Nota Müzik Market.`;
+    : `${p.name} — ${catName || 'müzik enstrümanı'}. ${fmtTL(priceNum)}, PayTR güvenli ödeme, hızlı kargo. Nota Müzik Market.`;
   const inStock = p.stock > 0;
   const glyph = esc((catName || p.name || '?').charAt(0).toUpperCase());
-  const priceNum = Number(p.price);
 
-  // Product #ldProduct'ta (product.js hydration'da canlı veriyle bunu değiştirir).
-  const productLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+  // Product #ldProduct'ta. product.js hydration'da AYNI modülle yeniden üretir,
+  // bu yüzden SSR ve hydrate çıktısı yapısal olarak özdeş olur.
+  const productLd = buildProductSchema({
     name: p.name,
-    description: excerpt(p.description, 300) || p.name,
-    sku: p.id,
-    brand: { '@type': 'Brand', name: 'Nota Müzik Market' },
-    category: catName || undefined,
-    image: imgs.length ? imgs : undefined,
-    offers: {
-      '@type': 'Offer',
-      price: priceNum,
-      priceCurrency: 'TRY',
-      itemCondition: 'https://schema.org/NewCondition',
-      availability: inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      priceValidUntil: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
-      url: url,
-    },
-  };
+    id: p.id,
+    price: priceNum,
+    stock: p.stock,
+    description: p.description,
+    images: imgs,
+    categoryName: catName,
+    url: url,
+  });
   // BreadcrumbList ayrı script'te (JS dokunmaz, JS render eden bot için de kalır).
+  const crumbs = [
+    { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: SITE + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Ürünler', item: SITE + '/products.html' },
+  ];
+  if (catPage) {
+    crumbs.push({ '@type': 'ListItem', position: 3, name: catPage.label, item: `${SITE}/${catPage.slug}.html` });
+  }
+  crumbs.push({ '@type': 'ListItem', position: crumbs.length + 1, name: p.name, item: url });
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: SITE + '/' },
-      { '@type': 'ListItem', position: 2, name: 'Ürünler', item: SITE + '/products.html' },
-      { '@type': 'ListItem', position: 3, name: p.name, item: url },
-    ],
+    itemListElement: crumbs,
   };
 
   const gallery = imgs.length
@@ -224,10 +128,10 @@ ${imgs.length ? `<link rel="preload" as="image" href="${esc(thumb(imgs[0], 720))
 ${HEADER}
 
 <main class="product-shell">
-  <nav class="product-crumb" id="productCrumb" aria-label="Sayfa yolu">
+  <nav class="product-crumb" id="productCrumb" aria-label="Sayfa yolu"${catPage ? ` data-cat-slug="${esc(catPage.slug)}" data-cat-label="${esc(catPage.label)}"` : ''} data-ssr="1">
     <a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span>
     <a href="products.html">Ürünler</a> <span aria-hidden="true">›</span>
-    <span>${esc(p.name)}</span>
+${catPage ? `    <a href="${esc(catPage.slug)}.html">${esc(catPage.label)}</a> <span aria-hidden="true">›</span>\n` : ''}    <span>${esc(p.name)}</span>
   </nav>
 
   <div id="productMain" class="product-main">
@@ -235,10 +139,12 @@ ${HEADER}
       ${gallery}
     </div>
     <div class="product-info">
-      <p class="product-cat">${esc(catName)}</p>
+      <p class="product-cat">${catPage ? `<a href="${esc(catPage.slug)}.html">${esc(catName)}</a>` : esc(catName)}</p>
       <h1 class="product-title">${esc(p.name)}</h1>
       <div class="product-rating-line" id="ratingLine"></div>
-      <p class="product-price">${esc(fmtTL(p.price))}</p>
+      <p class="product-price">${pf.discountPercent > 0
+        ? `<span class="price-old">${esc(fmtTL(pf.oldPrice))}</span> ${esc(fmtTL(pf.price))} <span class="disc-tag">-%${esc(pf.discountPercent)}</span>`
+        : esc(fmtTL(pf.price))}</p>
       <p class="product-stock ${inStock ? '' : 'is-out'}">${inStock ? 'Stokta — ' + p.stock + ' adet' : 'Tükendi'}</p>
       <p class="product-desc">${esc(p.description || '')}</p>
       <div class="product-buy">
@@ -290,14 +196,12 @@ ${body}
 
 // ---- ana akış ----
 async function main() {
-  const select = 'id,slug,name,price,stock,description,is_active,categories(slug,name),product_images(storage_path,is_primary,display_order)';
-  const url = `${SUPABASE_URL}/rest/v1/products?select=${encodeURIComponent(select)}&is_active=eq.true&order=name`;
-  const res = await fetch(url, { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
-  if (!res.ok) { console.error('✗ Supabase hata:', res.status, await res.text()); process.exit(1); }
-  const raw = (await res.json()).filter((p) => p.slug);
+  const raw = await fetchProducts();
+  // Ürün → kategori landing sayfası eşlemesi (breadcrumb + kategori linki için)
+  const catIdx = categoryIndex(raw.filter((p) => !isTestProduct(p)));
   // Test ürünleri (ör. paytr-test): sayfa üretilir ama noindex + sitemap dışı.
   // (Katalog canlı Supabase'den okuduğu için sayfayı üretmezsek link 404 olur.)
-  const isTest = (p) => /(^|[-_])test([-_]|$)/i.test(p.slug) || /\btest\b/i.test(p.name);
+  const isTest = isTestProduct;
   const indexable = raw.filter((p) => !isTest(p));
   const skipped = raw.filter(isTest);
 
@@ -305,7 +209,7 @@ async function main() {
   fs.readdirSync(ROOT).filter((f) => /^urun-.+\.html$/.test(f)).forEach((f) => fs.unlinkSync(path.join(ROOT, f)));
 
   raw.forEach((p) => {
-    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), pinVersions(productHtml(p, isTest(p))), 'utf8');
+    fs.writeFileSync(path.join(ROOT, `urun-${p.slug}.html`), pinVersions(productHtml(p, isTest(p), catIdx[p.slug])), 'utf8');
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap-products.xml'), buildSitemap(indexable), 'utf8');
 

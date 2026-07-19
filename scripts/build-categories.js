@@ -1,0 +1,324 @@
+#!/usr/bin/env node
+/* ============================================================
+   build-categories.js — category-data.js → kategori landing sayfaları
+   Üretir:
+     • <slug>.html            (12+ ticari intent landing sayfası)
+     • sitemap-categories.xml (yalnız indexlenebilir olanlar)
+   Ayrıca index.html'e kategori bloğunu enjekte eder.
+
+   Çalıştır:  node scripts/build-categories.js
+   SIRA ÖNEMLİ: build-products → build-categories → build-blog
+   (kategori sayfaları ürün verisine, blog linkleri kategori
+   sayfalarının varlığına bağlı)
+
+   Neden ayrı sitemap: sitemap.xml'i build-blog, sitemap-products.xml'i
+   build-products yazıyor. Kategorileri birine eklemek scriptleri
+   birbirine bağımlı kılardı; ayrı dosya bağımsızlığı korur.
+   ============================================================ */
+
+const fs = require('fs');
+const path = require('path');
+const {
+  SITE, sharedScripts, header, footer, pinVersions,
+  esc, stripHtml, catCard, injectBetween, fetchProducts, isTestProduct,
+} = require('./shared-chrome');
+
+const ROOT = path.resolve(__dirname, '..');
+
+// ---- category-data.js'i yükle (build-blog.js ile aynı window shim) ----
+const dataSrc = fs.readFileSync(path.join(ROOT, 'category-data.js'), 'utf8');
+const sandbox = { window: {} };
+new Function('window', dataSrc)(sandbox.window);
+const CATS = sandbox.window.CATEGORY_PAGES;
+if (!Array.isArray(CATS) || !CATS.length) {
+  console.error('✗ CATEGORY_PAGES bulunamadı'); process.exit(1);
+}
+
+// ---- blog başlıkları (ilgili yazılar bloğu için) ----
+const blogSrc = fs.readFileSync(path.join(ROOT, 'blog-data.js'), 'utf8');
+const blogBox = { window: {} };
+new Function('window', blogSrc)(blogBox.window);
+const POSTS = blogBox.window.BLOG_POSTS || [];
+const postBySlug = Object.fromEntries(POSTS.map((p) => [p.slug, p]));
+
+const HEADER = header('products.html');
+const FOOTER = footer([['products.html', 'Tüm Ürünler'], ['blog.html', 'Blog'], ['siparis-sorgula.html', 'Sipariş Sorgula']]);
+const SCRIPTS = sharedScripts();
+
+/* ---- ürün eşlemesi ----
+   Üç seviye sırayla: cats (kaba filtre) → include/exclude (daraltma)
+   → plus/minus (slug ile tekil düzeltme). Ayrıntı: category-data.js başlığı. */
+function matchProducts(cat, products) {
+  const inCats = new Set(cat.cats || []);
+  let list = products.filter((p) => p.categories && inCats.has(p.categories.slug));
+
+  if (cat.include) list = list.filter((p) => cat.include.test(p.name));
+  if (cat.exclude) list = list.filter((p) => !cat.exclude.test(p.name));
+
+  if (cat.plus && cat.plus.length) {
+    const have = new Set(list.map((p) => p.slug));
+    for (const slug of cat.plus) {
+      const found = products.find((p) => p.slug === slug);
+      if (!found) { console.warn(`  ⚠ ${cat.slug}: plus slug bulunamadı → ${slug}`); continue; }
+      if (!have.has(slug)) list.push(found);
+    }
+  }
+  if (cat.minus && cat.minus.length) {
+    const drop = new Set(cat.minus);
+    list = list.filter((p) => !drop.has(p.slug));
+  }
+
+  return list.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+}
+
+// ---- SSS: <details> kullanılır, inline onclick YOK (CSP inline script'i engelliyor) ----
+const faqHtml = (faq) => !faq || !faq.length ? '' : `
+  <section class="cat-faq" id="sss" aria-labelledby="sssBaslik">
+    <h2 id="sssBaslik">Sık Sorulan Sorular</h2>
+    ${faq.map((f) => `<details class="cat-faq-item">
+      <summary>${esc(f.q)}</summary>
+      <div class="cat-faq-answer"><p>${esc(f.a)}</p></div>
+    </details>`).join('\n    ')}
+  </section>`;
+
+const relatedHtml = (slugs) => {
+  const posts = (slugs || []).map((s) => postBySlug[s]).filter(Boolean);
+  if (!posts.length) return '';
+  return `
+  <section class="cat-related" aria-labelledby="ilgiliBaslik">
+    <h2 id="ilgiliBaslik">İlgili Yazılar</h2>
+    <ul class="cat-related-list">
+      ${posts.map((p) => `<li><a href="blog-${esc(p.slug)}.html">${esc(p.title)}</a></li>`).join('\n      ')}
+    </ul>
+  </section>`;
+};
+
+function categoryHtml(cat, products, noindex) {
+  const url = `${SITE}/${cat.slug}.html`;
+  const img = `${SITE}/images/og-image.png`;
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: cat.h1,
+        description: cat.metaDesc,
+        url: url,
+        inLanguage: 'tr-TR',
+        isPartOf: { '@type': 'WebSite', name: 'Nota Müzik Market', url: SITE + '/' },
+      },
+      {
+        // ItemList sadece url+name taşır. Product nesnesi GÖMÜLMEZ:
+        // fiyat burada bayatlar ve ürün sayfasındaki şemayla çelişirdi.
+        '@type': 'ItemList',
+        name: cat.h1,
+        numberOfItems: products.length,
+        itemListElement: products.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: `${SITE}/urun-${p.slug}.html`,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: SITE + '/' },
+          { '@type': 'ListItem', position: 2, name: 'Ürünler', item: SITE + '/products.html' },
+          { '@type': 'ListItem', position: 3, name: cat.h1, item: url },
+        ],
+      },
+    ],
+  };
+
+  if (cat.faq && cat.faq.length) {
+    ld['@graph'].push({
+      '@type': 'FAQPage',
+      mainEntity: cat.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    });
+  }
+
+  // catalog-grid + cat-card: products.css'teki mevcut stiller (products.html
+  // ile aynı markup). Yeni sınıf uydurmak stilsiz grid demek olurdu.
+  const grid = products.length
+    ? `<div class="catalog-grid">${products.map(catCard).join('')}\n      </div>`
+    : `<p class="cat-empty">Bu kategoride şu an ürün bulunmuyor. <a href="products.html">Tüm ürünlere göz at →</a></p>`;
+
+  return `<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>${esc(cat.title)}</title>
+<meta name="description" content="${esc(cat.metaDesc)}" />
+<meta name="keywords" content="${esc(cat.keywords)}" />
+<meta name="robots" content="${noindex ? 'noindex, follow' : 'index, follow'}" />
+<meta name="theme-color" content="#fafafa" />
+<link rel="canonical" href="${url}" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Nota Müzik Market" />
+<meta property="og:locale" content="tr_TR" />
+<meta property="og:title" content="${esc(cat.title)}" />
+<meta property="og:description" content="${esc(cat.metaDesc)}" />
+<meta property="og:url" content="${url}" />
+<meta property="og:image" content="${img}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${esc(cat.title)}" />
+<meta name="twitter:description" content="${esc(cat.metaDesc)}" />
+<meta name="twitter:image" content="${img}" />
+
+<link rel="icon" type="image/png" href="images/logo-icon.png" />
+<link rel="apple-touch-icon" href="images/logo-icon.png" />
+<link rel="preconnect" href="https://kwjtfqhhctqwrfhxghai.supabase.co" crossorigin />
+<link rel="stylesheet" href="styles.css?v=38" />
+<link rel="stylesheet" href="auth.css?v=28" />
+<link rel="stylesheet" href="shop.css?v=32" />
+<link rel="stylesheet" href="products.css?v=1" />
+<link rel="stylesheet" href="category.css?v=1" />
+
+<script type="application/ld+json">
+${JSON.stringify(ld, null, 2)}
+</script>
+</head>
+<body class="shop-page category-page">
+
+${HEADER}
+
+<main class="cat-shell">
+  <nav class="product-crumb" aria-label="Sayfa yolu">
+    <a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span>
+    <a href="products.html">Ürünler</a> <span aria-hidden="true">›</span>
+    <span>${esc(cat.h1)}</span>
+  </nav>
+
+  <header class="cat-head">
+    <h1>${esc(cat.h1)}</h1>
+    <p class="cat-intro">${esc(cat.intro)}</p>
+    <p class="cat-count">${products.length} ürün listeleniyor</p>
+    <nav class="cat-jump" aria-label="Sayfa içi kısayollar">
+      <a href="#rehber">Satın alma rehberi</a>
+${cat.faq && cat.faq.length ? '      <a href="#sss">Sık sorulan sorular</a>\n' : ''}    </nav>
+  </header>
+
+  <section class="cat-products" aria-label="${esc(cat.h1)} ürünleri">
+    ${grid}
+  </section>
+
+  <article class="cat-body" id="rehber">
+${cat.body.trim()}
+  </article>
+${faqHtml(cat.faq)}
+${relatedHtml(cat.related)}
+
+  <p class="cat-allcta"><a href="products.html">Tüm ürünleri görüntüle →</a></p>
+</main>
+
+${FOOTER}
+
+<div class="nm-toast" id="nmToast" role="status" aria-live="polite"></div>
+
+${SCRIPTS}
+
+</body>
+</html>
+`;
+}
+
+// ---- sitemap ----
+function buildSitemap(indexable) {
+  const today = new Date().toISOString().slice(0, 10);
+  const body = indexable.map((c) =>
+    `  <url>\n    <loc>${SITE}/${c.slug}.html</loc>\n    <lastmod>${today}</lastmod>\n  </url>`
+  ).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${body}
+</urlset>
+<!-- Otomatik üretildi: node scripts/build-categories.js — ${indexable.length} kategori -->
+`;
+}
+
+// ---- ana sayfa kategori bloğu ----
+function homeCategoriesHtml(rows) {
+  return `
+      <div class="home-cat-grid">
+${rows.map((r) => `        <a class="home-cat-link" href="${esc(r.cat.slug)}.html">
+          <span class="home-cat-name">${esc(r.cat.short || r.cat.h1)}</span>
+          <span class="home-cat-count">${r.products.length} ürün</span>
+        </a>`).join('\n')}
+      </div>`;
+}
+
+// ---- ana akış ----
+async function main() {
+  const all = await fetchProducts();
+  const products = all.filter((p) => !isTestProduct(p));
+
+  const rows = CATS.map((cat) => ({ cat, products: matchProducts(cat, products) }));
+
+  // Temizlik: SADECE category-data.js'teki slug listesine göre sil.
+  // Geniş regex ASLA kullanılmaz — kategori dosyaları index.html, blog.html
+  // ile aynı isim uzayında ve hatalı bir desen ana sayfayı silebilir.
+  for (const { cat } of rows) {
+    const fp = path.join(ROOT, `${cat.slug}.html`);
+    if (fs.existsSync(fp)) fs.unlinkSync(fp);
+  }
+
+  const indexable = [];
+  for (const { cat, products: list } of rows) {
+    const min = cat.minProducts == null ? 3 : cat.minProducts;
+    const thin = list.length < min;
+    fs.writeFileSync(
+      path.join(ROOT, `${cat.slug}.html`),
+      pinVersions(categoryHtml(cat, list, thin)),
+      'utf8'
+    );
+    if (thin) {
+      console.log(`  ⤫ ${cat.slug}.html — ${list.length} ürün (< ${min}) → noindex, sitemap dışı`);
+    } else {
+      indexable.push(cat);
+      console.log(`  ✓ ${cat.slug}.html — ${list.length} ürün`);
+    }
+  }
+
+  fs.writeFileSync(path.join(ROOT, 'sitemap-categories.xml'), buildSitemap(indexable), 'utf8');
+
+  // Ana sayfaya kategori bloğu (link equity'yi dağıtır — index.html'de
+  // şimdiye kadar hiç ürün/kategori linki yoktu)
+  const homeRows = rows.filter((r) => indexable.includes(r.cat));
+  injectBetween('index.html', 'CATEGORIES', homeCategoriesHtml(homeRows));
+
+  const orphan = products.filter((p) => !rows.some((r) => r.products.includes(p)));
+  console.log(`\n  ✓ ${rows.length} kategori sayfası (${indexable.length} indexlenebilir)`);
+  console.log(`  ✓ sitemap-categories.xml (${indexable.length} URL)`);
+  if (orphan.length) {
+    console.log(`  ⚠ ${orphan.length} ürün hiçbir kategori sayfasında yok:`);
+    orphan.forEach((p) => console.log(`      ${p.categories ? p.categories.slug : '(kategorisiz)'} — ${p.name.slice(0, 55)}`));
+  }
+}
+
+/* Ürün slug'ı → kategori sayfası. build-products.js bunu kullanarak
+   ürün sayfalarına kategori linki basar (aksi halde kategori adı düz
+   metin kalıyor ve landing sayfalarına hiç iç link akmıyor). */
+function categoryIndex(products) {
+  const idx = {};
+  for (const cat of CATS) {
+    for (const p of matchProducts(cat, products)) {
+      // Bir ürün birden çok sayfada olabilir; ilk (en spesifik) eşleşme kalır
+      if (!idx[p.slug]) idx[p.slug] = { slug: cat.slug, label: cat.short || cat.h1 };
+    }
+  }
+  return idx;
+}
+
+module.exports = { categoryIndex };
+
+if (require.main === module) {
+  main().catch((e) => { console.error('✗', e); process.exit(1); });
+}

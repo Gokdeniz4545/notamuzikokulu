@@ -97,40 +97,20 @@
   function applyProductSchema(avg, count, reviews) {
     const node = document.getElementById('ldProduct');
     if (!node) return;
+    // Şema product-schema.js'ten gelir — build-products.js ile AYNI kaynak.
+    // Modül yüklenmediyse SSR'deki şemaya dokunma (silmekten iyidir).
+    if (!window.NMProductSchema) return;
     const imgs = (product.images && product.images.length) ? product.images : (product.image ? [product.image] : []);
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'Product',
+    const schema = window.NMProductSchema.buildProductSchema({
       name: product.name,
-      description: excerpt(product.description, 300) || product.name,
-      sku: product.id,
-      brand: { '@type': 'Brand', name: 'Nota Müzik Market' },
-      offers: {
-        '@type': 'Offer',
-        price: Number(product.price),
-        priceCurrency: 'TRY',
-        availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-        url: pageUrl(),
-      },
-    };
-    if (imgs.length) schema.image = imgs;
-    if (product.categoryName) schema.category = product.categoryName;
-    if (count > 0) {
-      schema.aggregateRating = {
-        '@type': 'AggregateRating',
-        ratingValue: Number(avg.toFixed(1)),
-        reviewCount: count,
-        bestRating: 5,
-        worstRating: 1,
-      };
-      schema.review = (reviews || []).slice(0, 5).map(r => ({
-        '@type': 'Review',
-        author: { '@type': 'Person', name: r.author_name || 'Müşteri' },
-        reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
-        reviewBody: r.comment || undefined,
-        datePublished: r.created_at ? r.created_at.slice(0, 10) : undefined,
-      }));
-    }
+      id: product.id,
+      price: product.price,
+      stock: product.stock,
+      description: product.description,
+      images: imgs,
+      categoryName: product.categoryName,
+      url: pageUrl(),
+    }, { avg: avg, count: count, reviews: reviews });
     node.textContent = JSON.stringify(schema);
   }
 
@@ -158,7 +138,14 @@
     }
 
     applyMeta();
-    $('#productCrumb').innerHTML = `<a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span> <span>${esc(product.name)}</span>`;
+    // SSR breadcrumb'ı EZME: statik ürün sayfalarında zaten Ürünler ve
+    // kategori landing linklerini taşıyor. Üzerine yazmak bu iç linkleri
+    // siliyordu (Google JS render ettiği için canlıda da kayboluyorlardı).
+    // Yalnız fallback product.html'de (SSR crumb yok) inşa et.
+    const crumbEl = $('#productCrumb');
+    if (crumbEl && !crumbEl.dataset.ssr) {
+      crumbEl.innerHTML = `<a href="index.html">Ana Sayfa</a> <span aria-hidden="true">›</span> <a href="products.html">Ürünler</a> <span aria-hidden="true">›</span> <span>${esc(product.name)}</span>`;
+    }
 
     renderMain();
     // PayTR taksit tablosu — indirimli (nihai) fiyat üzerinden, TL cinsinden
@@ -172,6 +159,17 @@
   // Responsive görsel yardımcıları (NMApi thumb/srcset — varyant yoksa orijinali döndürür)
   const gThumb = (u, w) => { const a = window.NMApi; return a && a.thumb ? a.thumb(u, w) : u; };
   const gSrcset = (u) => { const a = window.NMApi; return a && a.srcset ? a.srcset(u) : ''; };
+
+  /* Kategori adı — statik sayfalarda landing sayfasına link olur.
+     Eşleme build-categories.js'te yapılıp breadcrumb'a data-cat-* olarak
+     yazılıyor; burada okunur ki hydration iç linki silmesin. */
+  function catLinkHtml() {
+    const name = product.categoryName || '';
+    if (!name) return '';
+    const crumb = $('#productCrumb');
+    const slug = crumb && crumb.dataset.catSlug;
+    return slug ? `<a href="${esc(slug)}.html">${esc(name)}</a>` : esc(name);
+  }
 
   // ---- üst: galeri + bilgi ----
   function renderMain() {
@@ -190,7 +188,7 @@
           `<button type="button" class="product-thumb ${i === 0 ? 'is-active' : ''}" data-i="${i}"><img src="${esc(gThumb(u, 360))}" data-full="${esc(u)}" alt="" width="72" height="96" loading="lazy" decoding="async" /></button>`).join('')}</div>` : ''}
       </div>
       <div class="product-info">
-        <p class="product-cat">${esc(product.categoryName || '')}</p>
+        <p class="product-cat">${catLinkHtml()}</p>
         <h1 class="product-title">${esc(product.name)}</h1>
         <div class="product-rating-line" id="ratingLine"></div>
         <p class="product-price">${product.discountPercent > 0

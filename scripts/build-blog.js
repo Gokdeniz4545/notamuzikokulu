@@ -11,10 +11,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { sharedScripts, footer, pinVersions } = require('./shared-chrome');
+const { SITE, sharedScripts, header, footer, pinVersions, esc, stripHtml } = require('./shared-chrome');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE = 'https://www.notamuzikmarket.com';
 
 // ---- blog-data.js'i yükle (window shim) ----
 const dataSrc = fs.readFileSync(path.join(ROOT, 'blog-data.js'), 'utf8');
@@ -26,48 +25,12 @@ if (!Array.isArray(POSTS) || !POSTS.length) {
 }
 
 // ---- yardımcılar ----
-const esc = (s) => String(s)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;');
-const stripHtml = (html) => String(html)
-  .replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
-  .replace(/\s+/g, ' ').trim();
 const trDate = new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 const fmtDate = (iso) => trDate.format(new Date(iso));
 const readLabel = (p) => p.readMin + ' dk okuma';
 
-// ---- ortak chrome (blog.html ile birebir) ----
-const HEADER = `<header class="site-header" id="siteHeader">
-  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
-    <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
-  </a>
-  <nav class="site-nav" aria-label="Birincil">
-    <a href="products.html">Ürünler</a>
-    <a href="blog.html" aria-current="page">Blog</a>
-    <a href="https://www.notamuzikokulu.com/" target="_blank" rel="noopener noreferrer">Okullarımız</a>
-    <a href="iletisim.html">İletişim</a>
-  </nav>
-  <div class="header-right">
-    <div class="auth-slot" id="authSlot" data-state="loading">
-      <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
-      <button class="auth-link auth-link-primary" data-when="out" data-tab="register" type="button">Kayıt Ol</button>
-      <a href="account.html" class="account-link" data-when="in" hidden>Hesabım</a>
-      <button type="button" id="logoutBtn" class="logout-link" data-when="in" hidden>Çıkış</button>
-    </div>
-    <a href="account.html?tab=wishlist" class="fav-link" aria-label="Favorilerim" title="Favorilerim">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-      </svg>
-    </a>
-    <a href="cart.html" class="cart-btn" aria-label="Sepet">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
-        <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
-      </svg>
-      <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
-    </a>
-  </div>
-</header>`;
+// ---- ortak chrome (shared-chrome.js tek kaynak) ----
+const HEADER = header('blog.html');
 
 // cerez-politikasi.html'den türetilir
 const FOOTER = footer();
@@ -250,6 +213,14 @@ ${body}
 }
 
 // ---- yaz ----
+// Artık dosyaları temizle: blog-data.js'ten bir yazı silinirse sayfası
+// diskte kalıp sitemap dışı bir yetim olarak indekslenmeye devam ederdi.
+// SADECE blog-data.js'te olmayan blog-*.html'ler silinir (blog.html değil).
+const validFiles = new Set(POSTS.map((p) => `blog-${p.slug}.html`));
+fs.readdirSync(ROOT)
+  .filter((f) => /^blog-.+\.html$/.test(f) && !validFiles.has(f))
+  .forEach((f) => { fs.unlinkSync(path.join(ROOT, f)); console.log('  ⤫ artık dosya silindi: ' + f); });
+
 let n = 0;
 POSTS.forEach((p, i) => {
   const file = path.join(ROOT, `blog-${p.slug}.html`);

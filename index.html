@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="styles.css?v=49" />
 <link rel="stylesheet" href="auth.css?v=28" />
 <link rel="stylesheet" href="legal.css?v=1" />
+<link rel="stylesheet" href="category.css?v=2" />
 
 <script type="application/ld+json">
 {
@@ -142,6 +143,65 @@
         <span class="stack-hint">scroll</span>
       </div>
     </div>
+  </section>
+
+  <!-- Kategori linkleri — build-categories.js dolduruyor.
+       stack-section'ın DIŞINDA olmalı: script.js sahne mantığı
+       o bölümün içindeki DOM'u yönetiyor. -->
+  <section class="home-cats" id="kategoriler" aria-labelledby="katBaslik">
+    <h2 id="katBaslik" class="home-cats-title">Kategoriler</h2>
+    <!--BUILD:CATEGORIES:START-->
+      <div class="home-cat-grid">
+        <a class="home-cat-link" href="elektro-gitar.html">
+          <span class="home-cat-name">Elektro Gitar</span>
+          <span class="home-cat-count">19 ürün</span>
+        </a>
+        <a class="home-cat-link" href="elektronik-davul.html">
+          <span class="home-cat-name">Elektronik Davul</span>
+          <span class="home-cat-count">10 ürün</span>
+        </a>
+        <a class="home-cat-link" href="dijital-piyano.html">
+          <span class="home-cat-name">Dijital Piyano</span>
+          <span class="home-cat-count">9 ürün</span>
+        </a>
+        <a class="home-cat-link" href="klasik-gitar.html">
+          <span class="home-cat-name">Klasik Gitar</span>
+          <span class="home-cat-count">6 ürün</span>
+        </a>
+        <a class="home-cat-link" href="cajon-darbuka.html">
+          <span class="home-cat-name">Cajon &amp; Darbuka</span>
+          <span class="home-cat-count">6 ürün</span>
+        </a>
+        <a class="home-cat-link" href="keman.html">
+          <span class="home-cat-name">Keman</span>
+          <span class="home-cat-count">5 ürün</span>
+        </a>
+        <a class="home-cat-link" href="davul-bageti.html">
+          <span class="home-cat-name">Davul Bageti</span>
+          <span class="home-cat-count">7 ürün</span>
+        </a>
+        <a class="home-cat-link" href="davul-calisma-pedi.html">
+          <span class="home-cat-name">Davul Çalışma Pedi</span>
+          <span class="home-cat-count">7 ürün</span>
+        </a>
+        <a class="home-cat-link" href="gitar-teli.html">
+          <span class="home-cat-name">Gitar Teli</span>
+          <span class="home-cat-count">3 ürün</span>
+        </a>
+        <a class="home-cat-link" href="gitar-kablosu.html">
+          <span class="home-cat-name">Gitar Kablosu</span>
+          <span class="home-cat-count">5 ürün</span>
+        </a>
+        <a class="home-cat-link" href="gitar-kilifi.html">
+          <span class="home-cat-name">Gitar Kılıfı</span>
+          <span class="home-cat-count">3 ürün</span>
+        </a>
+        <a class="home-cat-link" href="amfi-pedal.html">
+          <span class="home-cat-name">Amfi &amp; Pedal</span>
+          <span class="home-cat-count">3 ürün</span>
+        </a>
+      </div>
+      <!--BUILD:CATEGORIES:END-->
   </section>
 
 </main>
@@ -427,7 +487,7 @@
 <script src="script.js?v=45" defer></script>
 
 <script src="cookie-consent.js?v=1" defer></script>
-<script src="gtag.js?v=3" defer></script>
+<script src="gtag.js?v=4" defer></script>
 
 </body>
 </html>

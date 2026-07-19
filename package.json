@@ -5,8 +5,11 @@
   "description": "Nota Müzik Market — dev/build araçları (statik site + Supabase). Bu paket yalnız yerel build içindir, sunucuya deploy edilmez. NOT: build-*.js CommonJS (require), thumbnail scripti .mjs (ESM) — bu yüzden type:module YOK.",
   "scripts": {
     "build:products": "node scripts/build-products.js",
+    "build:categories": "node scripts/build-categories.js",
     "build:blog": "node scripts/build-blog.js",
-    "thumbs": "node scripts/generate-thumbnails.mjs"
+    "build": "npm run build:products && npm run build:categories && npm run build:blog",
+    "thumbs": "node scripts/generate-thumbnails.mjs",
+    "audit:desc": "node scripts/audit-descriptions.js"
   },
   "devDependencies": {
     "sharp": "^0.34.2"

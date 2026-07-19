@@ -9,21 +9,28 @@
    çerez yazmaz (Consent Mode v2 — onaysız trafik modellenir, ölçüm ölmez).
    Onay değişince cookie-consent.js'in 'nm:consent' olayı ile güncellenir.
 
-   KURULUM: aşağıdaki iki değeri Google Ads'ten al ve doldur.
+   KURULUM: aşağıdaki değerleri Google Ads / Analytics'ten al ve doldur.
      AW_ID          → Google Ads > Araçlar > Dönüşümler > etiket kurulumu
                       Biçim: 'AW-123456789'
      PURCHASE_LABEL → aynı ekrandaki "dönüşüm etiketi"
                       Biçim: 'AbC-D_efGhIjKlMnO'
-   İkisi de boşken dosya hiçbir şey yapmaz (site etkilenmez).
+     GA4_ID         → Analytics > Yönetici > Veri akışları > ölçüm kimliği
+                      Biçim: 'G-XXXXXXXXXX'  (organik trafik ölçümü için)
+   Hepsi boşken dosya hiçbir şey yapmaz (site etkilenmez).
+
+   NOT: GA4 verisini google-analytics.com'a gönderir. Bu alan adları
+   .htaccess'teki CSP connect-src listesinde OLMAK ZORUNDA, yoksa GA4
+   sessizce hiç hit göndermez (tek belirti: Realtime raporu boş kalır).
    ============================================================ */
 (function () {
   'use strict';
 
   var AW_ID = 'AW-18327645689';
   var PURCHASE_LABEL = '7NEHCNT_4dIcEPnbpqNE';  // Dönüşümler > "Satın alma işlemi (1)" > etkinlik snippet'i
+  var GA4_ID = 'G-HZ4NSTT3CB';  // Analytics > Veri akışları > notamuzikmarket.com
 
-  // ID girilmeden hiçbir istek atma — yanlışlıkla yayına çıkarsa sessiz kalsın
-  if (!AW_ID) { window.NMTrack = { purchase: function () {}, ready: false }; return; }
+  // Hiçbir kimlik girilmeden istek atma — yanlışlıkla yayına çıkarsa sessiz kalsın
+  if (!AW_ID && !GA4_ID) { window.NMTrack = { purchase: function () {}, ready: false }; return; }
 
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
@@ -54,27 +61,46 @@
   document.addEventListener('nm:consent', function (ev) { applyConsent(ev && ev.detail); });
 
   // ---- 3) gtag.js'i yükle ----
+  // Tek script yeter; Ads ve GA4 aynı dataLayer üzerinden ayrı config alır.
   var s = document.createElement('script');
   s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(AW_ID);
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(AW_ID || GA4_ID);
   document.head.appendChild(s);
 
   gtag('js', new Date());
-  gtag('config', AW_ID);
+  if (AW_ID) gtag('config', AW_ID);
+  if (GA4_ID) gtag('config', GA4_ID);
 
   // ---- 4) Satın alma dönüşümü ----
   // transaction_id = sipariş no → aynı sipariş iki kez sayılmaz (sayfa yenilense bile)
   window.NMTrack = {
     ready: true,
     purchase: function (o) {
-      if (!o || !PURCHASE_LABEL) return;
+      if (!o) return;
       var value = Number(o.value);
-      gtag('event', 'conversion', {
-        send_to: AW_ID + '/' + PURCHASE_LABEL,
-        value: isFinite(value) && value > 0 ? value : undefined,
-        currency: 'TRY',
-        transaction_id: String(o.oid || ''),
-      });
+      value = isFinite(value) && value > 0 ? value : undefined;
+      var oid = String(o.oid || '');
+
+      // Google Ads dönüşümü
+      if (AW_ID && PURCHASE_LABEL) {
+        gtag('event', 'conversion', {
+          send_to: AW_ID + '/' + PURCHASE_LABEL,
+          value: value,
+          currency: 'TRY',
+          transaction_id: oid,
+        });
+      }
+
+      // GA4 e-ticaret olayı — hangi kanalın (organik/reklam) satış getirdiğini
+      // ayırt etmek için şart. Ads dönüşümünden ayrı bir olaydır.
+      if (GA4_ID) {
+        gtag('event', 'purchase', {
+          send_to: GA4_ID,
+          value: value,
+          currency: 'TRY',
+          transaction_id: oid,
+        });
+      }
     },
   };
 })();

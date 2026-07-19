@@ -21,12 +21,18 @@ const ROOT = path.join(__dirname, '..');
 const SCRIPTS_FROM = path.join(ROOT, 'product.html');
 const FOOTER_FROM = path.join(ROOT, 'cerez-politikasi.html');
 
+const SITE = 'https://www.notamuzikmarket.com';
+const SUPABASE_URL = 'https://kwjtfqhhctqwrfhxghai.supabase.co';
+const IMG_BUCKET = 'product-images';
+
 const read = (f) => fs.readFileSync(f, 'utf8');
 
 // ---- script bloğu ----
 
 // Sadece o sayfaya özgü script'ler — ortak bloktan çıkarılır
-const PAGE_SPECIFIC = /^(product|products|blog|blog-data)\.js(\?|$)/;
+const PAGE_SPECIFIC = /^(product|products|blog|blog-data|product-schema)\.js(\?|$)/;
+// Ürün detay sayfasına özgü olanlar (sıra product.html'deki gibi korunur)
+const PRODUCT_ONLY = /^(product-schema|product)\.js(\?|$)/;
 const srcOf = (tag) => (tag.match(/src="([^"]+)"/) || [, ''])[1];
 
 function scriptTags() {
@@ -38,9 +44,66 @@ function scriptTags() {
 /** Her sayfada olan script'ler (supabase, api, sepet, auth, çerez onayı) */
 const sharedScripts = () => scriptTags().filter((t) => !PAGE_SPECIFIC.test(srcOf(t))).join('\n');
 
-/** Ortak blok + ürün detay mantığı (product.js) — sıra product.html'deki gibi korunur */
+/** Ortak blok + ürün detay mantığı (product-schema.js + product.js) */
 const productScripts = () =>
-  scriptTags().filter((t) => !PAGE_SPECIFIC.test(srcOf(t)) || srcOf(t).startsWith('product.js')).join('\n');
+  scriptTags().filter((t) => !PAGE_SPECIFIC.test(srcOf(t)) || PRODUCT_ONLY.test(srcOf(t))).join('\n');
+
+// ---- header ----
+
+/*
+   Header ELLE BAKIMLI SAYFADAN OKUNMUYOR — bilinçli bir istisna.
+   Kanonik aday olmaya uygun tek bir sayfa yok: product.html'de hiç <nav> yok,
+   iletisim.html'de 2 link var, index.html/blog.html'de 4. Herhangi birini
+   kaynak seçmek diğer sayfa tiplerinden iç link SİLER. Bu yüzden header
+   burada tanımlı ve en zengin nav (index.html'inki) tüm üretilen sayfalarda
+   kullanılır — 97 ürün sayfası da Okullarımız + İletişim linkini kazanır.
+   Nav değişecekse burayı değiştir, sonra elle bakımlı sayfaları da eşitle.
+*/
+const NAV = [
+  ['products.html', 'Ürünler'],
+  ['blog.html', 'Blog'],
+  ['https://www.notamuzikokulu.com/', 'Okullarımız', ' target="_blank" rel="noopener noreferrer"'],
+  ['iletisim.html', 'İletişim'],
+];
+
+/**
+ * Ortak site header'ı.
+ * current: aria-current="page" alacak href (ör. 'blog.html'); yoksa hiçbiri.
+ */
+function header(current = '') {
+  const nav = NAV.map(([href, label, attrs = '']) =>
+    `    <a href="${href}"${attrs}${href === current ? ' aria-current="page"' : ''}>${label}</a>`
+  ).join('\n');
+
+  return `<header class="site-header" id="siteHeader">
+  <a href="index.html" class="logo" aria-label="Nota Müzik Market ana sayfa">
+    <img class="logo-img" src="images/logo.png" alt="Nota Müzik Market" style="height:40px;width:auto;display:block" />
+  </a>
+  <nav class="site-nav" aria-label="Birincil">
+${nav}
+  </nav>
+  <div class="header-right">
+    <div class="auth-slot" id="authSlot" data-state="loading">
+      <button class="auth-link" data-when="out" data-tab="login" type="button">Giriş Yap</button>
+      <button class="auth-link auth-link-primary" data-when="out" data-tab="register" type="button">Kayıt Ol</button>
+      <a href="account.html" class="account-link" data-when="in" hidden>Hesabım</a>
+      <button type="button" id="logoutBtn" class="logout-link" data-when="in" hidden>Çıkış</button>
+    </div>
+    <a href="account.html?tab=wishlist" class="fav-link" aria-label="Favorilerim" title="Favorilerim">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+      </svg>
+    </a>
+    <a href="cart.html" class="cart-btn" aria-label="Sepet">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
+        <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
+      </svg>
+      <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+    </a>
+  </div>
+</header>`;
+}
 
 // ---- footer ----
 
@@ -95,4 +158,128 @@ function pinVersions(html) {
   return html.replace(ASSET_V, (m, file) => (map[file] ? `${file}?v=${map[file]}` : m));
 }
 
-module.exports = { sharedScripts, productScripts, footer, pinVersions };
+// ---- metin yardımcıları ----
+
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+const stripHtml = (html) => String(html == null ? '' : html)
+  .replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
+  .replace(/\s+/g, ' ').trim();
+
+const excerpt = (s, n = 155) => {
+  const t = String(s || '').replace(/\s+/g, ' ').trim();
+  return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
+};
+
+const fmtTL = (n) => new Intl.NumberFormat('tr-TR').format(Number(n || 0)) + ' TL';
+
+// ---- görsel yardımcıları (api.js ile aynı mantık) ----
+
+const toUrl = (p) => {
+  if (!p) return null;
+  if (/^https?:\/\//i.test(p)) return p;
+  return `${SUPABASE_URL}/storage/v1/object/public/${IMG_BUCKET}/${p}`;
+};
+
+function imageUrls(images) {
+  if (!images || !images.length) return [];
+  return images.slice().sort((a, b) => {
+    if ((!!b.is_primary) - (!!a.is_primary)) return (!!b.is_primary) - (!!a.is_primary);
+    return (a.display_order || 0) - (b.display_order || 0);
+  }).map((i) => toUrl(i.storage_path)).filter(Boolean);
+}
+
+// Responsive varyantlar (api.js ile aynı konvansiyon; generate-thumbnails.mjs üretir)
+const RESP_WIDTHS = [360, 720, 1200];
+// Kaynak görsel mi? jpg/jpeg/png/webp/avif — ama zaten _<N>.webp varyantı DEĞİL.
+const canVariant = (u) => !!u && /\/object\/public\/product-images\/.+\.(jpe?g|png|webp|avif)$/i.test(u) && !/_\d+\.webp$/i.test(u);
+const thumb = (u, w) => canVariant(u) ? u.replace(/\.(jpe?g|png|webp|avif)$/i, `_${w}.webp`) : u;
+const srcset = (u) => canVariant(u) ? RESP_WIDTHS.map((w) => `${thumb(u, w)} ${w}w`).join(', ') : '';
+
+// ---- katalog kartı ----
+
+// products.js card() ile birebir markup; JS hydrate edince sıçrama olmaz.
+// Ürün grid'i, kategori grid'i ve ana sayfa grid'i AYNI kartı kullanmalı,
+// yoksa shop.css/products.css stilleri tutmaz.
+function catCard(p) {
+  const imgs = imageUrls(p.product_images);
+  const out = p.stock <= 0;
+  const catName = p.categories ? p.categories.name : '';
+  const pf = priceFields(p);
+  const media = imgs.length
+    ? `<img src="${esc(thumb(imgs[0], 360))}" srcset="${esc(srcset(imgs[0]))}" sizes="(max-width: 768px) 45vw, 240px" data-full="${esc(imgs[0])}" alt="${esc(p.name)}" width="600" height="800" loading="lazy" decoding="async" />`
+    : `<span class="cat-card-glyph">${esc((catName || p.name || '?').charAt(0).toUpperCase())}</span>`;
+  return `
+      <a class="cat-card" href="urun-${esc(p.slug)}.html">
+        <div class="cat-card-media">
+          ${media}
+          ${out ? '<span class="cat-card-oos">Tükendi</span>' : ''}
+          ${pf.discountPercent > 0 ? `<span class="disc-badge${out ? ' disc-below' : ''}" aria-label="%${esc(pf.discountPercent)} indirim">%${esc(pf.discountPercent)}</span>` : ''}
+          <button type="button" class="cat-fav" data-id="${esc(p.id)}" aria-pressed="false" aria-label="Favorilere ekle" title="Favorilere ekle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          </button>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-card-cat">${esc(catName)}</span>
+          <p class="cat-card-name">${esc(p.name)}</p>
+          <p class="cat-card-price">${pf.discountPercent > 0
+            ? `<span class="price-old">${esc(fmtTL(pf.oldPrice))}</span> ${esc(fmtTL(pf.price))}`
+            : esc(fmtTL(pf.price))}</p>
+        </div>
+      </a>`;
+}
+
+// ---- HTML enjeksiyonu ----
+
+// İşaretçiler arasına HTML enjekte et (crawler için statik içerik). Yoksa uyar, atla.
+function injectBetween(file, tag, html) {
+  const fp = path.join(ROOT, file);
+  if (!fs.existsSync(fp)) { console.warn(`  ⚠ ${file} yok, atlandı`); return; }
+  let s = fs.readFileSync(fp, 'utf8');
+  const re = new RegExp(`(<!--BUILD:${tag}:START-->)[\\s\\S]*?(<!--BUILD:${tag}:END-->)`);
+  if (!re.test(s)) { console.warn(`  ⚠ ${file}: BUILD:${tag} işaretçisi yok, atlandı`); return; }
+  s = s.replace(re, `$1${html}\n      $2`);
+  fs.writeFileSync(fp, s, 'utf8');
+}
+
+// ---- Supabase ----
+
+// Anon key — RLS altında salt-okunur, tarayıcıya da servis ediliyor (api.js).
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3anRmcWhoY3Rxd3JmaHhnaGFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDcxOTEsImV4cCI6MjA5NDcyMzE5MX0.B4gLXDpFgUTmyJxvF8PipPyKWPr8tFYsxxYMjM2O7K8';
+
+/* İndirim / efektif fiyat — api.js:97-106 priceFields() ile AYNI kural.
+   create_order da COALESCE(discount_price, price) kullanır → gösterilen = ödenen.
+   Bu alınmazsa statik sayfa normal fiyatı, canlı sayfa indirimli fiyatı gösterir
+   ve Google iki farklı fiyat görür (Merchant Center'da fiyat uyuşmazlığı hatası). */
+function priceFields(p) {
+  const base = parseFloat(p.price);
+  const dp = (p.discount_price == null) ? null : parseFloat(p.discount_price);
+  const on = dp != null && dp > 0 && dp < base;
+  return {
+    price: on ? dp : base,
+    oldPrice: on ? base : null,
+    discountPercent: on ? Math.round((1 - dp / base) * 100) : 0,
+  };
+}
+
+/** Aktif ürünleri kategori + görselleriyle çeker (slug'ı olmayanlar elenir). */
+async function fetchProducts() {
+  const select = 'id,slug,name,price,discount_price,stock,description,is_active,categories(slug,name),product_images(storage_path,is_primary,display_order)';
+  const url = `${SUPABASE_URL}/rest/v1/products?select=${encodeURIComponent(select)}&is_active=eq.true&order=name`;
+  const res = await fetch(url, { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
+  if (!res.ok) { console.error('✗ Supabase hata:', res.status, await res.text()); process.exit(1); }
+  return (await res.json()).filter((p) => p.slug);
+}
+
+/** Test ürünü mü? (sayfa üretilir ama noindex + sitemap dışı) */
+const isTestProduct = (p) => /(^|[-_])test([-_]|$)/i.test(p.slug) || /\btest\b/i.test(p.name);
+
+module.exports = {
+  SITE, SUPABASE_URL,
+  sharedScripts, productScripts, header, footer, pinVersions,
+  esc, stripHtml, excerpt, fmtTL,
+  toUrl, imageUrls, canVariant, thumb, srcset,
+  catCard, injectBetween, fetchProducts, isTestProduct, priceFields,
+};

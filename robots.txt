@@ -6,4 +6,5 @@ Disallow: /checkout.html
 Disallow: /cart.html
 
 Sitemap: https://www.notamuzikmarket.com/sitemap.xml
+Sitemap: https://www.notamuzikmarket.com/sitemap-categories.xml
 Sitemap: https://www.notamuzikmarket.com/sitemap-products.xml

@@ -35,3 +35,11 @@ supabase/.branches/
 
 # Playwright test çıktıları
 *-kategoriler.png
+
+# Açıklama pipeline'ı ara çıktıları (yedek + onay bekleyen taslak)
+scripts/_backup-descriptions-*.json
+scripts/_draft-descriptions.json
+
+# Playwright MCP ara çıktıları
+.playwright-mcp/
+kategori-mobil.png

@@ -5,21 +5,42 @@
 ## Hakkında
 Nota Müzik Market (Süleyman Kesici – Nota Müzik), Çiğli / İzmir merkezli bir müzik enstrümanı e-ticaret sitesidir. Ürünler taranabilir statik sayfalar olarak yayımlanır; fiyat ve stok bilgisi canlı veritabanından güncellenir.
 
-## Kategoriler
-- Gitarlar — elektro, klasik ve akustik gitarlar
-- Klavye & Piyano — dijital piyano, org, keyboard
-- Davul & Perküsyon — akustik ve elektronik davul setleri, perküsyon
-- Yaylı Çalgılar — keman ve yaylı enstrümanlar
-- Aksesuarlar — tel, baget, amfi, kablo, stand ve diğer ekipmanlar
+## Kategori Sayfaları
+Her sayfa ürün listesi, satın alma rehberi ve sık sorulan sorular içerir.
+
+- Elektro gitar: https://www.notamuzikmarket.com/elektro-gitar.html
+- Klasik gitar: https://www.notamuzikmarket.com/klasik-gitar.html
+- Akustik gitar: https://www.notamuzikmarket.com/akustik-gitar.html
+- Dijital piyano: https://www.notamuzikmarket.com/dijital-piyano.html
+- Keyboard & org: https://www.notamuzikmarket.com/keyboard-org.html
+- Elektronik davul: https://www.notamuzikmarket.com/elektronik-davul.html
+- Cajon & darbuka: https://www.notamuzikmarket.com/cajon-darbuka.html
+- Keman: https://www.notamuzikmarket.com/keman.html
+- Saksafon: https://www.notamuzikmarket.com/saksafon.html
+- Klarnet: https://www.notamuzikmarket.com/klarnet.html
+- Davul bageti: https://www.notamuzikmarket.com/davul-bageti.html
+- Davul çalışma pedi: https://www.notamuzikmarket.com/davul-calisma-pedi.html
+- Gitar teli: https://www.notamuzikmarket.com/gitar-teli.html
+- Gitar kablosu: https://www.notamuzikmarket.com/gitar-kablosu.html
+- Gitar kılıfı: https://www.notamuzikmarket.com/gitar-kilifi.html
+- Amfi & efekt pedalı: https://www.notamuzikmarket.com/amfi-pedal.html
 
 ## Önemli Sayfalar
-- Ürün kataloğu: https://www.notamuzikmarket.com/products.html
+- Ürün kataloğu (tüm ürünler): https://www.notamuzikmarket.com/products.html
 - Blog & enstrüman rehberleri: https://www.notamuzikmarket.com/blog.html
 - İletişim & künye: https://www.notamuzikmarket.com/iletisim.html
 - Sipariş sorgulama (üyeliksiz): https://www.notamuzikmarket.com/siparis-sorgula.html
+- İade ve teslimat koşulları: https://www.notamuzikmarket.com/iade-teslimat.html
+
+## Satış Koşulları
+- Kargo: 2.000 TL ve üzeri siparişlerde ücretsiz; altında 199 TL (KDV dahil).
+- Cayma hakkı: teslimattan itibaren 14 gün.
+- Ödeme: PayTR altyapısı, kredi kartına taksit seçenekleri mevcut.
+- Teslimat: tüm Türkiye, 1-2 iş günü hazırlık + 1-3 iş günü kargo.
 
 ## Site Haritaları
 - https://www.notamuzikmarket.com/sitemap.xml
+- https://www.notamuzikmarket.com/sitemap-categories.xml
 - https://www.notamuzikmarket.com/sitemap-products.xml
 
 ## İletişim
