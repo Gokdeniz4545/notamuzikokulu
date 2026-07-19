@@ -76,23 +76,23 @@
    çıkıyor. Okunabilirlik için dar sütun. */
 .cat-answer {
   max-width: 760px;
-  margin: 0 0 32px;
-  padding: 20px 22px;
+  margin: 0 0 40px;
+  padding: 22px 24px;
   background: var(--bg-soft);
   border-radius: var(--radius);
-  border-left: 3px solid var(--accent);
+}
+.cat-answer h2 {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 700;
+  margin: 0 0 14px;
 }
 .cat-answer p {
   margin: 0 0 12px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
   color: var(--ink-2);
 }
 .cat-answer p:last-child { margin-bottom: 0; }
-.cat-answer-lead {
-  font-size: 17px !important;
-  color: var(--ink) !important;
-}
 .cat-answer-price strong { color: var(--ink); font-weight: 700; }
 .cat-answer-local a {
   color: var(--accent);

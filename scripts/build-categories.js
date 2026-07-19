@@ -95,12 +95,16 @@ function priceStats(list) {
 
 const trToday = () => new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-/* ---- alıntılanabilir cevap bloğu ----
-   Ürün ızgarasının ÜSTÜNE gelir. Sebep: AI alıntılarının %44'ü sayfanın ilk
-   %30'undan çıkıyor; rehber metni grid'in altında kaldığı için sayfanın
-   %60'ından sonra başlıyordu ve alıntılanacak metin ilk ekranda yoktu.
-   Hedef uzunluk 134-167 kelime (optimal alıntı pasajı). */
-function answerBlock(cat, stats) {
+/* ---- mağaza & satış bilgisi bloğu ----
+   ÜRÜN IZGARASININ ALTINA gelir (rehber metninden sonra).
+
+   Başta grid'in üstündeydi — AI alıntılarının %44'ü sayfanın ilk %30'undan
+   çıktığı için oraya konmuştu. Ama görsel olarak ürünleri ekranın çok
+   aşağısına itiyordu; kullanıcı isteğiyle aşağı alındı.
+   Alıntılanabilirlik açısından kayıp sınırlı: fiyat cümlesi hâlâ metinde,
+   AggregateOffer ve iki MusicStore düğümü şemada, adres/telefon
+   izmir-muzik-magazasi.html'de tam kapsamda duruyor. */
+function storeInfoBlock(cat, stats) {
   // min === max (tek fiyat) durumunda "X ile X arasında" demek garip olur
   const ad = esc(cat.short || cat.h1);
   const fiyat = !stats.count ? ''
@@ -112,8 +116,8 @@ function answerBlock(cat, stats) {
     : `Ürünler İzmir'deki mağazalarımızda çalınarak denenebilir; tüm Türkiye'ye kargo ile gönderilir.`;
 
   return `
-  <section class="cat-answer">
-    <p class="cat-answer-lead">${esc(cat.intro)}</p>
+  <section class="cat-answer" aria-labelledby="magazaBaslik">
+    <h2 id="magazaBaslik">Mağazalarımız ve Satış Koşulları</h2>
     ${fiyat ? `<p class="cat-answer-price">${fiyat}</p>` : ''}
     <p class="cat-answer-local">${yerel} İzmir'de iki mağazamız var: <strong>Karşıyaka</strong> (Şemikler Mah. 6205 Sok. No: 4/A) ve <strong>Menemen Ulukent</strong> (9 Eylül Mah. 268. Sok. No: 27/A) — her gün 10:00–21:00. <a href="izmir-muzik-magazasi.html">Mağazalarımız hakkında →</a></p>
     <p class="cat-answer-terms">2.000 TL ve üzeri siparişlerde kargo ücretsizdir; altındaki siparişlerde 199 TL kargo bedeli uygulanır. Siparişler 1-2 iş günü içinde hazırlanır, teslimat bölgeye göre 1-3 iş günü sürer. Teslimattan itibaren 14 gün cayma hakkınız vardır. Ödemeler PayTR güvenli ödeme altyapısı üzerinden alınır ve kredi kartına taksit seçenekleri ürün sayfasında görüntülenir.</p>
@@ -269,12 +273,12 @@ ${HEADER}
 
   <header class="cat-head">
     <h1>${esc(cat.h1)}</h1>
+    <p class="cat-intro">${esc(cat.intro)}</p>
     <p class="cat-count">${products.length} ürün listeleniyor</p>
     <nav class="cat-jump" aria-label="Sayfa içi kısayollar">
       <a href="#rehber">Satın alma rehberi</a>
 ${cat.faq && cat.faq.length ? '      <a href="#sss">Sık sorulan sorular</a>\n' : ''}    </nav>
   </header>
-${answerBlock(cat, stats)}
 
   <section class="cat-products" aria-label="${esc(cat.h1)} ürünleri">
     ${grid}
@@ -284,6 +288,7 @@ ${answerBlock(cat, stats)}
 ${cat.body.trim()}
   </article>
 ${faqHtml(cat.faq)}
+${storeInfoBlock(cat, stats)}
 ${relatedHtml(cat.related)}
 
   <p class="cat-allcta"><a href="products.html">Tüm ürünleri görüntüle →</a></p>
