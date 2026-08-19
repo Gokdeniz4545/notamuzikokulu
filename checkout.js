@@ -34,7 +34,8 @@
   let subtotal = 0;
 
   // Kargo: ara toplam < 2000 TL ise 199 TL, değilse ücretsiz (create_order ile aynı kural)
-  const FREE_SHIP_MIN = 2000, SHIP_FEE = 199;
+  // GECICI TEST (2026-08-19): kargo pasif, create_order ile aynı — testten sonra 199'a dön.
+  const FREE_SHIP_MIN = 2000, SHIP_FEE = 0;
   function shipFee(sub) { return (sub > 0 && sub < FREE_SHIP_MIN) ? SHIP_FEE : 0; }
   function shipLabel(sub) { return shipFee(sub) > 0 ? fmtTL(SHIP_FEE) : 'Ücretsiz'; }
 
